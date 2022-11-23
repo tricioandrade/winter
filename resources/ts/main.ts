@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import Home from "./components/Home";
-// import Header from "./components/Header";
+import {Inventory} from "./components/Inventory";
 import '../css/style.css';
 import axios from "./api/axios";
 import DateAndTime from "./tasks/DateAndTime";
@@ -25,10 +25,12 @@ function getPage(path: string | number): void {
             break;
         case '/users':      break;
         case '/sale':       break;
-        case '/inventory':  Home.render()  ;      break;
+        case '/inventory':  Inventory.render()  ;      break;
         case '/receipts':   break;
     default :
-        console.log('oops');
+
+        Home.setPrivilegeStatus(true);
+        Home.render();
         break;
     }
 }

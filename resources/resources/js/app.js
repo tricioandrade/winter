@@ -16,7 +16,7 @@ import Users from "../../ts/components/Users";
 import Receipts from "../../ts/components/Receipts";
 import '../../css/app.css';
 import ChangeUserPassword from "../../ts/tasks/ChangeUserPassword";
-import MessageBox from "../../ts/tasks/MessageBox";
+import MessageBox from "../../ts/components/MessageBox";
 import Cookie from "../../ts/tasks/Cookie";
 import DateAndTime from "../../ts/tasks/DateAndTime";
 

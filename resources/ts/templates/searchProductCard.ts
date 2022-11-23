@@ -1,9 +1,8 @@
 import Preloader from "../components/Preloader";
 
-const InventoryProductCard = (arr) => {
+const searchProductCard = (arr: any[]) => {
     let products = ``;
-
-    const e = p => {
+    const e = <T extends object> (p: T | any) => {
         products += `
                     <div id="I${p.id}" class="col-4 m-2 card">
                         <div class="card-body">
@@ -37,18 +36,12 @@ const InventoryProductCard = (arr) => {
                 `;
     }
 
-    if (arr[0]){
-        arr.map( iter => {
-            e(iter)
-        });
-    }
-    else {
-        e(arr);
-    }
+    if (arr[0]) arr.map( iter => { e(iter) });
+    else e(arr);
 
-    Preloader().remove();
-    document.getElementById("listed_search_product").innerHTML = products;
+    Preloader.inactive();
+    return products;
 }
 
 
-export default InventoryProductCard;
+export default searchProductCard;

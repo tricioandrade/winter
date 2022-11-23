@@ -1,7 +1,4 @@
-
-
-function Saletable  () {
-    return `<table  id="saleTable" class="table">
+const _ =  `<table  id="saleTable" class="table">
                 <thead>
                     <tr>
                         <th>Descrição</th>
@@ -14,6 +11,6 @@ function Saletable  () {
                 <tbody>
                 </tbody>
             </table>`;
-}
 
-export default Saletable;
+
+export default _;

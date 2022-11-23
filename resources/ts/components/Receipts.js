@@ -2,7 +2,7 @@ import axios from "../api/axios";
 import ReceiptSaftCard from "../templates/ReceiptSaftCard";
 import ReceiptSqlBackUpCard from "../templates/ReceiptSqlBackUpCard";
 import ReceiptSaleResumeTable from "../templates/ReceiptSaleResumeTable";
-import MessageBox from "../tasks/MessageBox";
+import MessageBox from "./MessageBox";
 import Preloader from "./Preloader";
 import ReceiptSoldProductResume from "../templates/ReceiptSoldProductResume";
 import {ReceiptInvoiceRow} from "../tasks/ReceiptInvoiceRow";

@@ -1,12 +1,13 @@
 import axios from "../api/axios";
-import MessageBox from "../tasks/MessageBox";
+import MessageBox from "./MessageBox";
 import Preloader from "./Preloader";
 import {buildTemplate} from "../tasks/buildTemplate";
 import {renderTemplate} from "../tasks/renderTemplate";
 import inventoryTemplate from "../templates/inventoryTemplate";
+import "./SearchProduct";
 
 
-class Inventory extends HTMLElement{
+export class Inventory extends HTMLElement{
     private template: HTMLTemplateElement;
 
     constructor() {
@@ -20,6 +21,8 @@ class Inventory extends HTMLElement{
     connectedCallback() {
         if (this.isConnected){
             this.createProduct();
+            this.updateProduct();
+            this.deleteProduct();
         }
         else{
             Inventory.render()
@@ -55,9 +58,9 @@ class Inventory extends HTMLElement{
                 Preloader.inactive();
                 console.log(data);
                 console.log(status);
-                MessageBox('Produto cadastrado!');
+                MessageBox.openModal('Produto cadastrado!');
             }catch (err) {
-                MessageBox('Não foi possível cadastrar o produto!');
+                MessageBox.openModal('Não foi possível cadastrar o produto!');
                 Preloader.inactive();
                 console.log(err);
             }
@@ -87,7 +90,7 @@ class Inventory extends HTMLElement{
 
             Preloader.active();
             try {
-                let update = await axios(
+                let { data } = await axios(
                     {
                         url: 'products/' + elem.product_id.value,
                         method: 'patch',
@@ -97,11 +100,11 @@ class Inventory extends HTMLElement{
                         }
                     });
 
-                MessageBox('Produto actualizado');
+                MessageBox.openModal('Produto actualizado');
                 Preloader.inactive();
-                console.log(update.data);
+                console.log(data);
             } catch (e) {
-                MessageBox('Não foi possível actualizar!');
+                MessageBox.openModal('Não foi possível actualizar!');
                 Preloader.inactive();
                 console.log(e);
             }
@@ -119,38 +122,11 @@ class Inventory extends HTMLElement{
                 const removeRow = document.querySelector('div#I' + id);
                 removeRow?.remove();
 
-                MessageBox('O produto foi deletado!');
+                MessageBox.openModal('Cadastrado com sucesso!');
             }catch (e) {
                 console.log(e);
-                MessageBox('Ocorreu um erro, produto ou serviço não Eliminado!');
+                MessageBox.openModal('Ocorreu um erro, produto ou serviço não Eliminado!');
             }
-
-        });
-    }
-
-    searchProducts = () => {
-        const formSearch = document.getElementById('product-search');
-        formSearch.addEventListener('submit', async (ev) => {
-           ev.preventDefault();
-            Preloader.active();
-            try {
-                if(formSearch.productSearchInput.value){
-                    let response = await axios.get('products/'+ formSearch.productSearchInput.value);
-                    let products = response.data.data.data;
-                    console.log(products);
-                    InventoryProductCard(products);
-                }
-                else {
-                    let response = await axios.get('products/');
-                    let products = response.data.data.data;
-                    console.log(response);
-                    InventoryProductCard(products);
-                }
-
-            }catch (err){
-                console.log(err) ;
-                Preloader.inactive();
-                MessageBox('Erro na busca de produtos, talvez deva cadastrar primeiro') }
 
         });
     }
@@ -160,4 +136,4 @@ class Inventory extends HTMLElement{
     }
 }
 
-export default Inventory;
+customElements.define('inventory-page', Inventory);

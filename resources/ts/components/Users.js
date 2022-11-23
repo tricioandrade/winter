@@ -6,7 +6,7 @@ import Preloader from "./Preloader";
 import axios from "../api/axios";
 import qs from "qs";
 import UsersList from "./UsersList";
-import MessageBox from "../tasks/MessageBox";
+import MessageBox from "./MessageBox";
 import {UsersFormAddCompanyInfo} from "./UsersFormAddCompanyInfo";
 import UserCompanyInfo from "./UserCompanyInfo";
 import ChangeUserPassword from "../tasks/ChangeUserPassword";

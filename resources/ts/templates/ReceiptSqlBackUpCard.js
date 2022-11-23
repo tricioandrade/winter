@@ -1,5 +1,5 @@
 import axios from "../api/axios";
-import MessageBox from "../tasks/MessageBox";
+import MessageBox from "../components/MessageBox";
 import Preloader from "../components/Preloader";
 
 

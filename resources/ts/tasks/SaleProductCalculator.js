@@ -1,6 +1,6 @@
 import SaleProdutTableRows from "./SaleProdutTableRows";
 import currency from 'currency.js';
-import MessageBox from "./MessageBox";
+import MessageBox from "../components/MessageBox";
 
 class SaleProductCalculator {
     constructor () {
