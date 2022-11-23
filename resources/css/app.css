@@ -1,0 +1,156 @@
+
+
+body {
+    font-family: 'Nunito', sans-serif;
+    /*background-color: #ffffff !important;*/
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    position: relactive;
+    z-index: 1
+}
+
+
+body:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 10%;
+    background: linear-gradient(45deg, #2d3748, #718096, #4a5568);
+    z-index: -2;
+}
+
+body:before {
+    content: "";
+    position: absolute;
+    background: #fdfdfd;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 17%;
+    border-top-left-radius: 100rem;
+    border-top-right-radius: 100rem;
+    z-index: -1
+}
+
+.animation {
+    animation: moveInBotton .3s ease-out .75s;
+    animation-fill-mode: backwards;
+}
+
+nav {
+    line-height: 1;
+    padding: inherit;
+    position: fixed;
+    top: 0;
+    box-shadow: 0 0.5rem 1rem #00000026 !important;
+    background:#e9ecef !important;
+}
+
+nav .navbar-brand {
+    text-shadow:0 0 1px #fefefe;
+    color:#333;
+}
+
+
+#app {
+    height: 100vh;
+}
+
+
+.card {
+    background:#fefefeeb;
+    border-top: 12px solid #efd701 important;
+    box-shadow: 0 0.5rem 1rem #00000026 !important;
+}
+
+.btn {
+    color:#333;
+    box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%) !important;
+    text-shadow:0 0 1px #fefefe;
+    border-color: #ffcd38c7;
+    background: linear-gradient(45deg, #ffcd38c7, hsl(54deg 99% 47%), hsl(45deg 100% 61% / 78%));
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    border-color: #ffffff;
+    transition: all 300ms ease-out;
+}
+
+.btn.btn-danger {
+    color:#fefefe;
+    text-shadow:0 0 1px red;
+    background:rgb(255 0 0 / 63%) !important
+}
+
+
+form input, form select {
+    border-color:#888 !important
+}
+
+
+
+@keyframes girar {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    50% {
+        transform: rotate(180deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes moveInLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-100px);
+    }
+
+    80% {
+        transform: translateX(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes moveInRight {
+    0% {
+        opacity: 0;
+        transform: translateX(0);
+    }
+
+    80% {
+        transform: translateX(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes moveInBotton {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

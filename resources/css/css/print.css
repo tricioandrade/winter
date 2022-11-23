@@ -1,0 +1,169 @@
+
+@media print {
+    * {
+        box-shadow: none !important;
+    }
+
+    body {
+        visibility: hidden
+    }
+
+    .super-shadow {
+        box-shadow: none !important;
+    }
+
+    .border-black {
+        border: none;
+    }
+
+    #print {
+        display:block !important;
+    }
+
+
+     #print .quotePrint #invoiceLogo img{
+        width:300px;
+    }
+
+     #print .quotePrint .scroll-table {
+        height: 42vh !important;
+        /*     display:initial; */
+        overflow: revert
+    }
+
+     #print .quotePrint {
+        position: absolute;
+        width: 210mm;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        visibility: visible !important;
+        z-index: 12;
+        border: none !important;
+    }
+
+     #print .quotePrint * {
+        box-shadow: none !important;
+        margin: inherit !important;
+        background: #fff !important;
+        padding-left: 0;
+        padding-right: 0;
+        font-size:13px !important;
+    }
+
+     #print .quotePrint ul * {
+        font-family: 'Times New Roman';
+        text-align: left;
+        font-size:14px !important;
+    }
+
+     #print .quotePrint table * {
+        font-family: 'Calibri';
+        text-align: center !important;
+    }
+
+     #print .quotePrint ul {
+        padding-left: 0 !important;
+    }
+
+     #print .quotePrint .faturaid{
+        font-family: 'Times New Roman';
+        font-weight:bold;
+    }
+
+     #print .quotePrint h6{
+        font-weight:bold;
+    }
+
+     #print .quotePrint #invoiceHeader table,  #print .quotePrint table {
+        border-top: 2px solid #000 !important;
+        -webkit-border-top: 2px solid #000 !important;
+    }
+
+     #print .quotePrint #invoiceHeader table thead,  #print .quotePrint table thead {
+        border-bottom: 1px solid #000 !important;
+        -webkit-border-bottom: 1px solid #000 !important;
+    }
+
+     #print .quotePrint #invoiceHeader table tbody,  #print .quotePrint table tbody {
+        border-top: 1px solid #000 !important;
+        -webkit-border-top: 1px solid #000 !important;
+    }
+
+     #print .quotePrint table tbody tr td {
+        border: none !important;
+    }
+
+     #print .quotePrint table tbody * {
+        padding: inherit !important;
+        font-weight:normal !important;
+    }
+
+     #print .quotePrint table.table-venda thead * {
+        position:inherit;
+        font-weight: bold !important;
+        text-align: center;
+    }
+
+     #print .quotePrint table thead {
+        border-top:3px solid !important;
+        border-bottom:2px solid#000 !important;
+        border-color:#000;
+    }
+
+     #print .quotePrint table.table-striped * {
+        background: none !important;
+
+    }
+
+     #print .quotePrint #invoiceHeader .row .row {
+        padding-top: 20px !important;
+        padding-bottom: 30px !important;
+    }
+
+
+    .estado:after {
+        content: "ANULADO";
+        position:absolute;
+        z-index:100;
+        left:0;
+        top:40%;
+        font-size:9rem;
+        color:red;
+        transform:rotate(-50deg);
+
+
+    }
+
+
+     #print .quotePrint #footerInfo ul {
+        border-top: 3px solid #000 !important
+    }
+
+     #print .quotePrint #footerInfo ul li,  #print .quotePrint #footerInfo ul li span,  #print .quotePrint #footerInfo ul li span h6 {
+        font-family: 'Arial' !important;
+        padding-left: 0;
+        padding-right: 0;
+        font-size:13px !important;
+    }
+
+     #print .quotePrint #footerInfo ul li:last-child > span {
+        font-weight: bold;
+        padding: 2px 0 2px 0;
+    }
+
+     #print .quotePrint #footerInfo ul li:last-child {
+        border-top: 2px solid #000 !important;
+    }
+
+
+    .p-4 {
+        padding: 0px !important;
+    }
+
+    html, body {
+        width: 210mm;
+        height: 297mm;
+    }
+
+}
