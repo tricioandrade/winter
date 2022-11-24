@@ -1,9 +1,11 @@
 import {ProductsForSale} from "../interfaces/ProductsForSale";
 
-class ShoppingCartManager {
+
+class ShoppingCartManager{
     private shoppingCart: { products: Partial<ProductsForSale[]>  } = { products: []};
 
-    set addProductToShoppingCart (product: ProductsForSale) {
+
+    public set addProductToShoppingCart (product: ProductsForSale | any) {
        const index = this.getProductIndex(product.id);
        // const cartProductID: any | object = this.shoppingCart.products[index];
        if (index) this.shoppingCart.products.splice(index);
@@ -12,6 +14,12 @@ class ShoppingCartManager {
 
     get getAllShoppingCartProducts (): object {
        return this.shoppingCart;
+    }
+
+    getOneShoppingCartProduct(product:  ProductsForSale): any {
+        this.addProductToShoppingCart(product);
+        const index = this.getProductIndex(product.id);
+        return this.shoppingCart.products[index];
     }
 
     public removeProductsFromShoppingCart(id: number) {

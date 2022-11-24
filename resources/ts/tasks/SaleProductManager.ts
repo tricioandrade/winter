@@ -2,29 +2,20 @@ import axios from "../api/axios";
 import MessageBox from "../components/MessageBox";
 // import {Product} from "../interfaces/Product";
 import ShoppingCartManager from "./ShoppingCartManager";
+import ProductCalculator from "./ProductCalculator";
 
 
-class SaleFormProductMannager extends ShoppingCartManager{
-    private products;
-
-    constructor(products: object) {
-        this.products = products;
-    }
-
-    connectedCallback() {
-
-    }
+class SaleProductManager extends ShoppingCartManager{
 
 
 
-
-    saleFormProduct =  () => {
+     saleFormProduct =  () => {
 
         // InvoiceList().then( temp => document.getElementById('changed_ref').innerHTML = temp.template);
 
 
         const form =  document.getElementById('sale-form-product');
-        const calculator = new SaleProductCalculator();
+        const calculator = new ProductCalculator();
         form.addEventListener('submit', async e => {
             e.preventDefault();
             const productInput = form.productInput.value;

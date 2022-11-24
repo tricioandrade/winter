@@ -3,7 +3,7 @@ export interface Product{
     uniqueID: string | number;
     name: string;
     description: string;
-    sockQuantity: number;
+    stockQuantity: number;
     forSaleState: boolean;
     forSaleQuantity: number;
     unityQuantity: number;
