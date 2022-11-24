@@ -1,5 +1,5 @@
-import './Calculator.css';
-import './Sales.css';
+import '../../css/Calculator.css';
+import '../../css/Sales.css';
 import axios from "../api/axios";
 import MessageBox from "./MessageBox";
 import SaleProductCalculator from "../tasks/SaleProductCalculator";
@@ -8,29 +8,29 @@ import InvoiceBuilder from "./InvoiceBuilder";
 import InvoiceList from "./InvoiceList";
 import {buildTemplate} from "../tasks/buildTemplate";
 import inventoryTemplate from "../templates/inventoryTemplate";
+import {renderTemplate} from "../tasks/renderTemplate";
+import saleTemplate from "../templates/saleTemplate";
+import {Product} from "../interfaces/Product";
 
 
 class Sales extends HTMLElement{
-    private invoice: [] = [];
-
-    private template: HTMLTemplateElement;
-
-    constructor() {
+    private invoice = [];
+    private productsForSale: Product[];
+    constructor(productsForSale: Product[]) {
         super();
+        this.productsForSale = productsForSale;
+
         this.attachShadow({mode: 'open'});
-        this.template = buildTemplate('div', inventoryTemplate);
-        this.shadowRoot?.appendChild(this.template.content.cloneNode(true));
-        console.log(this.template);
+        const template = buildTemplate('template', saleTemplate);
+        this.shadowRoot?.appendChild(template.content.cloneNode(true));
+        console.log(template);
+    }
+
+    connectedCallback() {
+
     }
 
 
-    printAgain = () => {
-
-      document.getElementById('printAgain').addEventListener('click', ev => {
-          new  InvoiceBuilder(this.invoice);
-
-      });
-    }
 
     finishSale = async (calculator) => {
 
@@ -79,52 +79,10 @@ class Sales extends HTMLElement{
 
     }
 
-    listener = (elem, callback) => {
-        elem.addEventListener('submit', callback(ev));
-    }
-
-    saleFormProduct =  () => {
-
-        InvoiceList().then( temp => document.getElementById('changed_ref').innerHTML = temp.template);
-
-
-        const form =  document.getElementById('sale-form-product');
-        const calculator = new SaleProductCalculator();
-        form.addEventListener('submit', async e => {
-            e.preventDefault();
-            const productInput = form.productInput.value;
-            const quantity = form.quantity.value;
-            const discount = 0;
-
-            try {
-                let One = 1;
-                if (calculator.actualProduct){
-                    One = calculator.actualProduct.quantity
-                }
-
-                console.log(`calculator/${productInput +'/'+ quantity +'/'+ discount}`);
-                const  response = await axios.get(`calculator/${productInput +'/'+ quantity+ '/'+ One +'/'+ discount}` );
-                let product  = response.data.data.data.product;
-
-                calculator.addProduct(product);
-            }
-            catch (e){
-                console.log(e);
-                MessageBox('Não foi possivel adicionar o produto, por favor verifique o stock do produto!');
-            }
-        });
-
-        calculator.remProduct();
-
-        this.finishSale(calculator);
-        this.printAgain();
-     }
 
     render () {
-
-        return `
-    `;
+        renderTemplate('sale-page');
     }
 }
 
-export default Sales;
+customElements.define('sale-page', Sales)

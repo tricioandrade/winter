@@ -111,7 +111,7 @@ export class Inventory extends HTMLElement{
         });
     }
 
-    deleteProduct  = async () => {
+    deleteProduct  = () => {
         const formDeleteProductInput = document.getElementById('listed_search_product')! as HTMLElement;
         formDeleteProductInput.addEventListener('submit', async ev => {
             ev.preventDefault();
@@ -132,7 +132,7 @@ export class Inventory extends HTMLElement{
     }
 
     static render () {
-        renderTemplate(document.createElement('inventory-page'));
+        renderTemplate('inventory-page');
     }
 }
 

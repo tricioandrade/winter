@@ -1,7 +1,8 @@
-import './Home.css';
+import '../../css/Home.css';
 import homeNormalUserTemplate from '../templates/homeNormalUserTemplate';
 import homeAdminUserTemplate from '../templates/homeAdminUserTemplate';
 import {renderTemplate} from "../tasks/renderTemplate";
+import {buildTemplate} from "../tasks/buildTemplate";
 
 type combinable = string | number | [] | boolean;
 
@@ -12,8 +13,7 @@ class Home extends HTMLElement{
     constructor() {
         super();
         this.attachShadow({mode: 'open'});
-        const template = document.createElement('template');
-        template.innerHTML = homeNormalUserTemplate;
+        const template = buildTemplate('template', homeNormalUserTemplate);
         this.shadowRoot?.appendChild(template.content.cloneNode(true))
     }
 
@@ -33,7 +33,7 @@ class Home extends HTMLElement{
 
     static render () {
         this.attachTemplateCall();
-        renderTemplate(document.createElement('home-page'));
+        renderTemplate('home-page');
     }
 }
 
