@@ -1,19 +1,21 @@
 import axios from "../api/axios";
-import MessageBox from "./MessageBox";
-import {Product} from "../interfaces/Product";
-import ShoppingCartManager from "../tasks/ShoppingCartManager";
+import MessageBox from "../components/MessageBox";
+// import {Product} from "../interfaces/Product";
+import ShoppingCartManager from "./ShoppingCartManager";
 
 
-class SaleFormProductMannager extends HTMLElement, ShoppingCartManager{
-    private products: Partial<Product>;
+class SaleFormProductMannager extends ShoppingCartManager{
+    private products;
 
-    constructor() {
-        super();
+    constructor(products: object) {
+        this.products = products;
     }
 
     connectedCallback() {
-        productsForSale:Product[]
+
     }
+
+
 
 
     saleFormProduct =  () => {
@@ -52,3 +54,5 @@ class SaleFormProductMannager extends HTMLElement, ShoppingCartManager{
         this.finishSale(calculator);
     }
 }
+
+export default SaleFormProductMannager;
