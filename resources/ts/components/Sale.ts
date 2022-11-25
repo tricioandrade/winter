@@ -3,7 +3,7 @@ import '../../css/Sales.css';
 import {buildTemplate} from "../tasks/buildTemplate";
 import {renderTemplate} from "../tasks/renderTemplate";
 import saleTemplate from "../templates/saleTemplate";
-import ProductsRequets from "../requests/ProductsRequets";
+import ProductsRequests from "../requests/ProductsRequests";
 import SaleFormProductMannager from "../tasks/SaleProductManager";
 import {Product} from "../interfaces/Product";
 import {ProductsForSale} from "../interfaces/ProductsForSale";
@@ -37,7 +37,7 @@ class Sales extends HTMLElement {
     }
 
     private loadProducts() {
-        ProductsRequets.getAllProducts().then( data => {
+        ProductsRequests.getAllProducts().then(data => {
             console.log(data);
             this.storeProducts = data.data;
             console.log(this.storeProducts);
@@ -68,7 +68,6 @@ class Sales extends HTMLElement {
         });
     }
 
-
     private addProductToSaleTable(product: Partial<ProductsForSale>) {
         const table = this.shadowRoot?.getElementById('saleTable') as HTMLElement;
         table.innerHTML += SaleProdutTableRows(product);
@@ -78,15 +77,15 @@ class Sales extends HTMLElement {
         const table = this.shadowRoot?.getElementById('saleTable') as HTMLElement;
 
         table.addEventListener('submit', ev => {
-            const target = ev.target as HTMLElement;
-            const selectedElement = target.querySelector('form button') as HTMLFormElement;
-            const value = +selectedElement.value;
+            const target: HTMLElement = ev.target as HTMLElement;
+            const selectedElement: HTMLFormElement = target.querySelector('form button') as HTMLFormElement;
+            const value: number = +selectedElement.value;
             try{
                 const selectRow = this.shadowRoot?.querySelector('tr#product' + value) as HTMLElement;
                 selectRow.remove();
 
                 this.shoppingCart.removeProductsFromShoppingCart(value);
-                MessageBox.openModal('Producto Removido!');
+                MessageBox.openModal('Produto Removido!');
             }catch (e) {
                 console.log(e);
                 MessageBox.openModal('Não Eliminado!');

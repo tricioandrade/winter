@@ -5,6 +5,10 @@ class InvoicesRequets {
         return await axios.get('invoice');
     }
 
+    static async getAllPaidInvoices () {
+        return await axios.get('invoice/paid_invoices');
+    }
+
     static async getSingleInvoice (id: number) {
         return await axios.get('invoice/' + id);
     }

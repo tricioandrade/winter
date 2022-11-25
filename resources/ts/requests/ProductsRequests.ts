@@ -1,6 +1,6 @@
 import axios from "../api/axios";
 
-class ProductsRequets {
+class ProductsRequests {
 
     static async saveProduct (data: string | object) {
         return await axios.post('products', data)
@@ -28,4 +28,4 @@ class ProductsRequets {
     }
 }
 
-export default ProductsRequets;
+export default ProductsRequests;
