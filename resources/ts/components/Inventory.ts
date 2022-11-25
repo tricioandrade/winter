@@ -1,8 +1,8 @@
 import axios from "../api/axios";
 import MessageBox from "./MessageBox";
 import Preloader from "./Preloader";
-import {buildTemplate} from "../tasks/buildTemplate";
-import {renderTemplate} from "../tasks/renderTemplate";
+import {buildTemplate} from "../traits/buildTemplate";
+import {renderTemplate} from "../traits/renderTemplate";
 import inventoryTemplate from "../templates/inventoryTemplate";
 import "./SearchProduct";
 
