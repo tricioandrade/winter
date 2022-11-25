@@ -1,4 +1,4 @@
-
+import {SoldProduct} from "./SoldProduct";
 
 
 export interface Invoice {
@@ -43,24 +43,6 @@ export interface Invoice {
             name: string;
             email: string
         },
-        sold_products: {
-           id: number | string;
-           attributes: {
-               name: string;
-               description: number;
-               sale_id: number;
-               sold_quantity: number;
-               sold_price: number,
-               sold_price_with_tax: number,
-               sold_promotional_price: number;
-               sold_promotional_status: boolean | string;
-               tax_value: number;
-               tax_exemption_reason: string;
-               tax_exemption_code: string;
-               tax_type: string;
-               tax_total: number;
-               total: number;
-           }
-        }[]
+        sold_products: SoldProduct[]
     }
 }

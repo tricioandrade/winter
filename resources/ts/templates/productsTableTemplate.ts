@@ -1,36 +1,48 @@
+// import logo from '../../images/outonologo.png';
+
+const productsTableTemplate = (products) => {
+    let tBody = '';
 
 
-const ProductsTableTemplate = () => {
-    const table = `
-        <div style="display: none" id="print" class="col-12 row">
-                    <div class="quotePrint">
-                        <div id="outonoPrintLogo">
-                            <div id="invoiceLogo" class="col-12 text-start">
-                                <img src="outonologo.jpg" alt="Outono">
-                            </div>
-                        </div>
-                        <span id="clean">
-                            <div style="" id="invoiceHeader"></div>
-                            <div style="" id="invoiceDetails" class="col-12"></div>
-                            <div style="" id="invoiceMiddleInfo" class="col-12"></div>
-                            <div class="col-12 saleQuote text-start pl-2">
-                                <table class="table product  table-venda productList  scroll-table" id="table-venda">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col" id="code" >Código</th>
-                                            <th scope="col">Descrição</th>
-                                            <th scope="col">Quantidade</th>
-                                            <th scope="col">Preço unitário</th>
-                                            <th scope="col">Tx IVA</th>
-                                            <th scope="col">Total líquido</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
-                                <div id="footerInfo"></div>
-                            </div>
-                        </span>
-                    </div>
-                </div>
+
+    const receiptSoldProductResume = document.querySelector('table#receiptSoldProductResume tbody');
+
+    let tableRows = '';
+    let i = 1;
+
+    products.map( props => {
+        tableRows +=  `
+            <tr>
+                <td>${i}</td>
+                <td>${props.relationships.product.name}</td>
+                <td>${props.relationships.product.description}</td>
+                <td>${props.attributes.discount}</td>
+                <td>${props.attributes.quantity}</td>
+                <td>${props.relationships.sale.invoice_number}</td>
+                <td>${props.attributes.total} Kz</td>
+            </tr>
+        `;
+        i++;
+    });
+
+    let table = `
+            <table class="table product  table-venda productList  scroll-table" id="table-venda">
+                <thead>
+                    <tr>
+                        <th scope="col" id="code" >Código</th>
+                        <th scope="col">Descrição</th>
+                        <th scope="col">Quantidade</th>
+                        <th scope="col">Preço unitário</th>
+                        <th scope="col">Tx IVA</th>
+                        <th scope="col">Total líquido</th>
+                    </tr>
+                </thead>
+                <tbody>${tBody}</tbody>
+            </table>
     `;
+
+
+
 }
+
+export default productsTableTemplate;

@@ -1,15 +1,15 @@
-import {ProductsForSale} from "../interfaces/ProductsForSale";
+import {OnSaleProduct} from "../interfaces/OnSaleProduct";
 
-const SaleProdutTableRows = (product: Partial<ProductsForSale>) => {
+const SaleProdutTableRows = (product: Partial<OnSaleProduct>) => {
 
     return `
         <tr id="product${product.id}">
-            <td>${product.uniqueID}</td>
-            <td>${product.name}</td>
-            <td>${product.priceWithTax}</td>
-            <td>${product.onSaleQuantity}</td>
-            <td>${product.taxValue}</td>
-            <td>${product.priceTotal}</td>
+            <td>${product.attributes?.code}</td>
+            <td>${product.attributes?.name}</td>
+            <td>${product.attributes?.price_with_tax}</td>
+            <td>${product.on_sale_quantity}</td>
+            <td>${product.attributes?.tax_value}</td>
+            <td>${product.price_total}</td>
             <td>
                 <form>
                     <button class="btn delete" type="submit" value="${product.id}" ><i class="fa fa-trash-alt"></i></button>

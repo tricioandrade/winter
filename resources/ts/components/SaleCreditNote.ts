@@ -1,30 +1,24 @@
 import '../../css/Calculator.css';
 import '../../css/Sales.css';
-import {buildTemplate} from "../tasks/buildTemplate";
-import {renderTemplate} from "../tasks/renderTemplate";
+import {buildTemplate} from "../traits/buildTemplate";
 import saleTemplate from "../templates/saleTemplate";
-import ProductsRequests from "../requests/ProductsRequests";
-import SaleFormProductMannager from "../tasks/SaleProductManager";
-import {Product} from "../interfaces/Product";
 import {ProductsForSale} from "../interfaces/ProductsForSale";
-import ProductCalculator from "../tasks/ProductCalculator";
-import ShoppingCartManager from "../tasks/ShoppingCartManager";
-import SaleProdutTableRows from "../tasks/SaleProdutTableRows";
+import ProductCalculator from "../traits/ProductCalculator";
+import ShoppingCartManager from "../traits/ShoppingCartManager";
+import SaleProdutTableRows from "../traits/SaleProdutTableRows";
 import MessageBox from "./MessageBox";
 import InvoicesRequests from "../requests/InvoicesRequests";
 import {Invoice} from "../interfaces/Invoice";
 
-
 class CreditNote extends HTMLElement {
     // private invoice = [];
-    private storeProducts: Product[] = [];
-    private invoices: Invoice[];
+    private invoices: Invoice[] = [];
     private shoppingCart;
 
     constructor() {
         super();
         this.attachShadow({mode: 'open'});
-        const template = buildTemplate('template', saleTemplate);
+        const template = buildTemplate('template', creditNoteTemplate);
         this.shadowRoot?.appendChild(template.content.cloneNode(true));
         console.log(template);
         this.shoppingCart = new ShoppingCartManager();
@@ -32,9 +26,14 @@ class CreditNote extends HTMLElement {
 
     connectedCallback() {
         if (this.isConnected) {
-            this.loadInvoices();
-            this.addProductToCart();
-            this.removeProductFromShoppingCart();
+            try {
+                this.loadInvoices();
+                this.addProductToCart();
+                this.removeProductFromShoppingCart();
+                this.closeCreditNoteComponent();
+            }catch (e) {
+                console.log(e)
+            }
         }
     }
 
@@ -42,6 +41,7 @@ class CreditNote extends HTMLElement {
         InvoicesRequests.getAllPaidInvoices().then(data => {
             console.log(data);
             this.invoices = data.data;
+            console.log(this.invoices);
 
         }).catch( err => {
             console.log(err);
@@ -53,7 +53,7 @@ class CreditNote extends HTMLElement {
         formProduct.addEventListener('submit', ev => {
             ev.preventDefault();
             this.productForSale = {
-                ...this.queryProduct(formProduct.productCode.value)[0],
+                ...this.queryInvoice(formProduct.productCode.value)[0],
                 onSaleQuantity: +formProduct.quantityForSale,
                 discount: +formProduct.discount.value,
                 priceTotal: ProductCalculator.calculateFinalPrice(
@@ -93,10 +93,18 @@ class CreditNote extends HTMLElement {
         });
     }
 
-    private queryProduct(code: string): object[]{
-        return this.storeProducts.filter(obj => {
-            return obj.uniqueID === code;
+    private queryInvoice(uniqueNumber: string): object[]{
+        return this.invoices.filter(obj => {
+            return obj.attributes.invoice_number === uniqueNumber;
         })
+    }
+
+    closeCreditNoteComponent () {
+        const closeCreditNoteBtn = this.shadowRoot?.getElementById('closeCreditNoteBtn') as HTMLElement;
+        closeCreditNoteBtn.addEventListener('click', ev => {
+            ev.preventDefault();
+            this.remove();
+        });
     }
 }
 
