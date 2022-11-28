@@ -1,3 +1,4 @@
+u
 import '../../css/Home.css';
 import homeNormalUserTemplate from '../templates/homeNormalUserTemplate';
 import homeAdminUserTemplate from '../templates/homeAdminUserTemplate';
@@ -8,18 +9,17 @@ type combinable = string | number | [] | boolean;
 
 class Home extends HTMLElement{
     private static privilege: combinable;
-
-    // private static attachTemplateCall: Function;
-
+    private template;
     constructor() {
         super();
-        this.attachShadow({mode: 'open'});
-        const template = buildTemplate('template', homeNormalUserTemplate);
-        this.shadowRoot?.appendChild(template.content.cloneNode(true))
+        // this.({mode: 'open'});
+        this.template = buildTemplate('template', homeNormalUserTemplate);
+        this.appendChild(this.template.content.cloneNode(true));
+
     }
 
     connectedCallback() {
-        const root = this.shadowRoot?.querySelector('#home-component')! as HTMLElement;
+        const root = this.querySelector('#home-component')! as HTMLElement;
         if (this.getPrivilegeStatus) root.innerHTML = homeAdminUserTemplate;
         else root.innerHTML = homeAdminUserTemplate;
         this.setPrivilegeStatus();
@@ -36,22 +36,16 @@ class Home extends HTMLElement{
     }
 
     private route () {
-
-        const router = () => {
-            this.shadowRoot?.addEventListener('click', ev => {
+        (window as any).route = () => {
+            this.addEventListener('click', ev => {
                 ev.preventDefault();
-                ev?.target?.removeEventListener('click', evt => {
-                    evt.preventDefault();
-                    evt.stopImmediatePropagation();
-                });
+                ev.stopImmediatePropagation();
+
                 const elem: any = ev?.target as HTMLElement;
-                console.log(elem);
                 window.history.pushState({}, "", elem.href);
                 dispatch(window.location.pathname);
-                ev.stopImmediatePropagation();
             });
         };
-        (window as any).route = router;
     }
 
 }

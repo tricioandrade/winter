@@ -2,6 +2,7 @@ export const renderTemplate = < T extends keyof HTMLElementTagNameMap | string >
     const root = document.getElementById(mainRoot)! as HTMLElement;
     root.innerHTML = '';
 
+    console.log(template);
     try { root.appendChild(document.createElement(template));
         return true; }
     catch (e) { return false }

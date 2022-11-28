@@ -1,5 +1,8 @@
 
 const _ = `
+<style>
+    @import url("https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css");
+</style>
 <div id="home-component" class="container animation">
     <div class="row col-12 mb-5">
         <div class="included-menu">

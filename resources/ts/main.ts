@@ -10,5 +10,10 @@ import "./components/Sale";
 import "./components/Home";
 import {dispatch} from "./traits/Route";
 
-dispatch(window.location.pathname);
 
+
+const openUrl = () => dispatch(window.location.pathname);
+
+
+openUrl();
+window.onpopstate = openUrl;
