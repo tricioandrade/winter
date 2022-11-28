@@ -1,3 +1,4 @@
+
 const _ = `
 <div id="home-component" class="container animation">
     <div class="row col-12 mb-5">
@@ -21,43 +22,43 @@ const _ = `
             <a  href="/sales" id="sales" onclick="route()" class="btn btn-primary">Abrir secção</a>
             </div>
         </div>
-    <div class="card  col m-1  rounded">
-        <div class="card-img-top">
-            <i class="fa fa-receipt"></i>
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">Inventário</h5>
-            <p class="card-text">Cadastramento e registro de produtos, tabela de preço, impressão, gestão de stock, geral, armazém.</p>
-        </div>
-            <div class="card-footer align-items-center text-center">
+        <div class="card  col m-1  rounded">
+            <div class="card-img-top">
+                <i class="fa fa-receipt"></i>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Inventário</h5>
+                <p class="card-text">Cadastramento e registro de produtos, tabela de preço, impressão, gestão de stock, geral, armazém.</p>
+            </div>
+                <div class="card-footer align-items-center text-center">
 
-        <a href="/inventory" id="inventory" onclick="route()" class="btn btn-primary">Abrir secção</a>
+            <a href="/inventory" id="inventory" onclick="route()" class="btn btn-primary">Abrir secção</a>
+            </div>
         </div>
-    </div>
-    <div class="card  col m-1  rounded">
-        <div class="card-img-top">
-            <i class="fa fa-file-invoice"></i>
+        <div class="card  col m-1  rounded">
+            <div class="card-img-top">
+                <i class="fa fa-file-invoice"></i>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Relatórios</h5>
+                <p class="card-text">Relatórios, informação geral,  relatórios de venda e de stock incluidos também relatórios de produtos.</p>
+            </div>
+            <div class="card-footer align-items-center text-center">
+                <a href="/receipts" id="receipts" onclick="route()" class="btn btn-primary">Abrir secção</a>
+            </div>
         </div>
-        <div class="card-body">
-            <h5 class="card-title">Relatórios</h5>
-            <p class="card-text">Relatórios, informação geral,  relatórios de venda e de stock incluidos também relatórios de produtos.</p>
+        <div class="card  col m-1  rounded">
+            <div class="card-img-top">
+                <i class="fa fa-file-invoice"></i>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Usuários</h5>
+                <p class="card-text">Relatórios, informação geral,  relatórios de venda e de stock incluidos também relatórios de produtos.</p>
+            </div>
+            <div class="card-footer align-items-center text-center">
+            <a href="/settings" id="users" onclick="route()" class="btn btn-primary">Abrir secção</a>
+            </div>
         </div>
-        <div class="card-footer align-items-center text-center">
-            <a href="/receipts" id="receipts" onclick="route()" class="btn btn-primary">Abrir secção</a>
-        </div>
-    </div>
-    <div class="card  col m-1  rounded">
-        <div class="card-img-top">
-            <i class="fa fa-file-invoice"></i>
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">Usuários</h5>
-            <p class="card-text">Relatórios, informação geral,  relatórios de venda e de stock incluidos também relatórios de produtos.</p>
-        </div>
-        <div class="card-footer align-items-center text-center">
-        <a href="/settings" id="users" onclick="route()" class="btn btn-primary">Abrir secção</a>
-        </div>
-    </div>
     </div>
 </div>
 

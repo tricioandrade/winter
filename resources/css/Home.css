@@ -1,18 +1,18 @@
-#home-component .card {
+home-page .card {
     margin-top: 10%;
     text-align: left;
     padding: 0;
     border:1px solid #fff !important;
 /*     border-top:12px solid #333 !important; */
     background:#f3f3f3ee;
-/*     box-shadow: 
-        rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, 
+/*     box-shadow:
+        rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
         rgba(0, 0, 0, 0.3) 0px 30px 60px -30px; */
     box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%) !important;
-    
+
 }
 
-#home-component .card .card-img-top {
+home-page .card .card-img-top {
     font-size: 40px;
     text-align: center;
     padding: 50px 10px;
@@ -21,7 +21,7 @@
     line-height: 2;
 }
 
-#home-component .card .card-img-top:after {
+home-page .card .card-img-top:after {
     content: "";
     position: absolute;
     bottom: 20%;
@@ -31,25 +31,25 @@
     z-index: 1;
 }
 
-#home-component .card .card-body {
+home-page .card .card-body {
     color: #333;
 }
 
-#home-component .card .card-body h5 {
+home-page .card .card-body h5 {
     text-align:center;
     font-family: "Nunito bold", serif;
     color: #333;
     text-shadow: 0 0 black;
 }
 
-#home-component .card .card-body p {
+home-page .card .card-body p {
     text-align: center;
     font-size: 15px;
     color: #222;
     text-shadow: 0 0 black;
 }
 
-#home-component .card .card-footer a.btn {
+home-page .card .card-footer a.btn {
     font-size: 14px;
     color: #fefefe;
     text-shadow: 0 0 black;

@@ -26,11 +26,6 @@ body:before {
     z-index: -1
 }
 
- {
-    padding: 0;
-    margin: 0;
-}
-
  nav {
     line-height: 2;
     padding: 0;
@@ -42,8 +37,8 @@ body:before {
 #login {
     margin-top:11em;
 }
- 
- 
+
+
  nav a, #all-content  nav a span {
     font-family: "Nunito bold", sans-serif;
     color: #333;
@@ -69,7 +64,6 @@ a.navbar-brand {
     font-family: "Velocity", serif;
     font-size: 18px;
     color: #fefefe;
-    font-weight: ;
 }
 .navbar-brand {
     font-family: "Velocity" !important;

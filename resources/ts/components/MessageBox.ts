@@ -8,19 +8,16 @@ class MessageBox extends HTMLElement{
         template.innerHTML = messageBoxTemplate;
         this.attachShadow({ mode: "open" });
         this.shadowRoot?.appendChild(template.content.cloneNode(true));
-
+        // this.attributeChangeCallback('opened', '', '');
     }
 
     attributeChangeCallback(name: string, _: any, __: any){
+        const modal = this.shadowRoot?.querySelector('.modal');
+        console.log(modal);
         if (name === 'opened'){
-            if (this.hasAttribute('opened')){
-                this.shadowRoot?.querySelector('.modal')
-                    ?.classList.add('active');
-            }
-            else {
-                this.shadowRoot?.querySelector('.modal')
-                    ?.classList.remove('active');
-            }
+            if (this.hasAttribute('opened'))
+                    modal?.classList.add('active');
+            else modal?.classList.remove('active');
         }
     }
 
@@ -33,9 +30,9 @@ class MessageBox extends HTMLElement{
     }
 
     static openModal (message: string, M: any = MessageBox) {
-        const slot  = M.shadowRoot?.querySelector('slot')!;
+        const slot  = M.shadowRoot?.querySelector('p')!;
         slot.textContent = message;
-        M.shadowRoot?.querySelector('.modal')?.setAttribute('opened', '');
+        M.shadowRoot?.querySelector('.modal')?.setAttribute('opened', 'true');
     }
 }
 

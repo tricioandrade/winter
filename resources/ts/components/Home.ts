@@ -2,9 +2,6 @@ import '../../css/Home.css';
 import homeNormalUserTemplate from '../templates/homeNormalUserTemplate';
 import homeAdminUserTemplate from '../templates/homeAdminUserTemplate';
 import {buildTemplate} from "../traits/buildTemplate";
-// import {renderTemplate} from "../traits/renderTemplate";
-// import {Route} from "../interfaces/Route";
-// import MessageBox from "./MessageBox";
 import {dispatch} from "../traits/Route";
 
 type combinable = string | number | [] | boolean;
@@ -50,18 +47,10 @@ class Home extends HTMLElement{
                 const elem: any = ev?.target as HTMLElement;
                 console.log(elem);
                 window.history.pushState({}, "", elem.href);
-                handleLocation();
+                dispatch(window.location.pathname);
                 ev.stopImmediatePropagation();
             });
         };
-
-        function handleLocation () {
-            const path = window.location.pathname;
-            const route = path;
-            dispatch(route);
-        }
-
-        window.onpopstate = handleLocation;
         (window as any).route = router;
     }
 
