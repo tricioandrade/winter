@@ -4,7 +4,7 @@ import {buildTemplate} from "../traits/buildTemplate";
 import {renderTemplate} from "../traits/renderTemplate";
 import saleTemplate from "../templates/saleTemplate";
 import ProductsRequests from "../requests/ProductsRequests";
-import SaleFormProductMannager from "../traits/SaleProductManager";
+// import SaleFormProductMannager from "../traits/SaleProductManager";
 import ProductCalculator from "../traits/ProductCalculator";
 import ShoppingCartManager from "../traits/ShoppingCartManager";
 import SaleProdutTableRows from "../traits/SaleProdutTableRows";

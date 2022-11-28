@@ -55,7 +55,7 @@ const _ = `
             <p class="card-text">Relatórios, informação geral,  relatórios de venda e de stock incluidos também relatórios de produtos.</p>
         </div>
         <div class="card-footer align-items-center text-center">
-        <a href="/users" id="users" onclick="route()" class="btn btn-primary">Abrir secção</a>
+        <a href="/settings" id="users" onclick="route()" class="btn btn-primary">Abrir secção</a>
         </div>
     </div>
     </div>

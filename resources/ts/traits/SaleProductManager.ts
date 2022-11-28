@@ -46,4 +46,4 @@ class SaleProductManager extends ShoppingCartManager{
     }
 }
 
-export default SaleFormProductMannager;
+export default SaleProductManager;

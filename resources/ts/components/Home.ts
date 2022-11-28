@@ -2,11 +2,16 @@ import '../../css/Home.css';
 import homeNormalUserTemplate from '../templates/homeNormalUserTemplate';
 import homeAdminUserTemplate from '../templates/homeAdminUserTemplate';
 import {buildTemplate} from "../traits/buildTemplate";
+// import {renderTemplate} from "../traits/renderTemplate";
+// import {Route} from "../interfaces/Route";
+// import MessageBox from "./MessageBox";
+import {dispatch} from "../traits/Route";
 
 type combinable = string | number | [] | boolean;
 
 class Home extends HTMLElement{
     private static privilege: combinable;
+
     // private static attachTemplateCall: Function;
 
     constructor() {
@@ -19,8 +24,10 @@ class Home extends HTMLElement{
     connectedCallback() {
         const root = this.shadowRoot?.querySelector('#home-component')! as HTMLElement;
         if (this.getPrivilegeStatus) root.innerHTML = homeAdminUserTemplate;
-        else root.innerHTML = homeNormalUserTemplate;
+        else root.innerHTML = homeAdminUserTemplate;
         this.setPrivilegeStatus();
+
+        this.route();
     }
 
     private setPrivilegeStatus () {
@@ -29,6 +36,33 @@ class Home extends HTMLElement{
 
     private get getPrivilegeStatus (): any {
         return Home.privilege;
+    }
+
+    private route () {
+
+        const router = () => {
+            this.shadowRoot?.addEventListener('click', ev => {
+                ev.preventDefault();
+                ev?.target?.removeEventListener('click', evt => {
+                    evt.preventDefault();
+                    evt.stopImmediatePropagation();
+                });
+                const elem: any = ev?.target as HTMLElement;
+                console.log(elem);
+                window.history.pushState({}, "", elem.href);
+                handleLocation();
+                ev.stopImmediatePropagation();
+            });
+        };
+
+        function handleLocation () {
+            const path = window.location.pathname;
+            const route = path;
+            dispatch(route);
+        }
+
+        window.onpopstate = handleLocation;
+        (window as any).route = router;
     }
 
 }
