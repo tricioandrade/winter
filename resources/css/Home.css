@@ -1,27 +1,50 @@
-home-page .card {
+.card {
     margin-top: 10%;
     text-align: left;
     padding: 0;
-    border:1px solid #fff !important;
-/*     border-top:12px solid #333 !important; */
-    background:#f3f3f3ee;
-/*     box-shadow:
-        rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
-        rgba(0, 0, 0, 0.3) 0px 30px 60px -30px; */
-    box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%) !important;
-
+/*     border:2px solid #444 !important; */
+    border: none !important;
+    background: none;
+/*     box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 77%) !important; */
+    box-shadow: none !important;
 }
 
-home-page .card .card-img-top {
+.card *{
+    z-index:3;
+}
+
+.card:before {
+    background:#de771c;
+    content: "";
+    position: absolute;
+    box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 77%) !important;
+    border-top:2px solid #333 !important;
+    border-bottom:2px solid #333 !important;
+    
+    top:0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 17%;
+/*     border-top-left-radius: 100rem; */
+    border-top-right-radius: 6rem;
+    border-top-left-radius: 6rem;
+    border-bottom-right-radius: 6rem;
+    border-bottom-left-radius: 6rem;
+    z-index: 1;
+}
+
+.card .card-img-top {
     font-size: 40px;
     text-align: center;
     padding: 50px 10px;
-    color: #333;
+    text-shadow: 0 0 10px#92531a;
+    color: #f2d714;
     position: relative;
     line-height: 2;
 }
 
-home-page .card .card-img-top:after {
+.card .card-img-top:after {
     content: "";
     position: absolute;
     bottom: 20%;
@@ -31,29 +54,37 @@ home-page .card .card-img-top:after {
     z-index: 1;
 }
 
-home-page .card .card-body {
-    color: #333;
+.card .card-body {
+    color: #;
 }
 
-home-page .card .card-body h5 {
+.card .card-body h5 {
     text-align:center;
-    font-family: "Nunito bold", serif;
-    color: #333;
-    text-shadow: 0 0 black;
+    font-family: "Arial", serif;
+    font-weight: 500 ;
+    color: #f8f9fa;
 }
 
-home-page .card .card-body p {
+.card .card-body p {
     text-align: center;
-    font-size: 15px;
-    color: #222;
-    text-shadow: 0 0 black;
+    font-family: 'Arial';
+    font-size: 16px;
+    text-shadow:#c0691b;
+    color: #333;
 }
 
-home-page .card .card-footer a.btn {
+.card .card-footer {
+    border: none;
+    background:none;
+}
+
+.card .card-footer a.btn {
     font-size: 14px;
-    color: #fefefe;
-    text-shadow: 0 0 black;
-    background: linear-gradient(45deg, #222, #333, #333, #222) !important;
-    border: 1px solid #222;
+    color: #fefe;
+    text-shadow: 0 0 #d4a312;
+    background:#333;
+    border: 2px solid #333;
+    border-radius:100px;
+    box-shadow:0px 0px 5px #333 !important;
 }
 

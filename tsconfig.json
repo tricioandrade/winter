@@ -4,7 +4,8 @@
     "useDefineForClassFields": true,
     "module": "ESNext",
     "lib": ["ESNext", "ES6", "DOM","esnext.asynciterable"],
-    "moduleResolution": "Node",
+      "jsx": "react",
+      "moduleResolution": "Node",
     "strict": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -13,6 +14,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+      "experimentalDecorators": true
   }
 }

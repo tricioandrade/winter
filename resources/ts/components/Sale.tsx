@@ -11,33 +11,27 @@ import SaleProdutTableRows from "../traits/SaleProdutTableRows";
 import MessageBox from "./MessageBox";
 import {StockProduct} from "../interfaces/StockProduct";
 import {OnSaleProduct} from "../interfaces/OnSaleProduct";
+import React from "react";
 
 
-class Sales extends HTMLElement {
+class Sales extends React.Component {
     // private invoice = [];
     private stockProducts: StockProduct[] = [];
     private onSaleProduct: Partial<OnSaleProduct> = {};
-    private shoppingCart;
+    private shoppingCart = new ShoppingCartManager();
 
-    constructor() {
-        super();
-        this.attachShadow({mode: 'open'});
-        const template = buildTemplate('template', saleTemplate);
-        this.shadowRoot?.appendChild(template.content.cloneNode(true));
-        console.log(template);
-        this.shoppingCart = new ShoppingCartManager();
+    constructor(props: object) {
+        super(props);
     }
 
-    connectedCallback() {
-        if (this.isConnected) {
-            try {
-                this.loadProducts();
-                this.addProductToCart();
-                this.removeProductFromShoppingCart();
-                this.loadCreditNoteComponent();
-            }catch (e) {
-                console.log(e);
-            }
+    componentDidMount() {
+        try {
+            this.loadProducts();
+            this.addProductToCart();
+            this.removeProductFromShoppingCart();
+            this.loadCreditNoteComponent();
+        }catch (e) {
+            console.log(e);
         }
     }
 
@@ -46,7 +40,7 @@ class Sales extends HTMLElement {
             console.log(data);
             this.stockProducts = data.data;
             console.log(this.stockProducts);
-            new SaleFormProductMannager(data)
+            // new SaleFormProductMannager(data)
 
         }).catch( err => {
             console.log(err);
@@ -54,7 +48,7 @@ class Sales extends HTMLElement {
     }
 
     private addProductToCart () {
-        const formProduct = this.shadowRoot?.getElementById('formProduct')! as HTMLFormElement;
+        const formProduct = document.getElementById('formProduct')! as HTMLFormElement;
         formProduct.addEventListener('submit', ev => {
             ev.preventDefault();
             this.onSaleProduct = {
@@ -74,12 +68,12 @@ class Sales extends HTMLElement {
     }
 
     private addProductToSaleTable(onSaleProduct: Partial<OnSaleProduct>) {
-        const table = this.shadowRoot?.getElementById('saleTable') as HTMLElement;
+        const table = document.getElementById('saleTable') as HTMLElement;
         table.innerHTML += SaleProdutTableRows(onSaleProduct);
     }
 
     private removeProductFromShoppingCart() {
-        const table = this.shadowRoot?.getElementById('saleTable') as HTMLElement;
+        const table = document.getElementById('saleTable') as HTMLElement;
 
         table.addEventListener('submit', ev => {
             const target: HTMLElement = ev.target as HTMLElement;
@@ -87,7 +81,7 @@ class Sales extends HTMLElement {
             const value: number = +selectedElement.value;
 
             try{
-                const selectRow = this.shadowRoot?.querySelector('tr#product' + value) as HTMLElement;
+                const selectRow = document.querySelector('tr#product' + value) as HTMLElement;
                 selectRow.remove();
                 this.shoppingCart.removeProductsFromShoppingCart(value);
                 MessageBox.openModal('Produto removido!');
@@ -105,16 +99,16 @@ class Sales extends HTMLElement {
     }
 
     loadCreditNoteComponent () {
-        const creditNoteBtn = this.shadowRoot?.getElementById('creditNoteBtn') as HTMLElement;
+        const creditNoteBtn = document.getElementById('creditNoteBtn') as HTMLElement;
         creditNoteBtn.addEventListener('click', ev => {
             ev.preventDefault();
-            this.shadowRoot?.appendChild(this.shadowRoot.ownerDocument.createElement('<credit-note></credit-note>'));
+            document.appendChild(document.createElement('<credit-note></credit-note>'));
         });
     }
 
     render () {
-        renderTemplate('sale-page');
+        return <saleTemplate />;
     }
 }
 
-customElements.define('sale-page', Sales)
+export default Sales;

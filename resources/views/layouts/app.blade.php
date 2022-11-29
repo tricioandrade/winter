@@ -14,7 +14,7 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/ts/main.ts'])
+    @vite(['resources/sass/app.scss', 'resources/ts/main.tsx'])
 </head>
 <body>
 <div id="app">
@@ -22,8 +22,8 @@
 
     @else
 
-        <nav  class="navbar navbar-expand-md navbar-light shadow-sm">
-            <div class="container">
+        <nav  class="navbar navbar-expand-md navbar-light ">
+            <div class="container col-8 m-auto">
                 <a class="navbar-brand" href="{{ url('/home') }}" onclick="route()">
                     outono
                 </a>
@@ -44,12 +44,12 @@
 
                         @else
                             <li class="nav-item">
-                                <a id="navbarDropdown" class="nav-link">
+                                <a  class="nav-link">
                                     <span id="clock"></span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a id="navbarDropdown" class="nav-link">
+                                <a class="nav-link">
                                     &verbar;
                                 </a>
                             </li>

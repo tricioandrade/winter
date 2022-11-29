@@ -2,10 +2,7 @@
     font-family: "Nunito";
     src: url("resources/css/fonts/fonts/Nunito/Nunito-Regular.ttf") format("truetype");
 }
-/*@font-face{*/
-/*    font-family: "Nunito Light";*/
-/*    src: url("fonts/Nunito/Nunito-Light.ttf") format("truetype");*/
-/*}*/
+
 @font-face{
     font-family: "Nunito Bold";
     src: url("resources/css/fonts/fonts/Nunito/Nunito-Bold.ttf") format("truetype");
