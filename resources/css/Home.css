@@ -63,7 +63,7 @@
     text-align: center;
     font-family: "Nunito Bold", serif;
     font-weight: 500 ;
-    color: #f8f9fa;
+    color: #c0691b;
     text-shadow: #c0691b;
 }
 
@@ -72,6 +72,7 @@
     font-size: 15px;
     text-shadow: #c0691b;
     color: #333;
+    padding:10px 10px;
 }
 
 #home-component .card .card-footer {
