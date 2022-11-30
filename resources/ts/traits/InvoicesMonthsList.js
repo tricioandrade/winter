@@ -1,4 +1,4 @@
-import DateAndTime from "./DateAndTime";
+import DateAndTime from "./Clock";
 
 
 export const InvoicesMonthsList = (invoices) => {

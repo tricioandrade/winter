@@ -1,8 +1,6 @@
 import '../../css/Calculator.css';
 import '../../css/Sales.css';
-import {buildTemplate} from "../traits/buildTemplate";
-import {renderTemplate} from "../traits/renderTemplate";
-import saleTemplate from "../templates/saleTemplate";
+import SaleTemplate from "../templates/SaleTemplate";
 import ProductsRequests from "../requests/ProductsRequests";
 // import SaleFormProductMannager from "../traits/SaleProductManager";
 import ProductCalculator from "../traits/ProductCalculator";
@@ -107,7 +105,7 @@ class Sales extends React.Component {
     }
 
     render () {
-        return <saleTemplate />;
+        return <SaleTemplate/>;
     }
 }
 

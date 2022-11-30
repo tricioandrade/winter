@@ -3,7 +3,7 @@ import {User} from "../interfaces/User";
 import UsersRequests from "../requests/UsersRequests";
 
 import '../../css/Home.css';
-import homeAdminUserTemplate from '../templates/homeAdminUserTemplate';
+import homeAdminUserTemplate from '../templates/HomeAdminUserTemplate';
 
 class Home extends React.Component{
     user: User[] = []

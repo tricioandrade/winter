@@ -1,24 +1,22 @@
-export const DateAndTime = {
-    clock : function () {
-        let clock = document.getElementById('clock');
+export const Clock = {
+    start : function () {
+        let clock = document.getElementById('clock')! as HTMLElement;
         let tick = () => {
-            const weekdays = this.weekdaysList;
             const month = this.monthList;
-
-            this.month = this.monthList[this.date().getMonth()];
-            this.day = this.date().getDay();
-            this.dateNow = this.date().getDate();
-            this.year = this.date().getFullYear();
 
             const h = this.date().getHours();
             const m = this.date().getMinutes();
             const s = this.date().getSeconds();
-            const w = this.date().getDay();
             const d = this.date().getDate();
-            const y = this.date().getFullYear();
             const M = this.date().getMonth();
 
-            clock.innerHTML = '<i class="fa fa-calendar-alt"></i>&nbsp;' + month[M] + ', ' + d + ' ' + '&nbsp;<i class="fa fa-clock"></i> ' + h + ':' + m + ':' + s;
+            const minutes: number | string = m.toString().length === 2 ? m : '0' + m;
+            const seconds: number | string = s.toString().length === 2 ? s : '0' + s;
+            const day    : number | string = d.toString().length === 2 ? d : '0' + d;
+
+            clock.innerHTML = `
+                <i class="fa fa-calendar-alt"></i>
+                &nbsp; ${month[M]} ${day} &nbsp;<i class="fa fa-clock"></i> ${h} : ${minutes} : ${seconds}`;
         };
         setInterval(tick, 1000);
     },
@@ -32,4 +30,4 @@ export const DateAndTime = {
     year: null
 }
 
-export default DateAndTime;
+export default Clock;

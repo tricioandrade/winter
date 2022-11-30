@@ -1,0 +1,20 @@
+@font-face{
+    font-family: "Nunito";
+    src: url("fonts/Nunito/Nunito-Regular.ttf") format("truetype");
+}
+/*@font-face{*/
+/*    font-family: "Nunito Light";*/
+/*    src: url("fonts/Nunito/Nunito-Light.ttf") format("truetype");*/
+/*}*/
+@font-face{
+    font-family: "Nunito Bold";
+    src: url("fonts/Nunito/Nunito-Bold.ttf") format("truetype");
+}
+@font-face{
+    font-family: "Nunito Ebold";
+    src: url("fonts/Nunito/Nunito-ExtraBold.ttf") format("truetype");
+}
+@font-face{
+    font-family: "Velocity";
+    src:url("fonts/velocity/velocity-font.ttf") format("truetype");
+}

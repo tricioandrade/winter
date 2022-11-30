@@ -4,7 +4,7 @@ import '../../css/css/app.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import '@fortawesome/fontawesome-free/js/all.min';
 import axios from "../../ts/api/axios";
-import Sale from "../../ts/components/Sale";
+import Sales from "../../ts/components/Sales";
 import {Root} from "../../ts/tasks/Root";
 import Home from "../../ts/components/Home";
 import "./routes/Core";
@@ -92,7 +92,7 @@ function go (path) {
                         }});
             break;
         case 'sales':
-                const sale = new Sale();
+                const sale = new Sales();
                 Root(sale.render());
                 sale.saleFormProduct();
 

@@ -1,5 +1,14 @@
-.box-card{
-    margin: 10px;
-    border:1px solid #fff !important;
-    background:#f3f3f3ee;
+#sale-component .card{
+    border:2px solid #de771c;
+    box-shadow: 0 0.5rem 1rem #adb5bd !important;
+    border-top: 2px solid rgba(255, 255, 255, 0.15) !important;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.125) !important;
+}
+
+#sale-component .btn {
+    border-radius:1px;
+    
+}
+
+#sale-component ul.list-group .btn {
 }

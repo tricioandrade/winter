@@ -15,6 +15,7 @@ export interface SoldProduct {
         sold_price_with_tax: number,
         sold_promotional_price: number;
         sold_promotional_status: boolean | string;
+        sold_discount: number;
         sold_tax_value: number;
         sold_tax_exemption_reason: string;
         sold_tax_exemption_code: string;
