@@ -7,10 +7,10 @@ export const InventorySaveProducts = () => {
 
     const [taxTotal, setTaxTotal] = useState<number>(0);
     const [price, setPrice] = useState<number>(0);
-    
+
 
     useEffect( () => {
-        console.log(price);
+        
 
     }, [price, taxTotal]);
 
@@ -92,7 +92,7 @@ export const InventorySaveProducts = () => {
                     </Col>
                     <Col lg={12}>
                         <FormLabel htmlFor="price_with_tax">Preço com imposto</FormLabel>
-                        {/*<FormControl type="number" value={priceWithTax} className="form-control" id="price_with_tax" disabled/>*/}
+                        <FormControl type="number" value={priceWithTax} className="form-control" id="price_with_tax" disabled/>
                     </Col>
                     <div className="col-12">
                         <label htmlFor="stock_quantity">Quantidade</label>
@@ -143,11 +143,11 @@ export const InventorySaveProducts = () => {
                     <Col lg={12}><pre className="text-center"><i>Imposto</i></pre></Col>
                     <div className="col-12">
                         <label htmlFor="tax_value">Valor do imposto</label>
-                        {/*<input type="number" className="form-control" id="tax_value" onChange={getTaxValue} required/>*/}
+                        <input type="number" className="form-control" id="tax_value" onChange={getTaxValue} required/>
                     </div>
                     <div className="col-12">
                         <label htmlFor="tax_total_added">Taxa do imposto adicionada</label>
-                        {/*<input type="text" value={taxAdded} className="form-control" id="tax_total_added" disabled/>*/}
+                        <input type="text" value={taxAdded} className="form-control" id="tax_total_added" disabled/>
                     </div>
                     <div className="col-12">
                         <label htmlFor="tax_type_id">Tipo de imposto</label>
