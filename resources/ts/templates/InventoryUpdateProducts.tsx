@@ -7,9 +7,10 @@ const InventoryUpdateProduct = () => {
 
 
     return (
-        <Form id="FormUpdateProduct" className="row g-3">
+
+        <Form id="FormUpdateProduct" className="row animation">
             <div className="col-12 text-center">
-                <p>Atualizar dados de Produtos</p>
+                <strong>Atualizar dados de Produtos</strong>
             </div>
             <Row className='col-12'>
                 <Col>
@@ -18,94 +19,90 @@ const InventoryUpdateProduct = () => {
                     </select>
                 </Col>
             </Row>
-            <Row className="col-6">
-                <small className="text-center p-2"><i>Descrição do artigo</i></small>
-                <hr />
+            <Row className="col-3">
+                <Col lg={12}><pre className="text-center"><i>Descrição do artigo</i></pre></Col>
+
                 <div className="col-12">
-                    <label htmlFor="_name">Nome do produto</label>
-                    <input type="text" className="form-control" id="_name"/>
+                    <label htmlFor="name">Nome do produto</label>
+                    <input type="text" className="form-control" id="name" required/>
+                </div>
+
+                <div className="col-12">
+                    <label htmlFor="description">Descrição</label>
+                    <input type="text" className="form-control" id="description"/>
+                </div>
+
+                <div className="col-12">
+                    <label htmlFor="ref_code">Código</label>
+                    <input type="text" className="form-control" id="ref_code"/>
                 </div>
                 <div className="col-12">
-                    <label htmlFor="_description">Descrição</label>
-                    <input type="text" className="form-control" id="_description"/>
-                </div>
-                <div className="col-12">
-                    <label htmlFor="_ref_code">Código</label>
-                    <input type="text" className="form-control" id="_ref_code"/>
-                </div>
-                <div className="col-12">
-                    <label htmlFor="_product_type">Tipo de Artigo</label>
-                    <select className="form-control" id="_product_type">
+                    <label htmlFor="product_type">Tipo de Artigo</label>
+                    <select className="form-control" id="product_type">
                         <option value="P">Produto</option>
                         <option value="S">Serviço</option>
                     </select>
                 </div>
             </Row>
-            <Row className="col-6">
-                <small className="text-center"><i>Cotação</i></small>
-                <hr />
-                <Col lg={12}>
-                    <label htmlFor="_price">Preço</label>
-                    <input type="number" className="form-control" id="_price"/>
-                </Col>
-                <Col lg={12} className="col-6">
-                    <label htmlFor="_quantity">Quantidade</label>
-                    <input type="number" className="form-control" id="_quantity"/>
-                </Col>
 
-                <Col lg={12}>
-                    <label htmlFor="_unity">Unidade</label>
-                    <input type="number" className="form-control" id="_unity"/>
-                </Col>
-                <Col lg={12}>
-                    <label htmlFor="_storage">Armazém</label>
-                    <input type="text" className="form-control" id="_storage"/>
-                </Col>
+            <Row className="col-3 ">
+                <Col lg={12}><pre className="text-center"><i>Cotação</i></pre></Col>
+                <div className="col-12">
+                    <label htmlFor="price">Preço</label>
+                    <input type="number" className="form-control" id="price"/>
+                </div>
+                <div className="col-12">
+                    <label htmlFor="quantity">Quantidade</label>
+                    <input type="number" className="form-control" id="quantity" required/>
+                </div>
+                <div className="col-12">
+                    <label htmlFor="unity">Unidade</label>
+                    <input type="number" className="form-control" id="unity" required/>
+                </div>
+                <div className="col-12">
+                    <label htmlFor="storage">Armazém</label>
+                    <input type="text" className="form-control" id="storage"/>
+                </div>
             </Row>
-            <Col lg={12} className='row'>
-                <Col lg={12}>
-                    <label htmlFor="_saleType">Pagamento por: </label>
-                    <select className="form-control" id="_saleType">
+
+
+            <Row className="col-3">
+                <div className="col-12"><pre className="text-center"><i>Isenção de imposto</i></pre></div>
+                <div className="col-12">
+                    <label htmlFor="saleType">Pagamento por: </label>
+                    <select className="form-control" id="saleType">
                         <option value="KG">Por kilograma, Kilo</option>
                         <option value="UN">Por unidade, Unitário</option>
                         <option value="HH">Por hora</option>
                     </select>
-                </Col>
-            </Col>
-
-            <Row className="col-12 ">
-                <small className="text-center"><i>Isenção de imposto</i></small>
-                <hr />
-                <div className="col-5">
-                    <label htmlFor="_exemption_code">Código</label>
-                    <input type="text" className="form-control" id="_exemption_code"/>
                 </div>
-                <div className="col-7">
-                    <label htmlFor="_exemption_reason">Motivo de isenção</label>
-                    <input type="text" className="form-control" id="_exemption_reason"/>
+                <div className="col-12">
+                    <label htmlFor="exemption_code">Código de isenção</label>
+                    <input type="text" className="form-control" id="exemption_code"/>
                 </div>
-                <small>Insira aqui o código do motivo, e o motivo de isenção!</small>
+                <div className="col-12">
+                    <label htmlFor="exemption_reason">Motivo de isenção</label>
+                    <input type="text" className="form-control" id="exemption_reason"/>
+                </div>
             </Row>
-
-            <Row className="col-12">
-                <small className="text-center"><i>Imposto</i></small>
-                <hr />
-                <div className="col-5">
-                    <label htmlFor="_tax_value">Valor do imposto</label>
-                    <input type="number" className="form-control" id="_tax_value"/>
+            <Row className="col-3">
+                <Col lg={12}><pre className="text-center"><i>Imposto</i></pre></Col>
+                <div className="col-12">
+                    <label htmlFor="tax_value">Valor do imposto</label>
+                    <input type="number" className="form-control" id="tax_value"/>
                 </div>
-                <div className="col-7">
-                    <label htmlFor="_tax_id">Tipo de imposto</label>
-                    <select className="form-control" id="_tax_id">
-                        <option value="1">IVA &horbar; Imposto sob valor acrescentado</option>
-                        <option value="2">ISE &horbar; Isento sob termos</option>
-                        <option value="3">IS &horbar; Imposto de Selo</option>
-                        <option value="4">NS &horbar; Não sujeição</option>
-                        <option value="5">OUT &horbar; Outros</option>
+                <div className="col-12">
+                    <label htmlFor="tax_id">Tipo de imposto</label>
+                    <select className="form-control" id="tax_id">
+                        <option value="1">IVA - Imposto sob valor acrescentado</option>
+                        <option value="2">ISE - Isento sob termos</option>
+                        <option value="3">IS - Imposto de Selo</option>
+                        <option value="4">NS - Não sujeição</option>
+                        <option value="5">OUT - Outros</option>
                     </select>
                 </div>
+                <button type="submit" className="btn float-end btn-primary mb-3">Actualizar</button>
             </Row>
-            <button type="submit" className="btn float-end btn-primary mb-3">Actualizar</button>
         </Form>
     );
 }

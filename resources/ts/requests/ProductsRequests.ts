@@ -7,11 +7,15 @@ class ProductsRequests {
     }
 
     static async getAllProducts () {
-        return await axios.get('product')
+        return await axios.get('products')
     }
 
     static async getSingleProduct (id: number) {
         return await axios.get('products/' + id)
+    }
+
+    static async getProductByName (name: string) {
+        return await axios.get('products/name/' + name)
     }
 
     static async updateProduct(id: number,data: object | object[] | string, token: string = '') {
