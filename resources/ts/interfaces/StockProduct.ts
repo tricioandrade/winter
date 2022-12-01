@@ -5,6 +5,7 @@ export interface StockProduct {
         user_id: number;
         description: number;
         code: number | string;
+        storage_id: number;
         stock_quantity: number;
         unity_quantity: number;
         for_sale_quantity: number;
@@ -16,8 +17,9 @@ export interface StockProduct {
         promotional_status: boolean | string;
         tax_type_id: number;
         tax_value: number;
-        tax_total: number;
-        tax_exemption_id: number;
+        tax_total_added: number;
+        tax_exemption_code: number | string;
+        tax_exemption_reason: number | string;
     };
     relationships: {
         tax_types: {
@@ -26,11 +28,7 @@ export interface StockProduct {
             description: string;
             symbol: string;
         };
-        tax_exemption: {
-            id: string | number;
-            code: string;
-            reason: string;
-        }
+
         user: {
             name: string;
             email: string;
