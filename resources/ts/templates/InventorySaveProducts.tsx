@@ -1,5 +1,5 @@
 import React from "react";
-import {Col, Form} from "react-bootstrap";
+import {Form, Row} from "react-bootstrap";
 
 
 
@@ -7,12 +7,11 @@ export const InventorySaveProducts = () => {
 
 
     return (
-        <Col className="col-5">
-            <div className="col-12">
-                <h6>Cadastrar dados de Produtos</h6>
-            </div>
-            <Form id="add-product" className="row g-3">
-                <div className="row col-6">
+            <Form id="FormAddProduct" className="row g-3">
+                <div className="col-12 text-center">
+                    <p>Cadastrar dados de Produtos</p>
+                </div>
+                <Row className="col-6">
                     <small className="text-center"><i>Descrição do artigo</i></small>
                     <hr/>
                     <div className="col-12">
@@ -36,9 +35,9 @@ export const InventorySaveProducts = () => {
                             <option value="S">Serviço</option>
                         </select>
                     </div>
-                </div>
+                </Row>
 
-                <div className="row col-6 ">
+                <Row className="col-6 ">
                     <small className="text-center"><i>Cotação</i></small>
                     <hr/>
                     <div className="col-12">
@@ -58,8 +57,9 @@ export const InventorySaveProducts = () => {
                         <label htmlFor="storage">Armazém</label>
                         <input type="text" className="form-control" id="storage"/>
                     </div>
-                </div>
-                <div className="row col-12">
+                </Row>
+
+                <Row className="col-12">
                     <div className="col-12">
                         <label htmlFor="saleType">Pagamento por: </label>
                         <select className="form-control" id="saleType">
@@ -68,8 +68,9 @@ export const InventorySaveProducts = () => {
                             <option value="HH">Por hora</option>
                         </select>
                     </div>
-                </div>
-                <div className="row col-12  card-body">
+                </Row>
+
+                <Row className="col-12 ">
                     <small className="text-center"><i>Isenção de imposto</i></small>
                     <hr/>
                     <div className="col-5">
@@ -81,8 +82,8 @@ export const InventorySaveProducts = () => {
                         <input type="text" className="form-control" id="exemption_reason"/>
                     </div>
                     <small>Insira aqui o código do motivo, e o motivo de isenção!</small>
-                </div>
-                <div className="row col-12 card-body">
+                </Row>
+                <Row className="col-12">
                     <small className="text-center"><i>Imposto</i></small>
                     <hr/>
                     <div className="col-5">
@@ -99,9 +100,8 @@ export const InventorySaveProducts = () => {
                             <option value="5">OUT &horbar; Outros</option>
                         </select>
                     </div>
-                </div>
+                </Row>
                 <button type="submit" className="btn float-end btn-primary mb-3">Adicionar</button>
             </Form>
-        </Col>
     );
 }

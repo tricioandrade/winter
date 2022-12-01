@@ -7,10 +7,9 @@ const SearchProducts = () => {
 
     return (
         <>
-            <Form id="productSearch" className="">
+            <Form id="productSearch" className="p-0">
                <Row>
-                   <Col lg={7} className="card d-flex p-2 shadow rounded align-baseline">
-                       <label className="p-2" htmlFor="product-input">Produto ou Serviço</label>
+                   <Col lg={7} className="d-flex p-2 shadow rounded align-baseline">
                        <input className="form-control" list="productListSearch" id="productSearchInput"
                               placeholder="Busque por produto..."/>
                        <datalist className="productList" id="productListSearch"></datalist>
@@ -20,8 +19,6 @@ const SearchProducts = () => {
                    </Col>
                </Row>
             </Form>
-            <Col className="row d-flex align-items-stretch pt-1" id="listedSearchProduct">
-            </Col>
         </>
     )
 }
