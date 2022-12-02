@@ -34,6 +34,22 @@ body:after {
 }
 
 
+.modal {
+    margin-top:10rem;
+}
+
+.modal:after{
+    content:'';
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgb(0 0 0 / 55%);
+    z-index:-1;
+}
+
+
 .animation {
     animation: moveInBotton .3s ease-out .75s;
     animation-fill-mode: backwards;

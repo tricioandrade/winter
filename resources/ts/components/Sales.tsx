@@ -3,13 +3,13 @@ import '../../css/Sales.css';
 import SaleTemplate from "../templates/SaleTemplate";
 import ProductsRequests from "../requests/ProductsRequests";
 // import SaleFormProductMannager from "../traits/SaleProductManager";
-import ProductCalculator from "../traits/ProductCalculator";
+import CalculatorTrait from "../traits/CalculatorTrait";
 import ShoppingCartManager from "../traits/ShoppingCartManager";
 import SaleProdutTableRows from "../traits/SaleProdutTableRows";
-import MessageBox from "./MessageBox";
 import {StockProduct} from "../interfaces/StockProduct";
 import {OnSaleProduct} from "../interfaces/OnSaleProduct";
 import React from "react";
+import MessageBox from "../traits/MessageBox";
 
 
 class Sales extends React.Component {
@@ -53,7 +53,7 @@ class Sales extends React.Component {
                 ...this.queryProduct(formProduct.productCode.value)[0],
                 on_sale_quantity: +formProduct.quantityForSale,
                 discount: +formProduct.discount.value,
-                price_total: ProductCalculator.calculateFinalPrice(
+                price_total: CalculatorTrait.calculateFinalPrice(
                     this.onSaleProduct,
                     +formProduct.quantityForSale.value,
                     +formProduct.discount.value
@@ -82,10 +82,10 @@ class Sales extends React.Component {
                 const selectRow = document.querySelector('tr#product' + value) as HTMLElement;
                 selectRow.remove();
                 this.shoppingCart.removeProductsFromShoppingCart(value);
-                MessageBox.openModal('Produto removido!');
+                MessageBox('Produto removido!');
             }catch (e) {
                 console.log(e);
-                MessageBox.openModal('Não foi possivel remover!');
+                MessageBox('Não foi possivel remover!');
             }
         });
     }
