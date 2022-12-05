@@ -1,13 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {InventorySaveProducts} from "./InventorySaveProducts";
+import {InventorySaveProducts} from "../components/InventorySaveProducts";
 import {Link} from "react-router-dom";
-import {Button, ButtonGroup, Card, Col, Container, Form, FormControl, Row} from "react-bootstrap";
-import InventoryUpdateProducts from "./InventoryUpdateProducts";
+import {Button, Col, Container, Form, FormControl, Row} from "react-bootstrap";
 import ProductsRequests from "../requests/ProductsRequests";
 
 export const InventoryTemplate: React.FC = () => {
 
-    const [page, setPage] = useState<string>('');
     const [productName, setProductName] = useState<string>('');
 
     const searchProducts = (evt: Event) => {
@@ -52,20 +50,8 @@ export const InventoryTemplate: React.FC = () => {
                         </Row>
                     </Form>
                 </Row>
-                <Row className='col-12'>
-                    <ButtonGroup size="sm">
-                        <Button onClick={ () => setPage( () => 'save-product'  ) } >Cadastrar produto</Button>
-                        <Button onClick={ () => setPage(() => 'update-product' ) } >Actualizar dados de produto</Button>
-                    </ButtonGroup>
-                </Row>
-                <Row lg={12} className="d-flex align-items-stretch" id="listedSearchProduct"></Row>
-                <Row className="mt-3">
-                    <Card className='shadow rounded col-12'>
-                        <Card.Body className='pt-0 mt-0'>
-                            { page === 'update-product' ? <InventoryUpdateProducts/> :  <InventorySaveProducts/> }
-                        </Card.Body>
-                    </Card>
-                </Row>
+
+                <InventorySaveProducts />
             </Row>
         </Container>
     )
