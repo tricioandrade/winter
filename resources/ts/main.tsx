@@ -7,7 +7,7 @@ import App from './routes/App';
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import {BrowserRouter} from 'react-router-dom';
-import {Clock} from "./traits/Clock";
+import {Clock} from "./tasks/Clock";
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>

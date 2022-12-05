@@ -23,7 +23,7 @@
     border-top: 12px solid #c0691b !important;
     border-bottom: 12px solid rgba(0, 0, 0, 0.125) !important;
     top: 0;
-    bottom: 12%;
+    bottom: 18%;
     left: 0;
     width: 100%;
     padding: 17%;
@@ -78,6 +78,7 @@
 #home-component .card .card-footer {
     border: none;
     background: none;
+    padding:14%
 }
 
 #home-component .card .card-footer a.btn {

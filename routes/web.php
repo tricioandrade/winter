@@ -24,3 +24,6 @@ Route::get('/sales', [App\Http\Controllers\HomeController::class, 'index'])->nam
 Route::get('/inventory', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/receipts', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/settings', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+/* Product Routes */
+Route::resource('/product', \App\Http\Controllers\ProductController::class);

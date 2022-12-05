@@ -3,18 +3,18 @@ import '../../css/Sales.css';
 import SaleTemplate from "../templates/SaleTemplate";
 import ProductsRequests from "../requests/ProductsRequests";
 // import SaleFormProductMannager from "../traits/SaleProductManager";
-import CalculatorTrait from "../traits/CalculatorTrait";
-import ShoppingCartManager from "../traits/ShoppingCartManager";
-import SaleProdutTableRows from "../traits/SaleProdutTableRows";
-import {StockProduct} from "../interfaces/StockProduct";
+import CalculatorTrait from "../tasks/CalculatorTrait";
+import ShoppingCartManager from "../tasks/ShoppingCartManager";
+import SaleProdutTableRows from "../tasks/SaleProdutTableRows";
+import {Product} from "../interfaces/Product";
 import {OnSaleProduct} from "../interfaces/OnSaleProduct";
 import React from "react";
-import MessageBox from "../traits/MessageBox";
+import MessageBox from "../tasks/MessageBox";
 
 
 class Sales extends React.Component {
     // private invoice = [];
-    private stockProducts: StockProduct[] = [];
+    private stockProducts: Product[] = [];
     private onSaleProduct: Partial<OnSaleProduct> = {};
     private shoppingCart = new ShoppingCartManager();
 

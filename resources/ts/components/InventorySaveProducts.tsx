@@ -1,13 +1,13 @@
 import React, {FormEvent, useEffect, useState} from "react";
 import {Button, ButtonGroup, Card, Col, Form, FormControl, FormLabel, FormSelect, Row} from "react-bootstrap";
-import CalculatorTrait from "../traits/CalculatorTrait";
+import CalculatorTrait from "../tasks/CalculatorTrait";
 import {Tax} from "../interfaces/TaxTypes";
-import MessageBox from "../traits/MessageBox";
+import MessageBox from "../tasks/MessageBox";
 import ProductsRequests from "../requests/ProductsRequests";
-import {StockProduct} from "../interfaces/StockProduct";
+import {Product} from "../interfaces/Product";
 
 export const InventorySaveProducts = () => {
-    let products: StockProduct[] = [];
+    let products: Product[] = [];
 
     const [page, setPage] = useState<boolean>(true);
 
@@ -48,21 +48,15 @@ export const InventorySaveProducts = () => {
 
         const taxId: number = +elem.tax_type_id;
 
-        if(Tax.ISE !== taxId){
-            elem.tax_exemption_code.value = '';
-            elem.tax_exemption_reason.value = '';
-        }
-
         form.append('name', elem.productName.value );
         form.append('description', elem.description.value );
         form.append('code', elem.code.value );
         form.append('product_type', elem.product_type.value );
-        form.append('sale_type', elem.saleType.value );
         form.append('price', elem.price.value );
         form.append('price_with_tax', elem.price_with_tax.value );
         form.append('stock_quantity', elem.stock_quantity.value );
         form.append('unity_quantity', elem.unity_quantity.value );
-        form.append('for_sale_quantity', elem.for_sale_quantity.value );
+        // form.append('for_sale_quantity', elem.for_sale_quantity.value );
         form.append('for_sale_status', elem.for_sale_status.value );
         form.append('unity_of_measure', elem.for_sale_status.value );
         form.append('storage_id', elem.storage_id.value );
@@ -70,9 +64,7 @@ export const InventorySaveProducts = () => {
         form.append('tax_exemption_reason', elem.tax_exemption_reason.value );
         form.append('tax_value', elem.tax_value.value );
         form.append('tax_total_added', elem.tax_total_added.value );
-        form.append('tax_type_id', elem.tax_id.value );
-
-
+        form.append('tax_type_id', elem.tax_type_id.value );
 
         if (taxId === Tax.ISE && (elem.tax_value !== 0 || elem.tax_exemption_reason.length < 6)) {
             MessageBox('O valor do imposto tem de ser 0');
@@ -135,8 +127,8 @@ export const InventorySaveProducts = () => {
                                     </Col>
                                     :''}
                                 <div className="col-12">
-                                    <label htmlFor="name">Nome do produto</label>
-                                    <input type="text" className="form-control" id="name" required/>
+                                    <label htmlFor="productName">Nome do produto</label>
+                                    <input type="text" className="form-control" id="productName" required/>
                                 </div>
 
                                 <div className="col-12">
@@ -169,7 +161,7 @@ export const InventorySaveProducts = () => {
 
                             {/*Quotation*/}
 
-                            <Row className="col-3 ">
+                            <Row className="col-3">
                                 <Col lg={12}><pre className="text-center"><i>Cotação</i></pre></Col>
                                 <Col lg={12}>
                                     <FormLabel htmlFor="price">Preço</FormLabel>
@@ -201,7 +193,7 @@ export const InventorySaveProducts = () => {
                                     :''}
                             </Row>
 
-
+                            {/*Tax*/}
                             <Row className="col-3">
                                 <Col lg={12}><pre className="text-center"><i>Imposto</i></pre></Col>
                                 <div className="col-12">
@@ -218,7 +210,7 @@ export const InventorySaveProducts = () => {
                                     <label htmlFor="tax_type_id">Tipo de imposto</label>
                                     <select className="form-control" id="tax_type_id">
                                         { taxValue === 0 || taxValue.toString().length === 0 ?
-                                            <option value={ Tax.ISE }  selected>ISE - Isento sob termos</option>
+                                            <option value={ Tax.ISE }>ISE - Isento sob termos</option>
                                         :   <>
                                                 <option value={ Tax.IVA } >IVA - Imposto sob valor acrescentado</option>
                                                 <option value={ Tax.IS  } >IS - Imposto de Selo</option>
@@ -240,14 +232,6 @@ export const InventorySaveProducts = () => {
                                         </Col>
                                     </>
                                 :''}
-                            </Row>
-                            <Row className="col-3">
-                                <Col lg={12}></Col>
-                                <Col lg={12}></Col>
-                                <Col lg={12}></Col>
-                                <Col lg={12}></Col>
-                                <Col lg={12}></Col>
-                                <Col lg={12}></Col>
                                 <button type="submit" className="btn btn-sm btn-primary lh-1">{page ? 'Salvar' : 'Actualizar'}</button>
                             </Row>
                         </Form>
