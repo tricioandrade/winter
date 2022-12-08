@@ -10,7 +10,7 @@ import Home from "../../ts/components/Home";
 import "./routes/Core";
 import Inventory from "../../ts/components/Inventory";
 import ProductListShowID from "../../ts/components/ProductsListShowID";
-import Preloader from "../../ts/components/Preloader";
+import Preloader from "../../ts/tasks/Preloader";
 import ProductList from "../../ts/components/ProductsList";
 import Users from "../../ts/components/Users";
 import Receipts from "../../ts/components/Receipts";

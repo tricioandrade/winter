@@ -3,7 +3,7 @@ import ReceiptSaftCard from "../templates/ReceiptSaftCard";
 import ReceiptSqlBackUpCard from "../templates/ReceiptSqlBackUpCard";
 import ReceiptSaleResumeTable from "../templates/ReceiptSaleResumeTable";
 import MessageBox from "./MessageBox";
-import Preloader from "./Preloader";
+import Preloader from "../tasks/Preloader";
 import ReceiptSoldProductResume from "../templates/ReceiptSoldProductResume";
 import {ReceiptInvoiceRow} from "../tasks/ReceiptInvoiceRow";
 import {ReceiptProductRows} from "../tasks/ReceiptProductRows";

@@ -2,7 +2,7 @@ import {UserFormAddUser} from "./UserFormAddUser";
 import UsersTableRows from "../tasks/UsersTableRows";
 import {UserUpdateUser} from "./UserUpdateUser";
 import {UserTableOfUsers} from "./UserTableOfUsers";
-import Preloader from "./Preloader";
+import Preloader from "../tasks/Preloader";
 import axios from "../api/axios";
 import qs from "qs";
 import UsersList from "./UsersList";

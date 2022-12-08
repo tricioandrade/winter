@@ -15,7 +15,7 @@ export interface Product {
         price_with_tax: number,
         promotional_price: number;
         promotional_status: boolean | string;
-        tax_type_id: number;
+        tax_id: number;
         tax_value: number;
         tax_total_added: number;
         tax_exemption_code: number | string;
@@ -27,11 +27,6 @@ export interface Product {
             name: string;
             description: string;
             symbol: string;
-        };
-
-        user: {
-            name: string;
-            email: string;
         }
     }
 }

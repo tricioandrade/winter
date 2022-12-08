@@ -1,21 +1,19 @@
-import {MessageBoxTemplate} from "../templates/MessageBoxTemplate";
 
 
-const MessageBox =  (message: string) => {
-    let modal = document.querySelector('.modal') as HTMLElement;
-    modal?.remove();
-    const app = document.querySelector('main')! as HTMLElement;
-    app.innerHTML += MessageBoxTemplate(message);
-    modal = document.querySelector('.modal')! as HTMLElement;
-    const p = modal.querySelector('p')!;
-    console.log(message);
-    console.log(p);
-    p.textContent = message;
 
-    const close = document.querySelector('.modal .btn-close') as HTMLElement;
-    close.addEventListener('click', () => {
-        console.log(modal);
-        modal.remove();
-    });
+class MessageBox  {
+    private static modal: HTMLElement = document.querySelector('.modal')! as HTMLElement;
+
+    public static open(message: string): void {
+        this.modal.classList.add('modal-active');
+        const p = this.modal.querySelector('p')!;
+        console.log(p);
+        p.textContent = message;
+
+        const close = this.modal.querySelector('.btn-close') as HTMLElement;
+        close.addEventListener('click', () => {
+            this.modal.classList.remove('modal-active');
+        });
+    }
 }
 export default MessageBox;

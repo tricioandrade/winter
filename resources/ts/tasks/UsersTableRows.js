@@ -1,4 +1,4 @@
-import Preloader from "../components/Preloader";
+import Preloader from "./Preloader";
 
 const UsersTableRows = (user) => {
     const UsersTable = document.querySelector('table#UsersTable tbody');

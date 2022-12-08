@@ -1,4 +1,4 @@
-import Preloader from "../components/Preloader";
+import Preloader from "../tasks/Preloader";
 
 const searchProductCard = (arr: any[]) => {
     let products = ``;

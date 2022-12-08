@@ -18,10 +18,8 @@ class ProductResource extends JsonResource
             'id'=> (string)$this->id,
             'attributes'=> [
                 'name'=> $this->name,
-                'user_id'=> $this->user_id,
                 'description'=> $this->description,
                 'code'=> $this->code,
-                'storage_id'=> $this->storage_id,
                 'stock_quantity'=> $this->stock_quantity,
                 'unity_quantity'=> $this->unity_quantity,
                 'for_sale_quantity'=> $this->for_sale_quantity,
@@ -31,7 +29,7 @@ class ProductResource extends JsonResource
                 'price_with_tax'=> $this->price_with_tax,
                 'promotional_price'=> $this->promotional_price,
                 'promotional_status'=> $this->promotional_status,
-                'tax_type_id'=> $this->tax_type_id,
+                'tax_id'=> $this->tax_id,
                 'tax_value'=> $this->tax_value,
                 'tax_total_added'=> $this->tax_total_added,
                 'tax_exemption_code'=> $this->tax_exemption_code,
@@ -43,10 +41,6 @@ class ProductResource extends JsonResource
                     'name'  => $this->tax->name,
                     'description' => $this->tax->description,
                     'symbol'=> $this->tax->symbol
-                ],
-                'user' => [
-                    'name'=> $this->user->name,
-                    'email'=> $this->user->email,
                 ]
             ]
         ];

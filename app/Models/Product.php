@@ -9,15 +9,14 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $table = 'stock_products';
+    protected $table = 'products';
     protected $primaryKey  = 'id';
 
     protected $fillable = [
+        'id',
         'name',
-        'user_id',
         'description',
         'code',
-        'storage_id',
         'stock_quantity',
         'unity_quantity',
         'for_sale_quantity',
@@ -27,7 +26,7 @@ class Product extends Model
         'price_with_tax',
         'promotional_price',
         'promotional_status',
-        'tax_type_id',
+        'tax_id',
         'tax_value',
         'tax_total_added',
         'tax_exemption_code',
@@ -36,13 +35,7 @@ class Product extends Model
 
     public function tax()
     {
-        return $this->belongsTo(TaxType::class);
+        return $this->belongsTo(Tax::class);
     }
-
-    public function user(){
-        return $this->belongsTo(User::class);
-    }
-
-
 }
 

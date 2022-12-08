@@ -1,6 +1,6 @@
 import axios from "../api/axios";
 import MessageBox from "./MessageBox";
-import Preloader from "./Preloader";
+import Preloader from "../tasks/Preloader";
 
 
 async function ProductListShowID  (){

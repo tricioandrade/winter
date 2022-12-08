@@ -13,12 +13,16 @@ trait HttpResponseTrait
         ], $code);
     }
 
-    public function error($data, string $message = '', $code = 500): \Illuminate\Http\JsonResponse
+    public function error($data, $exception, $code = 500): \Illuminate\Http\JsonResponse
     {
         return response()->json([
             'data' => $data,
             'status' => 'An error has occurred',
-            'message' => $message
+            'message' => [
+                'message' => $exception->getMessage(),
+                'file' => $exception->getFile(),
+                'line' => $exception->getLine()
+            ],
         ], $code);
     }
 }

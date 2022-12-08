@@ -10,7 +10,6 @@ class Home extends React.Component{
 
     constructor(props: object) {
      super(props);
-
     }
 
     componentDidMount() {

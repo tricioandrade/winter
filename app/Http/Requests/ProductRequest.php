@@ -26,13 +26,13 @@ class ProductRequest extends FormRequest
         return [
             'name'                  =>  'string',
             'description'           =>  'string',
-            'code'                  =>  'string|numeric',
+            'code'                  =>  'string',
             'storage_id'            =>  'integer',
             'stock_quantity'        =>  'integer',
             'unity_quantity'        =>  'integer',
             'for_sale_quantity'     =>  'integer|nullable',
             'for_sale_status'       =>  'string',
-            'unity_of_measure'      =>  'integer',
+            'unity_of_measure'      =>  'string',
             'price'                 =>  'numeric',
             'price_with_tax'        =>  'numeric',
             'promotional_price'     =>  'nullable|numeric',
@@ -40,8 +40,8 @@ class ProductRequest extends FormRequest
             'tax_type_id'           =>  'integer',
             'tax_value'             =>  'integer',
             'tax_total_added'       =>  'numeric',
-            'tax_exemption_code'    =>  'string',
-            'tax_exemption_reason'  =>  'string',
+            'tax_exemption_code'    =>  'string|nullable',
+            'tax_exemption_reason'  =>  'string|nullable',
         ];
     }
 }

@@ -1,6 +1,6 @@
 import DateAndTime from "../tasks/DateAndTime";
 import PrintTemplate from "./PrintTemplate";
-import Preloader from "./Preloader";
+import Preloader from "../tasks/Preloader";
 import CleanSaleAndPrint from "./CleanSaleAndPrint";
 
 class InvoiceBuilder {

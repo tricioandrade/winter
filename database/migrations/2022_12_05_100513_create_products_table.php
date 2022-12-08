@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tax_types', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('tax', function (Blueprint $table) {
+            $table->id()->autoIncrement();
             $table->string('name')->unique();
             $table->string('description')->unique();
             $table->string('symbol')->unique();
@@ -24,15 +24,9 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')
-                ->on('users')
-                ->references('id');
-
             $table->string('description');
-            $table->string('unique_code')->unique();
             $table->string('code')->unique();
-            $table->string('storage_id')->nullable();
+//            $table->string('storage')->nullable();
             $table->bigInteger('stock_quantity');
             $table->bigInteger('unity_quantity');
             $table->bigInteger('for_sale_quantity')->nullable();
@@ -43,9 +37,9 @@ return new class extends Migration
             $table->decimal('promotional_price', 20, 4)->nullable();
             $table->string('promotional_status')->nullable();
 
-            $table->unsignedBigInteger('tax_type_id');
-            $table->foreign('tax_type_id')
-                    ->on('tax_types')
+            $table->unsignedBigInteger('tax_id');
+            $table->foreign('tax_id')
+                    ->on('tax')
                     ->references('id');
 
             $table->integer('tax_value');

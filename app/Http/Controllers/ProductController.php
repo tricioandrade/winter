@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Traits\HttpResponseTrait;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -19,11 +22,15 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index()
+    public function index(): \Illuminate\Http\JsonResponse|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        //
+        try {
+            return $this->success(ProductResource::collection(Product::all()));
+        }catch (\Throwable $exception){
+            return $this->error([], $exception);
+        }
     }
 
     /**
@@ -49,8 +56,7 @@ class ProductController extends Controller
             $saved = Product::create($request->all());
             return $this->success($saved);
         }catch (\Throwable $exception) {
-            return $this->error('Não foi possível realizar o cadastro do produto: '
-                . $exception->getMessage(), code: 500);
+            return $this->error([], $exception);
         }
     }
 
@@ -58,11 +64,15 @@ class ProductController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show(Product $product)
     {
-        //
+        try {
+            return $this->success(new ProductResource($product));
+        }catch (\Throwable $exception) {
+            return $this->error([], $exception);
+        }
     }
 
     /**
@@ -71,7 +81,7 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Product $id)
     {
         //
     }
@@ -79,23 +89,36 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param ProductRequest $request
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse|Response
      */
-    public function update(Request $request, $id)
+    public function update(ProductRequest $request, Product $product)
     {
-        //
+        $request->validated($request->all());
+        try {
+            $saved = $product->update($request->all());
+            return $this->success($saved);
+        }catch (\Throwable $exception) {
+            return $this->error($request->all(), $exception);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        //
+        try {
+            $status = $product->update([
+                'for_sale_status' => 'no'
+            ]);
+            return $this->success($status);
+        }catch (\Throwable $exception) {
+            return $this->error([], $exception);
+        }
     }
 }

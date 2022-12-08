@@ -17,6 +17,29 @@ body:before {
     z-index: -1;
 }
 
+.preloader.active {
+    display: block;
+}
+
+.preloader {
+    position: fixed;
+    width: 1em;
+    height: 5em;
+    left: 50%;
+    bottom: 35%;
+    background-size: 100%;
+    background-position: top;
+    background-repeat: no-repeat;
+    z-index: 999;
+    display: none;
+    background: #333;
+    border-radius: 100px;
+    border-top: 13px solid #f1d70f;
+    border-bottom: 13px solid #f2d716;
+    transition: all 300ms ease-in;
+    animation: girar .4s ease-out infinite;
+}
+
 
 body:after {
     background:#f8fafc;
@@ -34,8 +57,14 @@ body:after {
 }
 
 
+
 .modal {
     margin-top:10rem;
+    display:none !important;
+}
+
+.modal.modal-active {
+    display: block !important;
 }
 
 .modal:after{
@@ -114,11 +143,16 @@ nav ul li a.nav-link {
     color: #fefe;
     text-shadow: 0 0 #d4a312;
     background:#333;
-    border: 2px solid #333;
+    border: 2px solid #fefe;
     border-radius:100px;
     box-shadow:0px 0px 5px #333 !important;
 }
 
+.btn-group .btn {
+    background-color:#333;
+    box-shadow:inherit;
+    border:inherit;
+}
 
 .btn:hover {
     transform: translateY(-3px);

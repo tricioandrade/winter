@@ -4,53 +4,66 @@ import CalculatorTrait from "../tasks/CalculatorTrait";
 import {Tax} from "../interfaces/TaxTypes";
 import MessageBox from "../tasks/MessageBox";
 import ProductsRequests from "../requests/ProductsRequests";
+import {nanoid} from "nanoid";
+import Preloader from "../tasks/Preloader";
+import axios from "../api/axios";
 import {Product} from "../interfaces/Product";
 
-export const InventorySaveProducts = () => {
-    let products: Product[] = [];
+export const  InventorySaveProducts = () => {
 
-    const [page, setPage] = useState<boolean>(true);
+    const [page, setPage] = useState(true);
+    const [taxValue, setTaxValue] = useState(0);
+    const [taxAdded, setTaxAdded] = useState(0);
+    const [priceWithTax, setPriceWithTax] = useState(0);
+    const [price, setPrice] = useState(0);
 
-    const [taxValue, setTaxValue] = useState<number>(0);
-    const [price, setPrice] = useState<number>(0);
-    const [priceWithTaxValue, setPriceWithTaxValue] = useState<number>(0);
-    const [taxAddedValue, setTaxAddedValue] = useState<number>(0);
+
+    const [products, setProducts] =  useState<Product[]>([]);
 
 
     useEffect( () => {
         const { priceWithTax, taxAdded } = CalculatorTrait.calculatePriceTax({
-            price,
-            taxValue,
+            price: price,
+            taxValue: taxValue,
             discount: 0
         });
+        setPriceWithTax(priceWithTax);
+        setTaxAdded(taxAdded);
 
-        setPriceWithTaxValue(+priceWithTax);
-        setTaxAddedValue(+taxAdded);
+        (async () => {
+            if (!page) {
+                Preloader.active();
+                const { data } = await axios.get('/product');
+                console.log(data);
+                setProducts(data.data);
+                Preloader.inactive();
+            }
+        })();
+    }, [price,  taxValue, page]);
 
 
-    }, [price, taxValue]);
-
-
-    if (!page) {
-        ProductsRequests.getAllProducts().then( data => {
-            products = data.data;
-            console.log(data);
-            console.log(products);
-        }).catch( error => {
-            console.log(error);
-        })
+    const listOfProducts = (products: Product[]) => {
+        console.log(products);
+        if (!products.length) return ;
+        return products.map((item: Product, key: number) => {
+             return <option key={key} value={item.attributes.code}>{item.attributes.name}</option>;
+        });
     }
+
 
     const handleSubmit = (evt: FormEvent) => {
         evt.preventDefault()
         const elem = evt.target as HTMLFormElement;
         const form = new FormData();
 
-        const taxId: number = +elem.tax_type_id;
+        const taxId: number = +elem.tax_id;
+
+        const uniqueId: string = elem.code.value.length ? elem.code.value : nanoid(12);
+        console.log(uniqueId);
 
         form.append('name', elem.productName.value );
         form.append('description', elem.description.value );
-        form.append('code', elem.code.value );
+        form.append('code', uniqueId);
         form.append('product_type', elem.product_type.value );
         form.append('price', elem.price.value );
         form.append('price_with_tax', elem.price_with_tax.value );
@@ -58,99 +71,110 @@ export const InventorySaveProducts = () => {
         form.append('unity_quantity', elem.unity_quantity.value );
         // form.append('for_sale_quantity', elem.for_sale_quantity.value );
         form.append('for_sale_status', elem.for_sale_status.value );
-        form.append('unity_of_measure', elem.for_sale_status.value );
-        form.append('storage_id', elem.storage_id.value );
-        form.append('tax_exemption_code', elem.tax_exemption_code.value );
-        form.append('tax_exemption_reason', elem.tax_exemption_reason.value );
+        form.append('unity_of_measure', elem.unity_of_measure.value );
+        // form.append('storage_id', elem.storage_id.value );
         form.append('tax_value', elem.tax_value.value );
         form.append('tax_total_added', elem.tax_total_added.value );
-        form.append('tax_type_id', elem.tax_type_id.value );
+        form.append('tax_id', elem.tax_id.value );
+
+        if (taxId === Tax.ISE){
+            form.append('tax_exemption_code', elem.tax_exemption_code.value );
+            form.append('tax_exemption_reason', elem.tax_exemption_reason.value );
+        }
 
         if (taxId === Tax.ISE && (elem.tax_value !== 0 || elem.tax_exemption_reason.length < 6)) {
-            MessageBox('O valor do imposto tem de ser 0');
+            MessageBox.open('O valor do imposto tem de ser 0');
             return;
         }
 
         if ((taxId === Tax.IVA || taxId === Tax.IS || taxId === Tax.OUT || taxId === Tax.NS ) && +elem.tax_value <= 0) {
-            MessageBox('O valor do imposto tem de ser maior que 0');
+            MessageBox.open('O valor do imposto tem de ser maior que 0');
             return;
         }
 
         if(page) {
-            ProductsRequests.saveProduct(form).then(data => {
+            Preloader.active();
+            ProductsRequests.saveProduct(form).then((data) => {
+                Preloader.inactive();
+                MessageBox.open('O produto foi cadastrado');
                 console.log(data);
-            }).catch( err => {
+            }).catch( (err) => {
+                Preloader.inactive();
+                MessageBox.open('Não foi possível salvar o produto');
                 console.log(err);
             });
         }else {
-            form.append('product_id', elem.product_id.value);
-            ProductsRequests.updateProduct(+elem.product_id.value, form).then( data => {
-                console.log(data);
-            }).catch( err => {
-                console.log(err);
+            Preloader.active();
+            ProductsRequests.updateProduct(+elem.product_id.value, form).then( () => {
+                Preloader.inactive();
+                MessageBox.open('O produto foi atualizado');
+            }).catch( () => {
+                Preloader.inactive();
+                MessageBox.open('Não foi possívem atualizar o produto');
             });
         }
     }
+
 
     return (
         <>
             <Row className='col-12'>
                 <ButtonGroup size="sm">
-                    <Button onClick={ () => setPage( true  ) } >Cadastrar produto</Button>
-                    <Button onClick={ () => setPage(false ) } >Actualizar dados de produto</Button>
+                    <Button className={ page ? 'active' : ''} onClick={ () => setPage(true) } >Cadastrar produto</Button>
+                    <Button className={ !page ? 'active' : ''} onClick={ () => setPage(false ) } >Actualizar dados de produto</Button>
                 </ButtonGroup>
             </Row>
             <Row lg={12} className="d-flex align-items-stretch" id="listedSearchProduct"></Row>
             <Row className="mt-3">
-                <Card className='shadow rounded col-12'>
-                    <Card.Body className='pt-0 mt-0'>
-                        <Form id="FormAddProduct" className="row animation" onSubmit={
-                            (evt) => handleSubmit(evt)
-                        }>
+                <Card className='shadow rounded col-12 m-auto'>
+                    <Form id={page ? 'FormAddProduct' : 'FormUpdateProduct'} className="animation" onSubmit={
+                        (evt) => handleSubmit(evt)
+                    }>
+                        <Card.Body className='row'>
                             <div className="col-12 text-center">
                                 {page ?
-                                    <strong >Cadastrar dados de Produtos</strong>
+                                    <strong>Cadastrar dados de Produtos</strong>
                                     :''}
                                 {!page ?
                                     <strong>Actualizar dados de Produtos</strong>
                                     : ''}
                             </div>
 
-                            <Row className="col-3">
+                            <Row className="col-4">
                                 <Col lg={12}><pre className="text-center"><i>Descrição do artigo</i></pre></Col>
                                 {!page ?
                                     <Col>
-                                        <label className="text-center" htmlFor="product_id">Selecione o produto ou
-                                            serviço</label>
-                                        <select className="form-control product_list" id="product_id">
-                                        </select>
+                                        <FormLabel className="text-center" htmlFor="product_id">Selecione o produto ou
+                                            serviço</FormLabel>
+                                        <FormSelect id="listOfProducts">
+                                            { listOfProducts(products) }
+                                        </FormSelect>
                                     </Col>
                                     :''}
-                                <div className="col-12">
-                                    <label htmlFor="productName">Nome do produto</label>
-                                    <input type="text" className="form-control" id="productName" required/>
-                                </div>
-
-                                <div className="col-12">
-                                    <label htmlFor="description">Descrição</label>
-                                    <input type="text" className="form-control" id="description"/>
-                                </div>
+                                <Col lg={12}>
+                                    <FormLabel htmlFor="productName">Nome do produto</FormLabel>
+                                    <FormControl id="productName" required/>
+                                </Col>
+                                <Col lg={6}>
+                                    <FormLabel htmlFor="description">Descrição</FormLabel>
+                                    <FormControl id="description"/>
+                                </Col>
                                 {page ?
-                                    <div className="col-12" >
-                                        <label htmlFor="code">Código</label>
-                                        <input type="text" className="form-control" id="code"/>
-                                    </div>
+                                    <Col lg={6}>
+                                        <FormLabel htmlFor="code">Código</FormLabel>
+                                        <FormControl id="code"/>
+                                    </Col>
                                     : ''}
                                 {page ?
-                                    <div className="col-12" >
-                                        <label htmlFor="product_type">Tipo de Artigo</label>
-                                        <select className="form-control" id="product_type">
+                                    <Col lg={6}>
+                                        <FormLabel htmlFor="product_type">Tipo de Artigo</FormLabel>
+                                        <FormSelect id="product_type">
                                             <option value="P">Produto</option>
                                             <option value="S">Serviço</option>
-                                        </select>
-                                    </div>
+                                        </FormSelect>
+                                    </Col>
                                     : ''}
-                                <Col lg={12}>
+                                <Col lg={6}>
                                     <FormLabel htmlFor="for_sale_status">Pronto para venda</FormLabel>
                                     <FormSelect id="for_sale_status">
                                         <option value="yes">Sim</option>
@@ -161,26 +185,26 @@ export const InventorySaveProducts = () => {
 
                             {/*Quotation*/}
 
-                            <Row className="col-3">
+                            <Row className="col-4">
                                 <Col lg={12}><pre className="text-center"><i>Cotação</i></pre></Col>
-                                <Col lg={12}>
+                                <Col lg={page ? 6 : 12}>
                                     <FormLabel htmlFor="price">Preço</FormLabel>
-                                    <FormControl type="number" className="form-control" id="price" onChange={
+                                    <FormControl type="number" id="price" onChange={
                                         (evt) => setPrice(+evt.target.value)
                                     } required/>
                                 </Col>
-                                <Col lg={12}>
+                                <Col lg={6}>
                                     <FormLabel htmlFor="price_with_tax">Preço com imposto</FormLabel>
-                                    <FormControl type="number" value={priceWithTaxValue} className="form-control" id="price_with_tax" disabled/>
+                                    <FormControl type="number" value={ priceWithTax } id="price_with_tax" disabled/>
                                 </Col>
-                                <div className="col-12">
+                                <Col lg={6}>
                                     <label htmlFor="stock_quantity">Quantidade</label>
-                                    <input type="number" className="form-control" id="stock_quantity" required/>
-                                </div>
-                                <div className="col-12">
-                                    <label htmlFor="unity_quantity">Unidade</label>
-                                    <input type="number" className="form-control" id="unity_quantity" required/>
-                                </div>
+                                    <FormControl type="number" id="stock_quantity" required/>
+                                </Col>
+                                <Col lg={page ? 6 : 12}>
+                                    <FormLabel htmlFor="unity_quantity">Unidade</FormLabel>
+                                    <FormControl type="number" id="unity_quantity" required/>
+                                </Col>
                                 {page ?
                                     <Col lg={12}>
                                         <FormLabel htmlFor="unity_of_measure">Pagamento por: </FormLabel>
@@ -194,48 +218,60 @@ export const InventorySaveProducts = () => {
                             </Row>
 
                             {/*Tax*/}
-                            <Row className="col-3">
+                            <Row className="col-4">
                                 <Col lg={12}><pre className="text-center"><i>Imposto</i></pre></Col>
-                                <div className="col-12">
-                                    <label htmlFor="tax_value">Valor do imposto</label>
-                                    <input type="number" className="form-control" id="tax_value" onChange={
+                                <div className="col-6">
+                                    <FormLabel htmlFor="tax_value">Valor do imposto</FormLabel>
+                                    <FormControl type="number" className="form-control" id="tax_value" onChange={
                                         (evt) => setTaxValue(+evt.target.value)
                                     } required/>
                                 </div>
-                                <div className="col-12">
-                                    <label htmlFor="tax_total_added">Taxa do imposto adicionada</label>
-                                    <input type="text" value={taxAddedValue} className="form-control" id="tax_total_added" disabled/>
-                                </div>
-                                <div className="col-12">
-                                    <label htmlFor="tax_type_id">Tipo de imposto</label>
-                                    <select className="form-control" id="tax_type_id">
-                                        { taxValue === 0 || taxValue.toString().length === 0 ?
+                                <Col lg={6}>
+                                    <FormLabel htmlFor="tax_total_added">Taxa adicionada</FormLabel>
+                                    <FormControl value={taxAdded} className="form-control" id="tax_total_added" disabled/>
+                                </Col>
+                                {taxValue === 0 || taxValue.toString().length === 0 ?
+                                    <>
+                                        <Col lg={6}>
+                                            <FormLabel htmlFor="tax_exemption_code">Código de isenção</FormLabel>
+                                            <FormControl id="tax_exemption_code"/>
+                                        </Col>
+                                        <Col lg={6}>
+                                            <FormLabel htmlFor="tax_exemption_reason">Motivo de isenção</FormLabel>
+                                            <FormControl id="tax_exemption_reason"/>
+                                        </Col>
+                                    </>
+                                    :
+                                    <Col lg={12}>
+                                        <p>Para produtos/serviços isentos de imposto, deverá informar o motivo de isensão!</p>
+                                    </Col>
+                                }
+                                <Col lg={12}>
+                                    <FormLabel htmlFor="tax_id">Tipo de imposto</FormLabel>
+                                    <FormSelect id="tax_id">
+                                        {taxValue === 0 || taxValue.toString().length === 0 ?
                                             <option value={ Tax.ISE }>ISE - Isento sob termos</option>
-                                        :   <>
+                                            :   <>
                                                 <option value={ Tax.IVA } >IVA - Imposto sob valor acrescentado</option>
                                                 <option value={ Tax.IS  } >IS - Imposto de Selo</option>
                                                 <option value={ Tax.NS  } >NS - Não sujeição</option>
                                                 <option value={ Tax.OUT }  >OUT - Outros</option>
                                             </>
                                         }
-                                    </select>
-                                </div>
-                                {taxValue === 0 || taxValue.toString().length === 0 ?
-                                    <>
-                                        <Col lg={12}>
-                                            <label htmlFor="tax_exemption_code">Código de isenção</label>
-                                            <input type="text" className="form-control" id="tax_exemption_code"/>
-                                        </Col>
-                                        <Col lg={12}>
-                                            <label htmlFor="tax_exemption_reason">Motivo de isenção</label>
-                                            <input type="text" className="form-control" id="tax_exemption_reason"/>
-                                        </Col>
-                                    </>
-                                :''}
-                                <button type="submit" className="btn btn-sm btn-primary lh-1">{page ? 'Salvar' : 'Actualizar'}</button>
+                                    </FormSelect>
+                                </Col>
                             </Row>
-                        </Form>
-                    </Card.Body>
+                        </Card.Body>
+                        <Card.Footer className='text-end'>
+                            <Button type="submit" className="btn-primary mt-2 ">
+                                {page ?
+                                    <><i className='fa fa-save'/> Salvar</>
+                                    :
+                                    <><i className='fa fa-upload'/> Actualizar</>
+                                }
+                            </Button>
+                        </Card.Footer>
+                    </Form>
                 </Card>
             </Row>
         </>

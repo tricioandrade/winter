@@ -1,6 +1,6 @@
 import axios from "../api/axios";
 import MessageBox from "../components/MessageBox";
-import Preloader from "../components/Preloader";
+import Preloader from "../tasks/Preloader";
 
 
 function ReceiptSaleResumeTable  (){

@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>Outono</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -25,7 +25,7 @@
         <nav  class="navbar navbar-expand-md navbar-light ">
             <div class="container col-8 m-auto">
                 <a class="navbar-brand" href="{{ url('/home') }}" onclick="route()">
-                    outono
+                    <img src="{{asset('outonologo.png')}}" alt="Outono" width="100">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -76,7 +76,20 @@
 
         <main class="py-4">
             @yield('content')
-
+            <span class="preloader"></span>
+            <div style="display:none" class="modal fade show" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-modal="true" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
 </div>
 </body>

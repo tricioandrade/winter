@@ -13,11 +13,11 @@ class CalculatorTrait {
         return Number.parseFloat(floatResult);
     }
 
-    static calculatePriceTax<T extends Calculator>(props: T)  {
+    static calculatePriceTax<T extends Calculator>(props: T):{ priceWithTax: number, taxAdded:number , discount: number}  {
 
         return {
-            priceWithTax: (((props.price * props.taxValue) / 100) + props.price).toFixed(4),
-            taxAdded: ((props.price * props.taxValue) / 100).toFixed(2),
+            priceWithTax: +(((props.price * props.taxValue) / 100) + props.price).toFixed(4),
+            taxAdded: +((props.price * props.taxValue) / 100).toFixed(2),
             discount: 0
         }
     }
