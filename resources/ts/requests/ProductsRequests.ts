@@ -18,11 +18,10 @@ class ProductsRequests {
         return await axios.get('product/name/' + name)
     }
 
-    static async updateProduct(id: number,data: object | object[] | string, token: string = '') {
-        return await axios({ url: 'product/' + id, method: 'patch', data: JSON.stringify(data),
+    static async updateProduct(id: number, data: object | object[] | string) {
+        return await axios({ url: 'product/' + id, method: 'patch', data: data,
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
-                    '_token: ': token
                 }
         });
     }

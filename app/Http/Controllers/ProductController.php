@@ -93,12 +93,11 @@ class ProductController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse|Response
      */
-    public function update(ProductRequest $request, Product $product)
+    public function update(Request $request, Product $product)
     {
-        $request->validated($request->all());
         try {
             $saved = $product->update($request->all());
-            return $this->success($saved);
+            return $this->success([$saved, $request->all()]);
         }catch (\Throwable $exception) {
             return $this->error($request->all(), $exception);
         }

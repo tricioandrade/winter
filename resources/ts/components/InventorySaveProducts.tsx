@@ -16,10 +16,7 @@ export const  InventorySaveProducts = () => {
     const [taxAdded, setTaxAdded] = useState(0);
     const [priceWithTax, setPriceWithTax] = useState(0);
     const [price, setPrice] = useState(0);
-
-
     const [products, setProducts] =  useState<Product[]>([]);
-
 
     useEffect( () => {
         const { priceWithTax, taxAdded } = CalculatorTrait.calculatePriceTax({
@@ -27,16 +24,23 @@ export const  InventorySaveProducts = () => {
             taxValue: taxValue,
             discount: 0
         });
+
         setPriceWithTax(priceWithTax);
         setTaxAdded(taxAdded);
 
         (async () => {
             if (!page) {
                 Preloader.active();
-                const { data } = await axios.get('/product');
-                console.log(data);
-                setProducts(data.data);
-                Preloader.inactive();
+                try {
+                    const { data } = await axios.get('/product');
+                    setProducts(data.data);
+                    console.log(data);
+                    Preloader.inactive();
+                }catch (e) {
+                    MessageBox.open('Não foi possível buscar produtos');
+                    console.log(e);
+                    Preloader.inactive();
+                }
             }
         })();
     }, [price,  taxValue, page]);
@@ -46,7 +50,7 @@ export const  InventorySaveProducts = () => {
         console.log(products);
         if (!products.length) return ;
         return products.map((item: Product, key: number) => {
-             return <option key={key} value={item.attributes.code}>{item.attributes.name}</option>;
+             return <option key={key} value={item.id}>{item.attributes.name}</option>;
         });
     }
 
@@ -55,23 +59,23 @@ export const  InventorySaveProducts = () => {
         evt.preventDefault()
         const elem = evt.target as HTMLFormElement;
         const form = new FormData();
-
         const taxId: number = +elem.tax_id;
-
-        const uniqueId: string = elem.code.value.length ? elem.code.value : nanoid(12);
-        console.log(uniqueId);
 
         form.append('name', elem.productName.value );
         form.append('description', elem.description.value );
-        form.append('code', uniqueId);
-        form.append('product_type', elem.product_type.value );
+        if(page) {
+            const uniqueId: string = elem.code.value.length ? elem.code.value : nanoid(12);
+            console.log(uniqueId);
+            form.append('code', uniqueId);
+            form.append('product_type', elem.product_type.value );
+            form.append('unity_of_measure', elem.unity_of_measure.value );
+        }
         form.append('price', elem.price.value );
         form.append('price_with_tax', elem.price_with_tax.value );
         form.append('stock_quantity', elem.stock_quantity.value );
         form.append('unity_quantity', elem.unity_quantity.value );
         // form.append('for_sale_quantity', elem.for_sale_quantity.value );
         form.append('for_sale_status', elem.for_sale_status.value );
-        form.append('unity_of_measure', elem.unity_of_measure.value );
         // form.append('storage_id', elem.storage_id.value );
         form.append('tax_value', elem.tax_value.value );
         form.append('tax_total_added', elem.tax_total_added.value );
@@ -105,11 +109,13 @@ export const  InventorySaveProducts = () => {
             });
         }else {
             Preloader.active();
-            ProductsRequests.updateProduct(+elem.product_id.value, form).then( () => {
+            ProductsRequests.updateProduct(+elem.product_id.value, form).then( (data) => {
                 Preloader.inactive();
+                console.log(data);
                 MessageBox.open('O produto foi atualizado');
-            }).catch( () => {
+            }).catch( (err) => {
                 Preloader.inactive();
+                console.log(err);
                 MessageBox.open('Não foi possívem atualizar o produto');
             });
         }
@@ -146,15 +152,17 @@ export const  InventorySaveProducts = () => {
                                     <Col>
                                         <FormLabel className="text-center" htmlFor="product_id">Selecione o produto ou
                                             serviço</FormLabel>
-                                        <FormSelect id="listOfProducts">
+                                        <FormSelect id="product_id">
                                             { listOfProducts(products) }
                                         </FormSelect>
                                     </Col>
                                     :''}
-                                <Col lg={12}>
-                                    <FormLabel htmlFor="productName">Nome do produto</FormLabel>
-                                    <FormControl id="productName" required/>
-                                </Col>
+                                {/*{page ?*/}
+                                    <Col lg={12}>
+                                        <FormLabel htmlFor="productName">Nome do produto</FormLabel>
+                                        <FormControl id="productName" required/>
+                                    </Col>
+                                {/*:''}*/}
                                 <Col lg={6}>
                                     <FormLabel htmlFor="description">Descrição</FormLabel>
                                     <FormControl id="description"/>
