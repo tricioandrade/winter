@@ -21,6 +21,13 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        Schema::create('product_types', function (Blueprint $table) {
+            $table->id()->autoIncrement();
+            $table->string('name')->unique();
+            $table->string('symbol')->unique();
+            $table->timestamps();
+        });
+
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
@@ -30,12 +37,13 @@ return new class extends Migration
             $table->bigInteger('stock_quantity');
             $table->bigInteger('unity_quantity');
             $table->bigInteger('for_sale_quantity')->nullable();
-            $table->string('for_sale_status');
+            $table->boolean('for_sale_status');
             $table->string('unity_of_measure');
             $table->decimal('price', 20, 4);
             $table->decimal('price_with_tax', 20, 4);
             $table->decimal('promotional_price', 20, 4)->nullable();
             $table->string('promotional_status')->nullable();
+            $table->string('product_type');
 
             $table->unsignedBigInteger('tax_id');
             $table->foreign('tax_id')

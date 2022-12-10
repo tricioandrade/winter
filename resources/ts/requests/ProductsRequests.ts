@@ -1,5 +1,5 @@
 import axios from "../api/axios";
-
+import qs from 'qs';
 class ProductsRequests {
 
     static async saveProduct (data: string | object) {
@@ -19,7 +19,7 @@ class ProductsRequests {
     }
 
     static async updateProduct(id: number, data: object | object[] | string) {
-        return await axios({ url: 'product/' + id, method: 'patch', data: data,
+        return await axios({ url: 'product/' + id, method: 'patch', data: qs.stringify(data),
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
                 }

@@ -6,11 +6,10 @@ import MessageBox from "../tasks/MessageBox";
 import ProductsRequests from "../requests/ProductsRequests";
 import {nanoid} from "nanoid";
 import Preloader from "../tasks/Preloader";
-import axios from "../api/axios";
 import {Product} from "../interfaces/Product";
+import ListOfProducts from "../templates/ListOfProducts";
 
-export const  InventorySaveProducts = () => {
-
+export const  InventorySaveProducts = ({ getProducts }: any) => {
     const [page, setPage] = useState(true);
     const [taxValue, setTaxValue] = useState(0);
     const [taxAdded, setTaxAdded] = useState(0);
@@ -28,77 +27,77 @@ export const  InventorySaveProducts = () => {
         setPriceWithTax(priceWithTax);
         setTaxAdded(taxAdded);
 
-        (async () => {
-            if (!page) {
-                Preloader.active();
-                try {
-                    const { data } = await axios.get('/product');
-                    setProducts(data.data);
-                    console.log(data);
-                    Preloader.inactive();
-                }catch (e) {
-                    MessageBox.open('Não foi possível buscar produtos');
-                    console.log(e);
-                    Preloader.inactive();
-                }
-            }
-        })();
+        if (!page) {
+            setProducts(getProducts)
+        }
+
     }, [price,  taxValue, page]);
-
-
-    const listOfProducts = (products: Product[]) => {
-        console.log(products);
-        if (!products.length) return ;
-        return products.map((item: Product, key: number) => {
-             return <option key={key} value={item.id}>{item.attributes.name}</option>;
-        });
-    }
-
 
     const handleSubmit = (evt: FormEvent) => {
         evt.preventDefault()
         const elem = evt.target as HTMLFormElement;
-        const form = new FormData();
         const taxId: number = +elem.tax_id;
 
-        form.append('name', elem.productName.value );
-        form.append('description', elem.description.value );
+        let product: object = {
+            name:               elem.productName.value,
+            description:        elem.description.value,
+            price:              +elem.price.value,
+            product_type_id:    +elem.product_type.value,
+            price_with_tax:     +elem.price_with_tax.value,
+            stock_quantity:     +elem.stock_quantity.value,
+            unity_quantity:     +elem.unity_quantity.value,
+            for_sale_status:    +elem.for_sale_status.value,
+            tax_value:          +elem.tax_value.value,
+            tax_total_added:    +elem.tax_total_added.value,
+            tax_id:             +elem.tax_id.value
+            /*storage_id: elem.storage_id.value,*/
+            /*for_sale_quantity: elem.for_sale_quantity.value*/
+        }
+
+        /**
+         * Add props to product is it's a new to be saved
+         * */
         if(page) {
-            const uniqueId: string = elem.code.value.length ? elem.code.value : nanoid(12);
-            console.log(uniqueId);
-            form.append('code', uniqueId);
-            form.append('product_type', elem.product_type.value );
-            form.append('unity_of_measure', elem.unity_of_measure.value );
+            product = { ...product,
+                code: (elem.code.value.length ? elem.code.value : nanoid(12)),
+                product_type: elem.product_type.value,
+                unity_of_measure: elem.unity_of_measure.value
+            };
         }
-        form.append('price', elem.price.value );
-        form.append('price_with_tax', elem.price_with_tax.value );
-        form.append('stock_quantity', elem.stock_quantity.value );
-        form.append('unity_quantity', elem.unity_quantity.value );
-        // form.append('for_sale_quantity', elem.for_sale_quantity.value );
-        form.append('for_sale_status', elem.for_sale_status.value );
-        // form.append('storage_id', elem.storage_id.value );
-        form.append('tax_value', elem.tax_value.value );
-        form.append('tax_total_added', elem.tax_total_added.value );
-        form.append('tax_id', elem.tax_id.value );
 
+        /**
+         * Verify if the tax is ISE so then apply exception and reason
+         * */
         if (taxId === Tax.ISE){
-            form.append('tax_exemption_code', elem.tax_exemption_code.value );
-            form.append('tax_exemption_reason', elem.tax_exemption_reason.value );
+            product = { ...product,
+                tax_exemption_code: elem.tax_exemption_code.value,
+                tax_exemption_reason: elem.tax_exemption_reason.value
+            }
         }
 
-        if (taxId === Tax.ISE && (elem.tax_value !== 0 || elem.tax_exemption_reason.length < 6)) {
-            MessageBox.open('O valor do imposto tem de ser 0');
+        /**
+         * Verify if the exception data is correctly filled
+         * */
+        if (taxId === Tax.ISE && (elem.tax_value !== 0 || elem.tax_exemption_reason.length)) {
+            MessageBox.open('O valor do imposto tem de ser 0, e ter um motivo de isenção válido');
             return;
         }
 
+        /*
+        * Verify if the value of tax its grater then 0
+        * */
         if ((taxId === Tax.IVA || taxId === Tax.IS || taxId === Tax.OUT || taxId === Tax.NS ) && +elem.tax_value <= 0) {
             MessageBox.open('O valor do imposto tem de ser maior que 0');
             return;
         }
 
+        /*
+        * @page variable is used to check if the submit form
+        * It's for save or update, in case of true for Save, else, false Update
+        * */
         if(page) {
             Preloader.active();
-            ProductsRequests.saveProduct(form).then((data) => {
+            ProductsRequests.saveProduct(product).then((data) => {
                 Preloader.inactive();
                 MessageBox.open('O produto foi cadastrado');
                 console.log(data);
@@ -107,9 +106,11 @@ export const  InventorySaveProducts = () => {
                 MessageBox.open('Não foi possível salvar o produto');
                 console.log(err);
             });
-        }else {
+        }
+
+        else {
             Preloader.active();
-            ProductsRequests.updateProduct(+elem.product_id.value, form).then( (data) => {
+            ProductsRequests.updateProduct(+elem.product_id.value, product).then( (data) => {
                 Preloader.inactive();
                 console.log(data);
                 MessageBox.open('O produto foi atualizado');
@@ -130,7 +131,6 @@ export const  InventorySaveProducts = () => {
                     <Button className={ !page ? 'active' : ''} onClick={ () => setPage(false ) } >Actualizar dados de produto</Button>
                 </ButtonGroup>
             </Row>
-            <Row lg={12} className="d-flex align-items-stretch" id="listedSearchProduct"></Row>
             <Row className="mt-3">
                 <Card className='shadow rounded col-12 m-auto'>
                     <Form id={page ? 'FormAddProduct' : 'FormUpdateProduct'} className="animation" onSubmit={
@@ -153,15 +153,15 @@ export const  InventorySaveProducts = () => {
                                         <FormLabel className="text-center" htmlFor="product_id">Selecione o produto ou
                                             serviço</FormLabel>
                                         <FormSelect id="product_id">
-                                            { listOfProducts(products) }
+                                            { ListOfProducts(products) }
                                         </FormSelect>
                                     </Col>
                                     :''}
                                 {/*{page ?*/}
-                                    <Col lg={12}>
-                                        <FormLabel htmlFor="productName">Nome do produto</FormLabel>
-                                        <FormControl id="productName" required/>
-                                    </Col>
+                                <Col lg={12}>
+                                    <FormLabel htmlFor="productName">Nome do produto</FormLabel>
+                                    <FormControl id="productName" required/>
+                                </Col>
                                 {/*:''}*/}
                                 <Col lg={6}>
                                     <FormLabel htmlFor="description">Descrição</FormLabel>
@@ -177,16 +177,16 @@ export const  InventorySaveProducts = () => {
                                     <Col lg={6}>
                                         <FormLabel htmlFor="product_type">Tipo de Artigo</FormLabel>
                                         <FormSelect id="product_type">
-                                            <option value="P">Produto</option>
-                                            <option value="S">Serviço</option>
+                                            <option value="1">Produto</option>
+                                            <option value="2">Serviço</option>
                                         </FormSelect>
                                     </Col>
                                     : ''}
                                 <Col lg={6}>
                                     <FormLabel htmlFor="for_sale_status">Pronto para venda</FormLabel>
                                     <FormSelect id="for_sale_status">
-                                        <option value="yes">Sim</option>
-                                        <option value="no">Não</option>
+                                        <option value="1">Sim</option>
+                                        <option value="0">Não</option>
                                     </FormSelect>
                                 </Col>
                             </Row>

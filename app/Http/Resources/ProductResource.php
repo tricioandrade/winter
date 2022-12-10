@@ -41,6 +41,11 @@ class ProductResource extends JsonResource
                     'name'  => $this->tax->name,
                     'description' => $this->tax->description,
                     'symbol'=> $this->tax->symbol
+                ],
+                'productType' => [
+                    'id' => (string)$this->productType->id,
+                    'name'  => $this->productType->name,
+                    'symbol'=> $this->productType->symbol
                 ]
             ]
         ];

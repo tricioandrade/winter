@@ -1,17 +1,16 @@
 import {Product} from "../interfaces/Product";
+import React from "react";
 
 
-function ListOfProducts  (products: any){
-    let template: any;
+const ListOfProducts = (products: Product[], listBy: string = 'id') => {
     console.log(products);
     if (!products.length) return ;
-
-    products.forEach((item: Product, key: number) => {
-        console.log(item);
-        template += `<option key=${key} value=${item.attributes.code}>${item.attributes.name}</option>`;
+    return products.map((item: Product, key: number) => {
+        return <option key={key} value={
+            listBy === 'id'
+                ? item.id : (listBy === 'name'
+                    ?  item.attributes.name : item.attributes.code)
+        }>{item.attributes.name}</option>;
     });
-
-    return (template);
 }
-
 export default  ListOfProducts;

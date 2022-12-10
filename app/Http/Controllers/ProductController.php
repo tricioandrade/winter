@@ -56,7 +56,7 @@ class ProductController extends Controller
             $saved = Product::create($request->all());
             return $this->success($saved);
         }catch (\Throwable $exception) {
-            return $this->error([], $exception);
+            return $this->error($request->all(), $exception);
         }
     }
 

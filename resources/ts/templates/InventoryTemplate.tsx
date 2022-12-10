@@ -1,29 +1,43 @@
-import React, {useEffect, useState} from "react";
+import React, {FormEvent, useEffect, useState} from "react";
 import {InventorySaveProducts} from "../components/InventorySaveProducts";
 import {Link} from "react-router-dom";
 import {Button, Col, Container, Form, FormControl, Row} from "react-bootstrap";
-import ProductsRequests from "../requests/ProductsRequests";
+import {Product} from "../interfaces/Product";
+import ListProductsOnCard from "./ListProductsOnCard";
+import ListOfProducts from "./ListOfProducts";
+import {getProducts} from "../tasks/GetProducts";
+import '../../css/Inventory.css';
 
-export const InventoryTemplate: React.FC = () => {
+export const InventoryTemplate =  () => {
 
-    const [productName, setProductName] = useState<string>('');
-
-    const searchProducts = (evt: Event) => {
+    const [form,       setFormState] = useState<boolean>(true);
+    const [product,      setProduct] = useState<Product[]>([]);
+    const [products,    setProducts] = useState<Product[]>([]);
+    const [rows,            setRows] = useState<boolean>(false);
+    
+    const searchProduct = async (evt: FormEvent) => {
         evt.preventDefault();
-        const form = evt.target as HTMLFormElement;
-        setProductName(form.productName.value);
-        console.log(form);
-        console.log(form.productName.value);
+        const product = (evt.target as HTMLFormElement).productName.value;
+        setRows(true);
+        if (product.length){
+            setProduct(queryProduct(product));
+        }else{
+            setProduct(products);
+        }
     };
 
-    useEffect( () => {
-        if(productName === '') return;
-        ProductsRequests.getProductByName(productName).then( data => {
-            console.log(data);
-        }).catch( err => {
-            console.log(err)
+    const queryProduct = (productName: string): Product[] => {
+        return products.filter((obj: Product) => {
+            return obj.attributes.name === productName;
         });
-    }, [productName]);
+    }
+
+    useEffect( () => {
+        if (form) {
+            getProducts(data=> setProducts(data) );
+            setFormState(false);
+        }
+    }, [form]);
 
     return (
         <Container id="inventory-component" className="animation">
@@ -37,12 +51,15 @@ export const InventoryTemplate: React.FC = () => {
             </Row>
             <Row className="animation col-12">
                 <Row className='mb-3 col-12'>
-                    <Form id="productSearch" className="p-0" onSubmit={
-                        (event: Event | any) => searchProducts(event)
-                    } >
+                    <Form  id="productSearch" onSubmit={
+                        (event: FormEvent) => searchProduct(event)
+                    } className="p-0" >
                         <Row>
                             <Col lg={7} className="d-flex p-2 shadow rounded align-baseline">
-                                <FormControl id="productName" placeholder="Busque por produto..."/>
+                                <FormControl id="productName" list='myList' placeholder="Busque por produto..."/>
+                                <datalist id={'myList'}>
+                                    {ListOfProducts(products, 'name')}
+                                </datalist>
                             </Col>
                             <Col lg={4} className="d-flex">
                                 <Button type="submit"  className="btn text-center"><i className="fa fa-search"></i></Button>
@@ -51,7 +68,18 @@ export const InventoryTemplate: React.FC = () => {
                     </Form>
                 </Row>
 
-                <InventorySaveProducts />
+                {rows ?
+                    <>
+                        <Col lg={12}>
+                            <Button onClick={ () => setRows(false) } className={'.animation'} >Fechar</Button>
+                        </Col>
+                        <Row id={'listedProducts'} className="d-flex col-12 align-items-stretch" style={{height: '58vh', overflow: 'auto'}} >
+                            { ListProductsOnCard(product) }
+                        </Row>
+                    </>
+                    :
+                    <InventorySaveProducts getProducts={products} />
+                }
             </Row>
         </Container>
     )

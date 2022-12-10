@@ -24,6 +24,7 @@
         "graceful-fs": "^4.2.10",
         "load-text-file": "^2.0.0",
         "nanoid": "^4.0.0",
+        "qs": "^6.11.0",
         "react": "^18.2.0",
         "react-bootstrap": "^2.6.0",
         "react-dom": "^18.2.0",

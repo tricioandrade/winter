@@ -26,12 +26,18 @@ class Product extends Model
         'price_with_tax',
         'promotional_price',
         'promotional_status',
+        'product_type_id',
         'tax_id',
         'tax_value',
         'tax_total_added',
         'tax_exemption_code',
         'tax_exemption_reason'
     ];
+
+    public function productType()
+    {
+        return $this->belongsTo(ProductType::class);
+    }
 
     public function tax()
     {

@@ -1,4 +1,3 @@
-import '../../css/Calculator.css';
 import '../../css/Sales.css';
 import SaleTemplate from "../templates/SaleTemplate";
 import ProductsRequests from "../requests/ProductsRequests";
@@ -82,10 +81,10 @@ class Sales extends React.Component {
                 const selectRow = document.querySelector('tr#product' + value) as HTMLElement;
                 selectRow.remove();
                 this.shoppingCart.removeProductsFromShoppingCart(value);
-                MessageBox('Produto removido!');
+                MessageBox.open('Produto removido!');
             }catch (e) {
                 console.log(e);
-                MessageBox('Não foi possivel remover!');
+                MessageBox.open('Não foi possivel remover!');
             }
         });
     }

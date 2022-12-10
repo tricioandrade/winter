@@ -9,9 +9,10 @@ export interface Product {
         stock_quantity: number;
         unity_quantity: number;
         for_sale_quantity: number;
-        for_sale_status: string | boolean;
+        for_sale_status: boolean;
         unity_of_measure: string | number;
         price: number,
+        product_type_id: number;
         price_with_tax: number,
         promotional_price: number;
         promotional_status: boolean | string;
@@ -22,10 +23,15 @@ export interface Product {
         tax_exemption_reason: number | string;
     };
     relationships: {
-        tax_types: {
+        tax: {
             id: string | number;
             name: string;
             description: string;
+            symbol: string;
+        },
+        productType: {
+            id: string | number;
+            name: string;
             symbol: string;
         }
     }
