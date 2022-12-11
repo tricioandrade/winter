@@ -7,6 +7,7 @@ import ListProductsOnCard from "./ListProductsOnCard";
 import ListOfProducts from "./ListOfProducts";
 import {getProducts} from "../tasks/GetProducts";
 import '../../css/Inventory.css';
+import {queryProduct} from "../tasks/ProductFilter";
 
 export const InventoryTemplate =  () => {
 
@@ -14,23 +15,19 @@ export const InventoryTemplate =  () => {
     const [product,      setProduct] = useState<Product[]>([]);
     const [products,    setProducts] = useState<Product[]>([]);
     const [rows,            setRows] = useState<boolean>(false);
-    
+
     const searchProduct = async (evt: FormEvent) => {
         evt.preventDefault();
-        const product = (evt.target as HTMLFormElement).productName.value;
+        const productName = (evt.target as HTMLFormElement).productName.value;
         setRows(true);
-        if (product.length){
-            setProduct(queryProduct(product));
+        if (productName.length){
+            setProduct(queryProduct(productName, products));
         }else{
             setProduct(products);
         }
     };
 
-    const queryProduct = (productName: string): Product[] => {
-        return products.filter((obj: Product) => {
-            return obj.attributes.name === productName;
-        });
-    }
+
 
     useEffect( () => {
         if (form) {
