@@ -1,7 +1,7 @@
-import {Product} from "../interfaces/Product";
+import {ProductResource} from "../interfaces/ProductResource";
 
-export const queryProduct = (ref: string | number, products: Product[], key: string = 'name'): Product[] => {
-    return products.filter((obj: Product) => {
+export const queryProduct = (ref: string | number, products: ProductResource[], key: string = 'name'): ProductResource[] => {
+    return products.filter((obj: ProductResource) => {
         switch (key) {
             case 'id'  : return obj.id === ref;
             case 'code': return obj.attributes.code === ref;

@@ -1,15 +1,15 @@
 import React, {FormEvent} from "react";
 import {Button, Card, Form} from "react-bootstrap";
-import {Product} from "../interfaces/Product";
+import {ProductResource} from "../interfaces/ProductResource";
 import ProductsRequests from "../requests/ProductsRequests";
 import MessageBox from "../tasks/MessageBox";
 import Preloader from "../tasks/Preloader";
 
-const ListProductsOnCard = (products: Product[]) => {
+const ListProductsOnCard = (products: ProductResource[]) => {
 
     if (!products.length) return ;
 
-    return products.map((p: Product, k) => {
+    return products.map((p: ProductResource, k) => {
         return (
             <Card key={k} id={'product' + p.id} className={"col-5 m-auto " + ( p.attributes.for_sale_status ? 'active' : 'inactive') }>
             <Card.Body className="card-body row">

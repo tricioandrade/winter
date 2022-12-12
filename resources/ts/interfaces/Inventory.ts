@@ -1,4 +1,4 @@
-import {Product} from "./Product";
+import {ProductResource} from "./ProductResource";
 
 export interface Inventory {
     page: boolean
@@ -6,5 +6,5 @@ export interface Inventory {
     price: number
     priceWithTax: number
     taxAdded: number
-    products: Product[]
+    products: ProductResource[]
 }

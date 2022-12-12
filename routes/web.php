@@ -25,5 +25,5 @@ Route::get('/inventory', [App\Http\Controllers\HomeController::class, 'index'])-
 Route::get('/receipts', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/settings', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-/* Product Routes */
+/* ProductResource Routes */
 Route::resource('/product', \App\Http\Controllers\ProductController::class);

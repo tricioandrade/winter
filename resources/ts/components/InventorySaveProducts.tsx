@@ -1,12 +1,12 @@
 import React, {FormEvent, useEffect, useState} from "react";
 import {Button, ButtonGroup, Card, Col, Form, FormControl, FormLabel, FormSelect, Row} from "react-bootstrap";
-import CalculatorTrait from "../tasks/CalculatorTrait";
+import CalculatorTask from "../tasks/CalculatorTask";
 import {Tax} from "../interfaces/TaxTypes";
 import MessageBox from "../tasks/MessageBox";
 import ProductsRequests from "../requests/ProductsRequests";
 import {nanoid} from "nanoid";
 import Preloader from "../tasks/Preloader";
-import {Product} from "../interfaces/Product";
+import {ProductResource} from "../interfaces/ProductResource";
 import ListOfProducts from "../templates/ListOfProducts";
 
 export const  InventorySaveProducts = ({ getProducts }: any) => {
@@ -15,10 +15,10 @@ export const  InventorySaveProducts = ({ getProducts }: any) => {
     const [taxAdded, setTaxAdded] = useState(0);
     const [priceWithTax, setPriceWithTax] = useState(0);
     const [price, setPrice] = useState(0);
-    const [products, setProducts] =  useState<Product[]>([]);
+    const [products, setProducts] =  useState<ProductResource[]>([]);
 
     useEffect( () => {
-        const { priceWithTax, taxAdded } = CalculatorTrait.calculatePriceTax({
+        const { priceWithTax, taxAdded } = CalculatorTask.calculatePriceTax({
             price: price,
             taxValue: taxValue,
             discount: 0

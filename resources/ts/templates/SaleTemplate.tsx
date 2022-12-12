@@ -5,14 +5,14 @@ import {SaleFormAccount} from "../components/SaleFormAccount";
 import {Button, Card, Col, Container, Form, FormControl, FormLabel, Row} from "react-bootstrap";
 import '../../css/Sales.css';
 import {Link} from "react-router-dom";
-import {Product} from "../interfaces/Product";
-import {getProducts} from "../tasks/GetProducts";
+import {ProductResource} from "../interfaces/ProductResource";
+import {loadProducts} from "../tasks/loadProducts";
 const SaleTemplate = () => {
 
     const [sale, setSaleState] = useState(true)
     const [paymentWay, setPaymentWay] = useState<string>('');
     const [paymentMechanism, setPaymentMechanism] = useState<string>('')
-    const [products, setProducts] = useState<Product[]>([]);
+    const [products, setProducts] = useState<ProductResource[]>([]);
 
     const [saleType, setSaleType] = useState<string>('');
 
@@ -25,7 +25,7 @@ const SaleTemplate = () => {
     const main = () => {
 
         if (sale) {
-            getProducts(data => setProducts(data) );
+            loadProducts(data => setProducts(data) );
             setSaleState(false);
         }
 
@@ -62,9 +62,7 @@ const SaleTemplate = () => {
                                     <Form>
                                         <Col lg={12}>
                                             <FormLabel htmlFor="payment_mechanism">Condições de pagamento</FormLabel>
-                                            <Form.Select id="payment_mechanism" onChange={
-                                                (evt) => setPaymentMechanism(evt.target.value)
-                                            }>
+                                            <Form.Select id="payment_mechanism" onChange={ setPaymentMechanism }>
                                                 <option disabled>Forma de pagamento</option>
                                                 <option>Pronto pagamento</option>
                                             </Form.Select>
@@ -111,8 +109,23 @@ const SaleTemplate = () => {
                                     </Form>
                                 </Col>
                             </Col>
+                            {/**/}
                             <Col lg={9} className={"table-div"} style={{height: '68vh', overflow: 'auto'}}>
-                                <SaleTable/>
+                                <Col>
+                                    <table id="saleTable" className="table">
+                                        <thead>
+                                        <tr>
+                                            <th>Descrição</th>
+                                            <th>Preço</th>
+                                            <th>Quantidade</th>
+                                            <th>Imposto</th>
+                                            <th>Desconto</th>
+                                            <th>Total</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </Col>
                             </Col>
                         </Row>
                     </Card.Body>

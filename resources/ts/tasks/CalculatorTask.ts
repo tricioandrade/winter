@@ -1,13 +1,10 @@
-import {OnSaleProduct} from "../interfaces/OnSaleProduct";
 import {Calculator} from "../interfaces/Calculator";
 
 
-
-
-class CalculatorTrait {
-    static calculateFinalPrice(onSaleProduct: Partial<OnSaleProduct>, onSaleQuantity: number, discount: number = 0): number{
+class CalculatorTask {
+    static calculateFinalPrice(priceWithTax: number, onSaleQuantity: number, discount: number = 0): number{
         let result = 0;
-        result =  Number(onSaleProduct.attributes?.price_with_tax) * Number(onSaleQuantity) - Number(discount);
+        result =  (priceWithTax * onSaleQuantity ) - discount;
         let floatResult = result.toFixed(4);
 
         return Number.parseFloat(floatResult);
@@ -23,4 +20,4 @@ class CalculatorTrait {
     }
 }
 
-export default CalculatorTrait;
+export default CalculatorTask;

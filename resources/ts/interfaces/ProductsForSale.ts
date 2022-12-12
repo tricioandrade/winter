@@ -1,6 +1,6 @@
-import {Product} from "./Product";
+import {ProductResource} from "./ProductResource";
 
-export interface ProductsForSale extends Product{
+export interface ProductsForSale extends ProductResource{
     discount: number;
     onSaleQuantity: number;
     priceTotal: number;

@@ -1,111 +1,233 @@
+import React, {FormEvent, useEffect, useState} from "react";
+import {Button, Card, Col, Container, Form, FormControl, FormLabel, Row} from "react-bootstrap";
 import '../../css/Sales.css';
-import SaleTemplate from "../templates/SaleTemplate";
-import ProductsRequests from "../requests/ProductsRequests";
-// import SaleFormProductMannager from "../traits/SaleProductManager";
-import CalculatorTrait from "../tasks/CalculatorTrait";
-import ShoppingCartManager from "../tasks/ShoppingCartManager";
-import SaleProdutTableRows from "../tasks/SaleProdutTableRows";
-import {Product} from "../interfaces/Product";
+import {Link} from "react-router-dom";
+import {ProductResource} from "../interfaces/ProductResource";
+import {loadProducts} from "../tasks/loadProducts";
+import listOfProducts from "../templates/ListOfProducts";
+import {queryProduct} from "../tasks/queryProduct";
+import CalculatorTask from "../tasks/CalculatorTask";
 import {OnSaleProduct} from "../interfaces/OnSaleProduct";
-import React from "react";
-import MessageBox from "../tasks/MessageBox";
+import {SoldProduct} from "../interfaces/SoldProduct";
+import calculatorTask from "../tasks/CalculatorTask";
 
+const Sales = () => {
 
-class Sales extends React.Component {
-    // private invoice = [];
-    private stockProducts: Product[] = [];
-    private onSaleProduct: Partial<OnSaleProduct> = {};
-    private shoppingCart = new ShoppingCartManager();
+    const [sale, setSaleState] = useState(true)
+    const [paymentWay, setPaymentWay] = useState<string>('');
+    const [paymentMechanism, setPaymentMechanism] = useState<string>('')
+    const [products, setProducts] = useState<ProductResource[]>([]);
+    const [saleType, setSaleType] = useState<string>('');
+    const [productForSale, setProductForSale] = useState<string>('');
+    const [soldProduct, setSoldProduct] = useState<Partial<SoldProduct[]>>([]);
 
-    constructor(props: object) {
-        super(props);
-    }
+    const handleSubmit = (evt: FormEvent) => {
+        evt.preventDefault();
+        const form = evt.target as HTMLFormElement;
 
-    componentDidMount() {
-        try {
-            this.loadProducts();
-            this.addProductToCart();
-            this.removeProductFromShoppingCart();
-            this.loadCreditNoteComponent();
-        }catch (e) {
-            console.log(e);
+        let onSaleProducts: OnSaleProduct[] = [];
+
+        const productCode: string = form.productCode.value;
+        let onSaleProduct: OnSaleProduct = {
+            code: form.productCode.value,
+            price_total: 0,
+            on_sale_quantity: +form.quantity.value,
+            discount: +form.discount.value
         }
-    }
 
-    private loadProducts() {
-        ProductsRequests.getAllProducts().then(data => {
-            console.log(data);
-            this.stockProducts = data.data;
-            console.log(this.stockProducts);
-            // new SaleFormProductMannager(data)
+        const product: ProductResource[] = queryProduct(productCode, products, 'code');
+        onSaleProduct.price_total = calculatorTask.calculateFinalPrice(
+            product[0].attributes.price_with_tax,
+            onSaleProduct.on_sale_quantity,
+            onSaleProduct.discount
+        );
 
-        }).catch( err => {
-            console.log(err);
-        })
-    }
-
-    private addProductToCart () {
-        const formProduct = document.getElementById('formProduct')! as HTMLFormElement;
-        formProduct.addEventListener('submit', ev => {
-            ev.preventDefault();
-            this.onSaleProduct = {
-                ...this.queryProduct(formProduct.productCode.value)[0],
-                on_sale_quantity: +formProduct.quantityForSale,
-                discount: +formProduct.discount.value,
-                price_total: CalculatorTrait.calculateFinalPrice(
-                    this.onSaleProduct,
-                    +formProduct.quantityForSale.value,
-                    +formProduct.discount.value
-                )
-            };
-
-           this.shoppingCart.addProductToShoppingCart(this.onSaleProduct);
-           this.addProductToSaleTable(this.onSaleProduct);
-        });
-    }
-
-    private addProductToSaleTable(onSaleProduct: Partial<OnSaleProduct>) {
-        const table = document.getElementById('saleTable') as HTMLElement;
-        table.innerHTML += SaleProdutTableRows(onSaleProduct);
-    }
-
-    private removeProductFromShoppingCart() {
-        const table = document.getElementById('saleTable') as HTMLElement;
-
-        table.addEventListener('submit', ev => {
-            const target: HTMLElement = ev.target as HTMLElement;
-            const selectedElement: HTMLFormElement = target.querySelector('form button') as HTMLFormElement;
-            const value: number = +selectedElement.value;
-
-            try{
-                const selectRow = document.querySelector('tr#product' + value) as HTMLElement;
-                selectRow.remove();
-                this.shoppingCart.removeProductsFromShoppingCart(value);
-                MessageBox.open('Produto removido!');
-            }catch (e) {
-                console.log(e);
-                MessageBox.open('Não foi possivel remover!');
+        const productConstructor: object[]= [
+            {
+                product_id: product[0],
+                ...products[0].attributes,
             }
-        });
+        ];
+
+        setSoldProduct( productConstructor );
     }
 
-    private queryProduct(code: string): object[]{
-        return this.stockProducts.filter(obj => {
-            return obj.attributes.code === code;
-        })
-    }
+    const main = () => {
 
-    loadCreditNoteComponent () {
-        const creditNoteBtn = document.getElementById('creditNoteBtn') as HTMLElement;
-        creditNoteBtn.addEventListener('click', ev => {
-            ev.preventDefault();
-            document.appendChild(document.createElement('<credit-note></credit-note>'));
-        });
-    }
+        if (sale) {
+            loadProducts(data => setProducts(data) );
+            setSaleState(false);
+        }
 
-    render () {
-        return <SaleTemplate/>;
-    }
+        switch (saleType) {
+            case 'invoiceReceiptBtn' :
+                break;
+            case 'saleMoneyBtn' :
+                break;
+            case 'creditNoteBtn' :
+                break;
+        }
+    };
+
+    useEffect(main, [saleType, sale]);
+
+    return (
+        <Container id="sale-component" className="animation">
+            <div className="row col-12 mb-5">
+                <div className="page-title">
+                    <div className="col-12 m-auto title-section">
+                        <Link to="#" className="border-0 text-decoration-none" aria-current="page">
+                            <i className="fa fa-cash-register"/>&nbsp;Vendas</Link>
+                    </div>
+                </div>
+            </div>
+            <Row className="col-12 m-auto pt-0 mt-0" id='sale-content'>
+                <Col lg={9} className="card shadow rounded pt-0 m-auto mt-0" style={{height: '70vh'}}>
+                    <Card.Body>
+                        <Row>
+                            <Col lg={3}>
+
+                                {/*Form Payment Mechanism*/}
+                                <Col lg={12} className="">
+                                    <Form>
+                                        <Col lg={12}>
+                                            <FormLabel htmlFor="payment_mechanism">Condições de pagamento</FormLabel>
+                                            <Form.Select id="payment_mechanism" onChange={ (evt) => setPaymentMechanism(evt.target.value) }>
+                                                <option>&nbsp;</option>
+                                                <option>Pronto pagamento</option>
+                                            </Form.Select>
+                                        </Col>
+                                    </Form>
+                                </Col>
+
+                                {/*Form Payment Ways*/}
+                                <Col>
+                                    <Form>
+                                        <div className="col-12">
+                                            <FormLabel htmlFor="payment_way">Meios de Pagamento</FormLabel>
+                                            <Form.Select id="payment_way" onChange={
+                                                (evt) => setPaymentWay(evt.target.value)
+                                            }>
+                                                <optgroup label={'Tipo de pagamento'}>
+                                                    <option >&nbsp;</option>
+                                                    <option value="NU">Numerário</option>
+                                                    <option value="CC">Cartão de Crédito</option>
+                                                    <option value="CB">Cheque Bancário</option>
+                                                    <option value="OU">Outros Meios</option>
+                                                </optgroup>
+                                            </Form.Select>
+                                        </div>
+                                    </Form>
+                                </Col>
+                                <hr/>
+
+                                {/*Form Of Products*/}
+                                <Col lg={12}>
+                                    <Form id="sale-form-product" onSubmit={  handleSubmit }>
+                                        <Col lg={12}>
+                                            <FormLabel htmlFor="product-input">Produto ou Serviço</FormLabel>
+                                            <FormControl list="productList" id="productCode" placeholder="Selecione o produto..."/>
+                                            <datalist id="productList">
+                                                { listOfProducts(products, 'code') }
+                                            </datalist>
+                                        </Col>
+                                        <Col lg={12}>
+                                            <FormLabel htmlFor="quantity">Quantidade</FormLabel>
+                                            <FormControl type="number" min="1"  id="quantity" placeholder='Quantidade a vender' />
+                                        </Col>
+                                        <Col lg={12}>
+                                            <FormLabel htmlFor="discount" className="form-label">Desconto</FormLabel>
+                                            <FormControl type="number" name="discount" id="discount" required placeholder='Total a descontar'/>
+                                        </Col>
+                                        <Button type="submit" className="btn btn-primary mt-3">Adicionar</Button>
+                                    </Form>
+                                </Col>
+                            </Col>
+
+                            {/*Sale Table*/}
+                            <Col lg={9} className={"table-div"} style={{height: '68vh', overflow: 'auto'}}>
+                                <Col>
+                                    <table id="saleTable" className="table">
+                                        <thead>
+                                        <tr>
+                                            <th>Descrição</th>
+                                            <th>Preço</th>
+                                            <th>Quantidade</th>
+                                            <th>Imposto</th>
+                                            <th>Desconto</th>
+                                            <th>Total</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </Col>
+                            </Col>
+                        </Row>
+                    </Card.Body>
+                </Col>
+                <Col lg={3} className="pl-1 float-end">
+                    <Col lg={12} className="card shadow rounded ">
+                        <Card.Body>
+                            <Col lg={12}>
+                                <Col id="account-footer">
+                                    <Form>
+                                        <Col lg={12} className="">
+                                            <FormLabel htmlFor="total">Total Líquido</FormLabel>
+                                            <FormControl
+                                                type="number" disabled
+                                                className="border-0 bg-transparent text-end rounded-0"
+                                                placeholder="0.00" id="totalValue"/>
+                                        </Col>
+                                        <Col>
+                                            <FormLabel htmlFor="paidValue">Valor pago</FormLabel>
+                                            <FormControl
+                                                id="paidValue"
+                                                type="number"
+                                                step="0,1"
+                                                className="text-end rounded-0"
+                                                placeholder="0,00"
+                                            />
+                                        </Col>
+                                        <Col>
+                                            <FormLabel htmlFor="change">Troco</FormLabel>
+                                            <FormControl type="number" className="form-control text-end rounded-0 border-0" placeholder="0,00" id="change"
+                                                         disabled/>
+                                        </Col>
+                                    </Form>
+                                </Col>
+                            </Col>
+                            <Col className='mt-1'>
+                                <Col lg={12} className="mt-3 mb-3">
+                                    <Button id="invoiceReceiptBtn" onClick = {
+                                        () => setSaleType('invoiceReceiptBtn')
+                                    } className="btn btn-primary">Imprimir FacturaRecibo</Button>
+                                </Col>
+                                <Col lg={12} className="mt-3 mb-3">
+                                    <Button id="saleMoneyBtn" onClick = {
+                                        () => setSaleType('saleMoneyBtn')
+                                    } className="btn-primary">Imprimir Venda à Dinheiro</Button>
+                                </Col>
+                                <Col lg={12} className="mt-3 mb-3">
+                                    <Button id="creditNoteBtn" onClick = {
+                                        () => setSaleType('creditNoteBtn')
+                                    } className="btn-primary">Imprimir Nota de Crédito</Button>
+                                </Col>
+                            </Col>
+                        </Card.Body>
+                        <Card.Footer>
+                            <Col lg={12}>
+                                <Button
+                                    id="printAgain"
+                                    type="button"
+                                    className="btn bg-success btn-primary">Imprimir novamente</Button>
+                            </Col>
+                        </Card.Footer>
+
+                    </Col>
+                </Col>
+            </Row>
+        </Container>
+    );
 }
 
 export default Sales;

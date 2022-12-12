@@ -1,9 +1,9 @@
 import Preloader from "./Preloader";
 import axios from "../api/axios";
 import MessageBox from "./MessageBox";
-import {Product} from "../interfaces/Product";
+import {ProductResource} from "../interfaces/ProductResource";
 
-export const getProducts = async (callback: (products: Product[]) => void ) => {
+export const loadProducts = async (callback: (products: ProductResource[]) => void ) => {
     Preloader.active();
     try {
         const { data } = await axios.get('/product');

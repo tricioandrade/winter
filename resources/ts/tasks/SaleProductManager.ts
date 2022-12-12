@@ -1,8 +1,8 @@
 import axios from "../api/axios";
 import MessageBox from "../components/MessageBox";
-// import {Product} from "../interfaces/Product";
+// import {ProductResource} from "../interfaces/ProductResource";
 import ShoppingCartManager from "./ShoppingCartManager";
-import CalculatorTrait from "./CalculatorTrait";
+import CalculatorTask from "./CalculatorTask";
 
 
 class SaleProductManager extends ShoppingCartManager{
@@ -15,7 +15,7 @@ class SaleProductManager extends ShoppingCartManager{
 
 
         const form =  document.getElementById('sale-form-product');
-        const calculator = new CalculatorTrait();
+        const calculator = new CalculatorTask();
         form.addEventListener('submit', async e => {
             e.preventDefault();
             const productInput = form.productInput.value;

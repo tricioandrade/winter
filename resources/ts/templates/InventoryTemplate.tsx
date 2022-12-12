@@ -2,18 +2,18 @@ import React, {FormEvent, useEffect, useState} from "react";
 import {InventorySaveProducts} from "../components/InventorySaveProducts";
 import {Link} from "react-router-dom";
 import {Button, Col, Container, Form, FormControl, Row} from "react-bootstrap";
-import {Product} from "../interfaces/Product";
+import {ProductResource} from "../interfaces/ProductResource";
 import ListProductsOnCard from "./ListProductsOnCard";
 import ListOfProducts from "./ListOfProducts";
-import {getProducts} from "../tasks/GetProducts";
+import {loadProducts} from "../tasks/loadProducts";
 import '../../css/Inventory.css';
-import {queryProduct} from "../tasks/ProductFilter";
+import {queryProduct} from "../tasks/queryProduct";
 
 export const InventoryTemplate =  () => {
 
     const [form,       setFormState] = useState<boolean>(true);
-    const [product,      setProduct] = useState<Product[]>([]);
-    const [products,    setProducts] = useState<Product[]>([]);
+    const [product,      setProduct] = useState<ProductResource[]>([]);
+    const [products,    setProducts] = useState<ProductResource[]>([]);
     const [rows,            setRows] = useState<boolean>(false);
 
     const searchProduct = async (evt: FormEvent) => {
@@ -31,7 +31,7 @@ export const InventoryTemplate =  () => {
 
     useEffect( () => {
         if (form) {
-            getProducts(data=> setProducts(data) );
+            loadProducts(data=> setProducts(data) );
             setFormState(false);
         }
     }, [form]);
