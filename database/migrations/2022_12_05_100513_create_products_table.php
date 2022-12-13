@@ -29,30 +29,33 @@ return new class extends Migration
         });
 
         Schema::create('products', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id('id')->autoIncrement();
+            $table->increments('user_id');
             $table->string('name')->unique();
             $table->string('description');
             $table->string('code')->unique();
-//            $table->string('storage')->nullable();
-            $table->bigInteger('stock_quantity');
-            $table->bigInteger('unity_quantity');
-            $table->bigInteger('for_sale_quantity')->nullable();
+            $table->integer('stock_quantity');
+            $table->integer('unity_quantity');
+            $table->integer('for_sale_quantity')->nullable();
             $table->boolean('for_sale_status');
             $table->string('unity_of_measure');
             $table->decimal('price', 20, 4);
-            $table->decimal('price_with_tax', 20, 4);
-            $table->decimal('promotional_price', 20, 4)->nullable();
-            $table->string('promotional_status')->nullable();
-            $table->string('product_type');
+            $table->decimal('price_with_tax', 20,4);
+            $table->unsignedBigInteger('product_type_id');
+            $table->foreign('product_type_id')
+                ->on('product_types')
+                ->references('id');
 
+            $table->decimal('promotional_price', 20,4)->nullable();
+            $table->boolean('promotional_status')->nullable();
             $table->unsignedBigInteger('tax_id');
             $table->foreign('tax_id')
-                    ->on('tax')
-                    ->references('id');
+                ->on('tax')
+                ->references('id');
 
             $table->integer('tax_value');
             $table->decimal('tax_total_added', 20, 4);
-            $table->string('tax_exemption_code', 6);
+            $table->string('tax_exemption_code', 10);
             $table->string('tax_exemption_reason', 100);
             $table->timestamps();
         });

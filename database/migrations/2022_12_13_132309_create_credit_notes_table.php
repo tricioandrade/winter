@@ -14,7 +14,16 @@ return new class extends Migration
     public function up()
     {
         Schema::create('credit_notes', function (Blueprint $table) {
-            $table->id();
+            $table->id('id');
+            $table->unsignedBigInteger('sale_id');
+            $table->foreign('sale_id')->references('id')->on('sales');
+
+            $table->string('saft_number')->unique();
+            $table->string('hash')->unique();
+            $table->string('invoice_ref')->unique();
+            $table->string('invoice_changed_ref')->unique();
+            $table->string('type_of_change');
+            $table->date('date');
             $table->timestamps();
         });
     }

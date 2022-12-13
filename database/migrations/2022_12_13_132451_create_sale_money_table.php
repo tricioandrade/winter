@@ -14,7 +14,14 @@ return new class extends Migration
     public function up()
     {
         Schema::create('sale_money', function (Blueprint $table) {
-            $table->id();
+            $table->id('id')->autoIncrement();
+            $table->unsignedBigInteger('sale_id');
+            $table->foreign('sale_id')->references('id')->on('sales');
+
+            $table->string('saft_number')->unique();
+            $table->string('hash')->unique();
+            $table->string('invoice_ref')->unique();
+            $table->date('date');
             $table->timestamps();
         });
     }
@@ -26,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sale_money');
+        Schema::dropIfExists('invoice_receipts');
     }
 };
