@@ -69,10 +69,8 @@
 
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <div class="m-auto col-6 text-center">
-                    <img src="outonologo.jpg" alt="" width="400">
+                    <img src="{{asset('outonologo.png')}}" alt="" width="400">
                 </div>
-
-
 
                 <div class="flex justify-center mt-4 sm:items-center sm:justify-between">
                     <div class="text-center text-sm text-gray-500 sm:text-left">
