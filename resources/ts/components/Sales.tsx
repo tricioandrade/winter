@@ -6,10 +6,11 @@ import {ProductResource} from "../interfaces/ProductResource";
 import {loadProducts} from "../tasks/loadProducts";
 import listOfProducts from "../templates/ListOfProducts";
 import {queryProduct} from "../tasks/queryProduct";
-import CalculatorTask from "../tasks/CalculatorTask";
 import {OnSaleProduct} from "../interfaces/OnSaleProduct";
 import {SoldProduct} from "../interfaces/SoldProduct";
 import calculatorTask from "../tasks/CalculatorTask";
+import {Product} from "../interfaces/Product";
+// import {Product} from "../interfaces/Product";
 
 const Sales = () => {
 
@@ -19,13 +20,41 @@ const Sales = () => {
     const [products, setProducts] = useState<ProductResource[]>([]);
     const [saleType, setSaleType] = useState<string>('');
     const [productForSale, setProductForSale] = useState<string>('');
-    const [soldProduct, setSoldProduct] = useState<Partial<SoldProduct[]>>([]);
+    const [soldProduct, setSoldProduct] = useState<
+        Partial<SoldProduct[]> |
+        Partial<Product[]> |
+        Partial<ProductResource[]>>([]);
+
+    const [invoice, setInvoice] = useState();
+
+    const resolveSale = (product: ProductResource[], onSaleProduct: any) => {
+        onSaleProduct.price_total = calculatorTask.calculateFinalPrice(
+            product[0].attributes.price_with_tax,
+            onSaleProduct.on_sale_quantity,
+            onSaleProduct.discount
+        );
+
+
+        // console.log(SoldProduct);
+        if ()
+        {
+            setSoldProduct([{
+                product_id: +product[0].id,
+                product_type_symbol: product[0].relationships.productType.symbol,
+                product_type_name: product[0].relationships.productType.name,
+                sold_quantity: onSaleProduct.on_sale_quantity,
+                discount: onSaleProduct.discount,
+                tax_type: product[0].relationships.tax.symbol,
+                tax_total: +product[0].attributes.tax_total_added * onSaleProduct.on_sale_quantity,
+                total: onSaleProduct.price_total,
+                ...product[0].attributes
+            }]);
+        }
+    }
 
     const handleSubmit = (evt: FormEvent) => {
         evt.preventDefault();
         const form = evt.target as HTMLFormElement;
-
-        let onSaleProducts: OnSaleProduct[] = [];
 
         const productCode: string = form.productCode.value;
         let onSaleProduct: OnSaleProduct = {
@@ -36,20 +65,7 @@ const Sales = () => {
         }
 
         const product: ProductResource[] = queryProduct(productCode, products, 'code');
-        onSaleProduct.price_total = calculatorTask.calculateFinalPrice(
-            product[0].attributes.price_with_tax,
-            onSaleProduct.on_sale_quantity,
-            onSaleProduct.discount
-        );
-
-        const productConstructor: object[]= [
-            {
-                product_id: product[0],
-                ...products[0].attributes,
-            }
-        ];
-
-        setSoldProduct( productConstructor );
+        resolveSale(product, onSaleProduct);
     }
 
     const main = () => {

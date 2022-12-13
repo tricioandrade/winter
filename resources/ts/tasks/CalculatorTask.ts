@@ -10,6 +10,15 @@ class CalculatorTask {
         return Number.parseFloat(floatResult);
     }
 
+    static calculateSumOfTotal(soldProducts: object[]){
+        return soldProducts.reduce( (previousValue: any, currentValue: any) => {
+            return {
+                total: previousValue.total + currentValue.total,
+                total_tax_sold: previousValue.tax_total + currentValue.tax_total
+            }
+        } )
+    }
+
     static calculatePriceTax<T extends Calculator>(props: T):{ priceWithTax: number, taxAdded:number , discount: number}  {
 
         return {

@@ -42,6 +42,11 @@ class Product extends Model
     public function tax()
     {
         return $this->belongsTo(Tax::class);
+
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
 

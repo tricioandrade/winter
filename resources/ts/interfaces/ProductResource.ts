@@ -2,35 +2,33 @@ export interface ProductResource {
     id: number | string;
     attributes: {
         name: string;
-        user_id: number;
-        description: number;
-        code: number | string;
-        storage_id: number;
-        stock_quantity: number;
+        description: string;
+        code: string;
+        stock_quantity: number ;
         unity_quantity: number;
         for_sale_quantity: number;
-        for_sale_status: boolean;
-        unity_of_measure: string | number;
-        price: number,
-        product_type_id: number;
+        for_sale_status: number;
+        unity_of_measure: string;
+        price: number;
         price_with_tax: number,
-        promotional_price: number;
-        promotional_status: boolean | string;
-        tax_id: number;
+        promotional_price?: number;
+        promotional_status?: number,
         tax_value: number;
         tax_total_added: number;
-        tax_exemption_code: number | string;
-        tax_exemption_reason: number | string;
+        tax_exemption_code: string;
+        tax_exemption_reason: string;
     };
     relationships: {
         tax: {
-            id: string | number;
             name: string;
             description: string;
             symbol: string;
         },
+        user: {
+            name: string;
+            description: string;
+        },
         productType: {
-            id: string | number;
             name: string;
             symbol: string;
         }

@@ -52,8 +52,10 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
         $request->validated($request->all());
+        $all = $request->all();
         try {
-            $saved = Product::create($request->all());
+            $all['user_id'] = Auth::user()->id;
+            $saved = Product::create($all);
             return $this->success($saved);
         }catch (\Throwable $exception) {
             return $this->error($request->all(), $exception);

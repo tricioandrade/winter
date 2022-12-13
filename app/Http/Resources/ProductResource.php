@@ -29,7 +29,6 @@ class ProductResource extends JsonResource
                 'price_with_tax'=> $this->price_with_tax,
                 'promotional_price'=> $this->promotional_price,
                 'promotional_status'=> $this->promotional_status,
-                'tax_id'=> $this->tax_id,
                 'tax_value'=> $this->tax_value,
                 'tax_total_added'=> $this->tax_total_added,
                 'tax_exemption_code'=> $this->tax_exemption_code,
@@ -37,13 +36,15 @@ class ProductResource extends JsonResource
             ],
             'relationships'=> [
                 'tax' => [
-                    'id' => (string)$this->tax->id,
                     'name'  => $this->tax->name,
                     'description' => $this->tax->description,
                     'symbol'=> $this->tax->symbol
                 ],
+                'user' => [
+                    'name'  => $this->user->name,
+                    'email' => $this->user->email,
+                ],
                 'productType' => [
-                    'id' => (string)$this->productType->id,
                     'name'  => $this->productType->name,
                     'symbol'=> $this->productType->symbol
                 ]
