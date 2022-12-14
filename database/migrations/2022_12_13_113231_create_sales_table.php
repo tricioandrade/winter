@@ -27,7 +27,7 @@ return new class extends Migration
 
             $table->string('currency')->default('AOA');
             $table->string('exchange')->default('750');
-            $table->string('customer');
+            $table->string('customer')->default('Consumidor final');
 
             $table->decimal('paid_value', 20,2);
             $table->string('change');

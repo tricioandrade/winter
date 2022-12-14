@@ -30,7 +30,11 @@ return new class extends Migration
 
         Schema::create('products', function (Blueprint $table) {
             $table->id('id')->autoIncrement();
-            $table->increments('user_id');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')
+                ->on('users')
+                ->references('id');
+
             $table->string('name')->unique();
             $table->string('description');
             $table->string('code')->unique();

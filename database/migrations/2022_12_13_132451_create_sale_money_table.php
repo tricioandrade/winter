@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('sale_money', function (Blueprint $table) {
             $table->id('id')->autoIncrement();
-            $table->unsignedBigInteger('sale_id');
+            $table->unsignedBigInteger('sale_id')->unique();
             $table->foreign('sale_id')->references('id')->on('sales');
 
             $table->string('saft_number')->unique();

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('credit_notes', function (Blueprint $table) {
             $table->id('id');
-            $table->unsignedBigInteger('sale_id');
+            $table->unsignedBigInteger('sale_id')->unique();
             $table->foreign('sale_id')->references('id')->on('sales');
 
             $table->string('saft_number')->unique();
