@@ -1,4 +1,7 @@
 import {Calculator} from "../interfaces/Calculator";
+import {SoldProduct} from "../interfaces/SoldProduct";
+import {Product} from "../interfaces/Product";
+import {ProductResource} from "../interfaces/ProductResource";
 
 
 class CalculatorTask {
@@ -8,6 +11,26 @@ class CalculatorTask {
         let floatResult = result.toFixed(4);
 
         return Number.parseFloat(floatResult);
+    }
+
+
+    static calculateProducts(products: any[], newProduct: any): Partial<SoldProduct[]> |
+        Partial<Product[]> |
+        Partial<ProductResource[]> {
+        const index = products.findIndex(object => {
+            return object.product_id === newProduct.product_id;
+        });
+
+        if (index >= 0) {
+            products[index].price_total =( +products[index].price_total + +newProduct.price_total) - +newProduct.discount;
+            products[index].discount = +products[index].discount + +newProduct.discount;
+            products[index].sold_quantity = +products[index].sold_quantity + +newProduct.on_sale_quantity;
+
+            return products;
+        }
+
+        products.push(newProduct);
+        return products;
     }
 
     static calculateSumOfTotal(soldProducts: object[]){

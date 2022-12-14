@@ -1,8 +1,8 @@
-import {Invoice} from "./Invoice";
+import {InvoiceResource} from "./InvoiceResource";
 import {SoldProduct} from "./SoldProduct";
 
 
-export interface CreditNote extends Invoice {
+export interface CreditNote extends InvoiceResource {
     id: number | string;
     relationships: {
         safT: {

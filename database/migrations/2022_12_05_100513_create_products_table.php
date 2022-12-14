@@ -43,8 +43,10 @@ return new class extends Migration
             $table->integer('for_sale_quantity')->nullable();
             $table->boolean('for_sale_status');
             $table->string('unity_of_measure');
+
             $table->decimal('price', 20, 4);
             $table->decimal('price_with_tax', 20,4);
+
             $table->unsignedBigInteger('product_type_id');
             $table->foreign('product_type_id')
                 ->on('product_types')
@@ -58,7 +60,9 @@ return new class extends Migration
                 ->references('id');
 
             $table->integer('tax_value');
+
             $table->decimal('tax_total_added', 20, 4);
+
             $table->string('tax_exemption_code', 10);
             $table->string('tax_exemption_reason', 100);
             $table->timestamps();

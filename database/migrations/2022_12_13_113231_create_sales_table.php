@@ -26,11 +26,12 @@ return new class extends Migration
                 ->references('id');
 
             $table->string('currency')->default('AOA');
-            $table->string('exchange')->default('750');
+            $table->integer('exchange')->default(750);
             $table->string('customer')->default('Consumidor final');
 
-            $table->decimal('paid_value', 20,2);
-            $table->string('change');
+            $table->decimal('paid_value', 20, 4);
+            $table->decimal('change', 20, 4)->default(0);
+
             $table->string('payment_mechanism');
             $table->string('payment_way');
 
@@ -46,17 +47,17 @@ return new class extends Migration
             $table->dateTime('system_entry_date');
 
 
-            $table->string('merchandise_total');
-            $table->string('commercial_discount');
-            $table->string('financial_discount');
-            $table->string('postage');
-            $table->string('service_total');
-            $table->string('tax_total');
-            $table->string('advance');
-            $table->string('eco_value');
-            $table->string('hit');
-            $table->string('total');
-            $table->string('short_hash');
+            $table->decimal('merchandise_total', 20, 4)->default(0);
+            $table->decimal('commercial_discount', 20, 4)->default(0);
+            $table->decimal('financial_discount', 20, 4)->default(0);
+            $table->decimal('postage', 20, 4)->default(0);
+            $table->decimal('service_total', 20, 4)->default(0);
+            $table->decimal('tax_total', 20, 4)->default(0);
+            $table->decimal('advance', 20, 4)->default(0);
+            $table->decimal('eco_value', 20, 4)->default(0);
+            $table->decimal('hit', 20, 4)->default(0);
+            $table->decimal('total', 20, 4)->default(0);
+            $table->string('short_hash',4);
 
             $table->timestamps();
         });

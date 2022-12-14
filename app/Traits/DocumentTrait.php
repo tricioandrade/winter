@@ -9,12 +9,27 @@ use App\Models\Invoice;
 use App\Models\InvoiceReceipt;
 use App\Models\SaleMoney;
 use Illuminate\Support\Facades\DB;
+use JetBrains\PhpStorm\Pure;
+use Termwind\Html\InheritStyles;
 
 trait DocumentTrait
 {
 
     use TimeTools;
     use HashMakerTrait;
+
+    public array $invoiceNames = [
+        'FT' => 'FACTURA ',
+        'FR' => 'FACTURA RECIBO ',
+        'VD' => 'VENDA A DINHEIRO ',
+        'NC' => 'NOTA DE CRÉDITO ',
+    ];
+
+    #[Pure] public function moneyFormat($value): string
+    {
+        $format = new \NumberFormatter("pt_AOA", \NumberFormatter::DECIMAL);
+        return $format->format($value);
+    }
 
     public function invoiceFilteredData(string $doc_type, int $id) {
         $documentTables = [
@@ -60,7 +75,7 @@ trait DocumentTrait
         }
 
         /*
-         * Generating invoice Number string with new Invoice Info*/
+         * Generating invoice Number string with new InvoiceResource Info*/
         $invoiceNumber = $docType .' '.date('Y').'OTN'.'/'. ($invoiceId + 1);
 
         /*

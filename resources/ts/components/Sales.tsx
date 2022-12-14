@@ -10,6 +10,7 @@ import {OnSaleProduct} from "../interfaces/OnSaleProduct";
 import {SoldProduct} from "../interfaces/SoldProduct";
 import calculatorTask from "../tasks/CalculatorTask";
 import {Product} from "../interfaces/Product";
+import CalculatorTask from "../tasks/CalculatorTask";
 // import {Product} from "../interfaces/Product";
 
 const Sales = () => {
@@ -20,7 +21,7 @@ const Sales = () => {
     const [products, setProducts] = useState<ProductResource[]>([]);
     const [saleType, setSaleType] = useState<string>('');
     const [productForSale, setProductForSale] = useState<string>('');
-    const [soldProduct, setSoldProduct] = useState<
+    const [soldProducts, setSoldProduct] = useState<
         Partial<SoldProduct[]> |
         Partial<Product[]> |
         Partial<ProductResource[]>>([]);
@@ -34,11 +35,11 @@ const Sales = () => {
             onSaleProduct.discount
         );
 
+        console.log(onSaleProduct);
+        console.log(soldProducts);
 
-        // console.log(SoldProduct);
-        if ()
-        {
-            setSoldProduct([{
+        setSoldProduct(CalculatorTask.calculateProducts(soldProducts,
+            {
                 product_id: +product[0].id,
                 product_type_symbol: product[0].relationships.productType.symbol,
                 product_type_name: product[0].relationships.productType.name,
@@ -48,8 +49,10 @@ const Sales = () => {
                 tax_total: +product[0].attributes.tax_total_added * onSaleProduct.on_sale_quantity,
                 total: onSaleProduct.price_total,
                 ...product[0].attributes
-            }]);
-        }
+            }
+        ));
+
+        console.log(soldProducts);
     }
 
     const handleSubmit = (evt: FormEvent) => {

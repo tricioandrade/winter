@@ -11,7 +11,8 @@
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.1",
-        "tricioandrade/openscrypt": "^1.1"
+        "tricioandrade/openscrypt": "^1.1",
+      "ext-intl": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

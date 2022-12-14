@@ -8,11 +8,11 @@
 // import SaleProdutTableRows from "../traits/SaleProdutTableRows";
 // import MessageBox from "./MessageBox";
 // import InvoicesRequests from "../requests/InvoicesRequests";
-// import {Invoice} from "../interfaces/Invoice";
+// import {InvoiceResource} from "../interfaces/InvoiceResource";
 //
 // class CreditNote extends HTMLElement {
 //     // private invoice = [];
-//     private invoices: Invoice[] = [];
+//     private invoices: InvoiceResource[] = [];
 //     private shoppingCart;
 //
 //     constructor() {

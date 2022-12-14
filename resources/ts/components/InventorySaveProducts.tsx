@@ -73,6 +73,11 @@ export const  InventorySaveProducts = ({ getProducts }: any) => {
                 tax_exemption_code: elem.tax_exemption_code.value,
                 tax_exemption_reason: elem.tax_exemption_reason.value
             }
+        }else{
+            product = { ...product,
+                tax_exemption_code: 'NÃO_APLICA',
+                tax_exemption_reason: 'NÃO_APLICA'
+            }
         }
 
         /**
