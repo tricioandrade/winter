@@ -13,6 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//$json = file_get_contents('../app.json');
+//print_r($json);
+//$me = json_decode($json);
+//var_dump($me);
+//print_r($me->name);
+
 Route::get('/', function () {
     return view('welcome');
 });

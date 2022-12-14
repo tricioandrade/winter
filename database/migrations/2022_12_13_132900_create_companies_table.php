@@ -14,7 +14,21 @@ return new class extends Migration
     public function up()
     {
         Schema::create('companies', function (Blueprint $table) {
-            $table->id();
+            $table->id()->autoIncrement();
+            $table->string('name');
+            $table->string('nif');
+            $table->string('currency')->default('AOA');
+            $table->string('designation');
+            $table->string('port');
+            $table->string('address');
+            $table->string('street');
+            $table->string('fulladdress');
+            $table->string('city');
+            $table->string('country');
+            $table->string('email');
+            $table->string('fiscal_year');
+            $table->string('phone');
+            $table->string('iban');
             $table->timestamps();
         });
     }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3ba018504126670e19bad74bfd50b7dc",
+    "content-hash": "75da7274b8282642f5fa260bf929dda4",
     "packages": [
         {
             "name": "brick/math",
@@ -5207,6 +5207,46 @@
                 "source": "https://github.com/tijsverkoyen/CssToInlineStyles/tree/2.2.5"
             },
             "time": "2022-09-12T13:28:28+00:00"
+        },
+        {
+            "name": "tricioandrade/openscrypt",
+            "version": "v1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tricioandrade/openscrypt.git",
+                "reference": "b8d0587ab9f437edca4bc4eb831abd250ee39d43"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tricioandrade/openscrypt/zipball/b8d0587ab9f437edca4bc4eb831abd250ee39d43",
+                "reference": "b8d0587ab9f437edca4bc4eb831abd250ee39d43",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "type": "plugin",
+            "autoload": {
+                "psr-4": {
+                    "Tricioandrade\\OpensCrypt\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Patrício Andrade",
+                    "email": "tricioandrade@outlook.com"
+                }
+            ],
+            "description": "a basic script for encrypt data",
+            "support": {
+                "issues": "https://github.com/tricioandrade/openscrypt/issues",
+                "source": "https://github.com/tricioandrade/openscrypt/tree/v1.1.2"
+            },
+            "time": "2022-12-13T20:50:51+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
