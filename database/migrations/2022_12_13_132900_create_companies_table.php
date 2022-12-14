@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->id()->autoIncrement();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('nif');
             $table->string('currency')->default('AOA');
             $table->string('designation');
@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('fiscal_year');
             $table->string('phone');
             $table->string('iban');
+
             $table->timestamps();
         });
     }
