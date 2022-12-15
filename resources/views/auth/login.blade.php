@@ -3,6 +3,9 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
+        <div class="m-auto col-6 text-center m-3 p-4">
+            <img src="{{asset('outonologo.png')}}" alt="" width="400">
+        </div>
         <div class="col-md-8 mt-4">
             <div class="card">
                 <div class="card-header">{{ __('Login') }}</div>

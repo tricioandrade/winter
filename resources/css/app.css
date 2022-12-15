@@ -177,8 +177,7 @@ form select {
     border-bottom: 1px solid rgba(0, 0, 0, 0.125) !important;
 }
 
-table thead th {
-
+table {
     font-size:14px !important;
 }
 

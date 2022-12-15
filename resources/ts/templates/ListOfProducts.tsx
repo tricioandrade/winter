@@ -3,7 +3,6 @@ import React from "react";
 
 
 const ListOfProducts = (products: ProductResource[], listBy: string = 'id') => {
-    console.log(products);
     if (!products.length) return ;
     return products.map((item: ProductResource, key: number) => {
         return <option key={key} value={

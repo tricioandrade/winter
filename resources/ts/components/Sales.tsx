@@ -12,6 +12,7 @@ import calculatorTask from "../tasks/CalculatorTask";
 import {Product} from "../interfaces/Product";
 import CalculatorTask from "../tasks/CalculatorTask";
 import MessageBox from "../tasks/MessageBox";
+import rowsOfProducts from "../templates/rowsOfProducts";
 // import {Product} from "../interfaces/Product";
 
 const Sales = () => {
@@ -21,13 +22,15 @@ const Sales = () => {
     const [paymentMechanism, setPaymentMechanism] = useState<string>('')
     const [products, setProducts] = useState<ProductResource[]>([]);
     const [saleType, setSaleType] = useState<string>('');
-    const [productForSale, setProductForSale] = useState<string>('');
-    const [saleTotal, setSaleTotal] = useState({});
+    const [productArrayKey, setProductArrayKey] = useState<number>(-1);
+    const [change, setChange] = useState<number>(0);
+    const [saleTotal, setSaleTotal] = useState<{tax_total: number,
+        total: number}>({
+        tax_total: 0,
+        total:0
+    });
 
-    const [soldProducts, setSoldProduct] = useState<
-        Partial<SoldProduct[]> |
-        Partial<Product[]> |
-        Partial<ProductResource[]>>([]);
+    const [soldProducts, setSoldProduct] = useState<Partial<SoldProduct[]>>([]);
 
     const [invoice, setInvoice] = useState();
 
@@ -43,6 +46,7 @@ const Sales = () => {
             discount: +form.discount.value
         }
 
+        form.productCode.value = '';
 
         const product: ProductResource[] = queryProduct(productCode, products, 'code');
 
@@ -57,9 +61,6 @@ const Sales = () => {
             onSaleProduct.discount
         );
 
-        console.log(onSaleProduct);
-        console.log(soldProducts);
-
         setSoldProduct(CalculatorTask.calculateProducts(soldProducts,
             {
                 product_id: +product[0].id,
@@ -73,14 +74,42 @@ const Sales = () => {
                 ...product[0].attributes
             }
         ));
-        if (soldProducts.length > 1){
-            setSaleTotal(CalculatorTask.calculateSumOfTotal(soldProducts));
-        }else if(soldProducts.length){
-            const data: any = soldProducts[0];
-            setSaleTotal({tax_total: data.tax_total, total: data.total})
-        }
+        totalSaleGenerate(soldProducts);
+
     }
 
+    const totalSaleGenerate = (soldProducts: any[]) => {
+        if (soldProducts.length > 1)
+            setSaleTotal(CalculatorTask.calculateSumOfTotal(soldProducts));
+        else if(soldProducts.length === 1)
+            setSaleTotal({tax_total: soldProducts[0].tax_total, total: soldProducts[0].total});
+        else
+            setSaleTotal({tax_total: 0.00, total: 0.00});
+
+        setSoldProduct(soldProducts);
+        console.log(soldProducts);
+    }
+
+    const handleSubmitOnTable = (evt: FormEvent) => {
+        evt.preventDefault();
+        const value = +((evt.target as HTMLElement).querySelector('button') as HTMLButtonElement).value;
+        setProductArrayKey(value);
+    }
+
+    const removeProduct = (soldProducts: any[], productArrayKey: number) => {
+        if ((productArrayKey === 0) || (productArrayKey > 1)) {
+
+            const index = products.findIndex((object: any) => {
+                return object.product_id === productArrayKey;
+            });
+
+            soldProducts.splice(index, 1);
+            setSoldProduct(soldProducts);
+            totalSaleGenerate(soldProducts);
+            setProductArrayKey(-1);
+
+        }
+    }
 
     useEffect(() => {
 
@@ -90,17 +119,14 @@ const Sales = () => {
         }
 
         switch (saleType) {
-            case 'invoiceReceiptBtn' :
-                break;
-            case 'saleMoneyBtn' :
-                break;
-            case 'creditNoteBtn' :
-                break;
+            case 'invoiceReceiptBtn' : break;
+            case 'saleMoneyBtn' :   break;
+            case 'creditNoteBtn' : break;
         }
 
-        console.log(saleTotal);
+        removeProduct(soldProducts, productArrayKey);
 
-    }, [saleType, sale, saleTotal]);
+    }, [productArrayKey, saleType, sale, saleTotal, soldProducts]);
 
     return (
         <Container id="sale-component" className="animation">
@@ -157,18 +183,18 @@ const Sales = () => {
                                     <Form id="sale-form-product" onSubmit={  handleSubmit }>
                                         <Col lg={12}>
                                             <FormLabel htmlFor="product-input">Produto ou Serviço</FormLabel>
-                                            <FormControl list="productList" id="productCode" placeholder="Selecione o produto..."/>
+                                            <FormControl required list="productList" id="productCode" placeholder="Selecione o produto..."/>
                                             <datalist id="productList">
                                                 { listOfProducts(products, 'code') }
                                             </datalist>
                                         </Col>
                                         <Col lg={12}>
                                             <FormLabel htmlFor="quantity">Quantidade</FormLabel>
-                                            <FormControl type="number" min="1"  id="quantity" placeholder='Quantidade a vender' />
+                                            <FormControl type="number" defaultValue={1} min="1"  id="quantity" placeholder='Quantidade a vender' />
                                         </Col>
                                         <Col lg={12}>
                                             <FormLabel htmlFor="discount" className="form-label">Desconto</FormLabel>
-                                            <FormControl type="number" name="discount" id="discount" required placeholder='Total a descontar'/>
+                                            <FormControl type="number" defaultValue={0} name="discount" id="discount" required placeholder='Total a descontar'/>
                                         </Col>
                                         <Button type="submit" className="btn btn-primary mt-3">Adicionar</Button>
                                     </Form>
@@ -178,7 +204,7 @@ const Sales = () => {
                             {/*Sale Table*/}
                             <Col lg={9} className={"table-div"} style={{height: '68vh', overflow: 'auto'}}>
                                 <Col>
-                                    <table id="saleTable" className="table">
+                                    <table id="saleTable" className="table" onSubmit={ handleSubmitOnTable }>
                                         <thead>
                                         <tr>
                                             <th>Descrição</th>
@@ -187,9 +213,12 @@ const Sales = () => {
                                             <th>Imposto</th>
                                             <th>Desconto</th>
                                             <th>Total</th>
+                                            <th>&nbsp;</th>
                                         </tr>
                                         </thead>
-                                        <tbody></tbody>
+                                        <tbody>
+                                            { rowsOfProducts(soldProducts) }
+                                        </tbody>
                                     </table>
                                 </Col>
                             </Col>
@@ -206,23 +235,32 @@ const Sales = () => {
                                             <FormLabel htmlFor="total">Total Líquido</FormLabel>
                                             <FormControl
                                                 type="number" disabled
+                                                value={parseFloat((saleTotal?.total).toString()).toFixed(2)}
                                                 className="border-0 bg-transparent text-end rounded-0"
-                                                placeholder="0.00" id="totalValue"/>
+                                                placeholder="0.00"/>
                                         </Col>
                                         <Col>
                                             <FormLabel htmlFor="paidValue">Valor pago</FormLabel>
                                             <FormControl
                                                 id="paidValue"
                                                 type="number"
-                                                step="0,1"
+                                                onChange={ (evt) => {
+                                                    if (+evt.target.value >= +saleTotal?.total){
+                                                        setChange(+evt.target.value - +saleTotal?.total);
+                                                    }
+                                                }}
                                                 className="text-end rounded-0"
                                                 placeholder="0,00"
                                             />
                                         </Col>
                                         <Col>
                                             <FormLabel htmlFor="change">Troco</FormLabel>
-                                            <FormControl type="number" className="form-control text-end rounded-0 border-0" placeholder="0,00" id="change"
-                                                         disabled/>
+                                            <FormControl
+                                                type="number"
+                                                className="text-end rounded-0"
+                                                placeholder="0,00"
+                                                value={parseFloat((change.toString())).toFixed(2)}
+                                                disabled/>
                                         </Col>
                                     </Form>
                                 </Col>

@@ -23,32 +23,60 @@
             }
 
 
-            body:after {
+
+            body:before {
+                /*      background: linear-gradient(45deg, hsl(45deg 100% 61%), hsl(54deg 99% 47%), hsl(45deg 100% 61%));  */
                 content: "";
                 position: absolute;
-                top: 0;
+                bottom: 0%;
+                top:0;
                 left: 0;
                 width: 100%;
-                height: 100%;
-                padding: 10%;
-                background: linear-gradient(45deg, #2d3748, #718096, #4a5568);
-                z-index: -2;
+                padding: 17%;
+                /*     box-shadow: 10px 10px 10px #f2d714; */
+                background:linear-gradient(45deg, #fefefe,#dee2e6, #dee2e6, #f8fafc, #dee2e6, #dee2e6);
+                z-index: -1;
+            }
+
+            .preloader.active {
+                display: block;
+            }
+
+            .preloader {
+                position: fixed;
+                width: 1em;
+                height: 5em;
+                left: 50%;
+                bottom: 35%;
+                background-size: 100%;
+                background-position: top;
+                background-repeat: no-repeat;
+                z-index: 999;
+                display: none;
+                background: #333;
+                border-radius: 100px;
+                border-top: 13px solid #f1d70f;
+                border-bottom: 13px solid #f2d716;
+                transition: all 300ms ease-in;
+                animation: girar .4s ease-out infinite;
             }
 
 
-            body:before {
+            body:after {
+                background:#f8fafc;
                 content: "";
                 position: absolute;
-                /*     background: linear-gradient( 45deg, #fefefe, #eee, #eee, #fefefe, #fefefe ); */
-                background:#fdfdfd;
-                bottom: 0;
+                bottom: 0%;
                 left: 0;
                 width: 100%;
                 padding: 17%;
                 border-top-left-radius: 100rem;
                 border-top-right-radius: 100rem;
-                z-index: -1
+                border-top: 2px solid #f8f9fa !important;
+                /*     box-shadow: 10px 10px 10px #f2d714; */
+                z-index: -1;
             }
+
             a.btn {
                 padding: 10px 20px;
                 background-color: #1a202c;
