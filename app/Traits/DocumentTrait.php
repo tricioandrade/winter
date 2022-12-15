@@ -84,7 +84,7 @@ trait DocumentTrait
 
         /*
          * Encrypting*/
-        $encryptedData = $this->make($this->dateNormal().';'.$this->dateTimeT().';'.$invoiceNumber.';'.$total.';'.$hash);
+        $encryptedData = self::encrypt($this->dateNormal().';'.$this->dateTimeT().';'.$invoiceNumber.';'.$total.';'.$hash);
 
         /*
          * Split and get a short chars of generated hash*/

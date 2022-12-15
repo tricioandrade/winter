@@ -10,6 +10,7 @@ export const loadProducts = async (callback: (products: ProductResource[]) => vo
         callback(data.data);
         Preloader.inactive();
     }catch (e) {
+        console.log(e);
         MessageBox.open('Não foi possível buscar produtos');
         Preloader.inactive();
     }

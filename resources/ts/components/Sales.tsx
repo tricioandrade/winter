@@ -11,6 +11,7 @@ import {SoldProduct} from "../interfaces/SoldProduct";
 import calculatorTask from "../tasks/CalculatorTask";
 import {Product} from "../interfaces/Product";
 import CalculatorTask from "../tasks/CalculatorTask";
+import MessageBox from "../tasks/MessageBox";
 // import {Product} from "../interfaces/Product";
 
 const Sales = () => {
@@ -21,6 +22,8 @@ const Sales = () => {
     const [products, setProducts] = useState<ProductResource[]>([]);
     const [saleType, setSaleType] = useState<string>('');
     const [productForSale, setProductForSale] = useState<string>('');
+    const [saleTotal, setSaleTotal] = useState({});
+
     const [soldProducts, setSoldProduct] = useState<
         Partial<SoldProduct[]> |
         Partial<Product[]> |
@@ -28,7 +31,26 @@ const Sales = () => {
 
     const [invoice, setInvoice] = useState();
 
-    const resolveSale = (product: ProductResource[], onSaleProduct: any) => {
+    function handleSubmit (evt: FormEvent)  {
+        evt.preventDefault();
+        const form = evt.target as HTMLFormElement;
+
+        const productCode: string = form.productCode.value;
+        let onSaleProduct: OnSaleProduct = {
+            code: form.productCode.value,
+            price_total: 0,
+            on_sale_quantity: +form.quantity.value,
+            discount: +form.discount.value
+        }
+
+
+        const product: ProductResource[] = queryProduct(productCode, products, 'code');
+
+        if(onSaleProduct.on_sale_quantity > +product[0].attributes.stock_quantity){
+            MessageBox.open('Não pode tentar vender uma quantidade maior que a existente em stock');
+            return;
+        }
+
         onSaleProduct.price_total = calculatorTask.calculateFinalPrice(
             product[0].attributes.price_with_tax,
             onSaleProduct.on_sale_quantity,
@@ -44,34 +66,23 @@ const Sales = () => {
                 product_type_symbol: product[0].relationships.productType.symbol,
                 product_type_name: product[0].relationships.productType.name,
                 sold_quantity: onSaleProduct.on_sale_quantity,
-                discount: onSaleProduct.discount,
+                discount: +onSaleProduct.discount,
                 tax_type: product[0].relationships.tax.symbol,
                 tax_total: +product[0].attributes.tax_total_added * onSaleProduct.on_sale_quantity,
                 total: onSaleProduct.price_total,
                 ...product[0].attributes
             }
         ));
-
-        console.log(soldProducts);
-    }
-
-    const handleSubmit = (evt: FormEvent) => {
-        evt.preventDefault();
-        const form = evt.target as HTMLFormElement;
-
-        const productCode: string = form.productCode.value;
-        let onSaleProduct: OnSaleProduct = {
-            code: form.productCode.value,
-            price_total: 0,
-            on_sale_quantity: +form.quantity.value,
-            discount: +form.discount.value
+        if (soldProducts.length > 1){
+            setSaleTotal(CalculatorTask.calculateSumOfTotal(soldProducts));
+        }else if(soldProducts.length){
+            const data: any = soldProducts[0];
+            setSaleTotal({tax_total: data.tax_total, total: data.total})
         }
-
-        const product: ProductResource[] = queryProduct(productCode, products, 'code');
-        resolveSale(product, onSaleProduct);
     }
 
-    const main = () => {
+
+    useEffect(() => {
 
         if (sale) {
             loadProducts(data => setProducts(data) );
@@ -86,9 +97,10 @@ const Sales = () => {
             case 'creditNoteBtn' :
                 break;
         }
-    };
 
-    useEffect(main, [saleType, sale]);
+        console.log(saleTotal);
+
+    }, [saleType, sale, saleTotal]);
 
     return (
         <Container id="sale-component" className="animation">

@@ -53,12 +53,12 @@ class ProductController extends Controller
     {
         $request->validated($request->all());
         $all = $request->all();
+        $all['user_id'] = Auth::user()->id;
         try {
-            $all['user_id'] = Auth::user()->id;
             $saved = Product::create($all);
             return $this->success($saved);
         }catch (\Throwable $exception) {
-            return $this->error($request->all(), $exception);
+            return $this->error($all, $exception);
         }
     }
 

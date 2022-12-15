@@ -8,7 +8,7 @@ use Tricioandrade\OpensCrypt\opensRSA;
 
 trait HashMakerTrait
 {
-    public function make( string $data): string
+    public static function encrypt( string $data): string
     {
         $enc = new opensRSA();
 
