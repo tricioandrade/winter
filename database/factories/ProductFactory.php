@@ -14,10 +14,40 @@ class ProductFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
+        $taxValues = $this->faker->randomElement( [
+            14,
+            7,
+            0,
+            5
+        ]);
+
+        $tax_id = $taxValues > 0 ? 2 : 1;
+        $price = $this->faker->randomFloat(4, 2, 4);
+        $price_with_tax = $price * $taxValues / 100 + $price;
+        $tax_added = $price * $taxValues / 100;
+
         return [
-            //
+            'user_id' => 1,
+            'name' => $this->faker->unique()->text('10'),
+            'description' => $this->faker->text(),
+            'code' => $this->faker->unique()->ean13(),
+            'stock_quantity' => $this->faker->randomNumber(4),
+            'unity_quantity' => $this->faker->randomNumber(4),
+            'for_sale_quantity' => $this->faker->randomNumber(4),
+            'for_sale_status' => $this->faker->numberBetween(1, 0),
+            'unity_of_measure' => 'KG',
+            'price' => $price,
+            'price_with_tax' => $price_with_tax,
+            'product_type_id' =>  1,
+            'promotional_price' => 0,
+            'promotional_status' => 0,
+            'tax_id' => $tax_id,
+            'tax_value' => $taxValues,
+            'tax_total_added' => $tax_added,
+            'tax_exemption_code' => $taxValues > 0 ? 'M-00' : 'NÃO_APLICA',
+            'tax_exemption_reason' =>  $taxValues > 0 ? 'Isento sob termos' : 'NÃO_APLICA',
         ];
     }
 }

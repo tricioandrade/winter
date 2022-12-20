@@ -2,7 +2,8 @@
 
 namespace App\Enums;
 
-class UserPrivilege
+enum UserPrivilege: int
 {
-
+    case ADMIN = 1;
+    case NORMAL = 0;
 }

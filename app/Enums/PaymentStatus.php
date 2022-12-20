@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-class PaymentStatus
+enum PaymentStatus
 {
-
+    
 }

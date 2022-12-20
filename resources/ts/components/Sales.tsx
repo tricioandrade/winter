@@ -9,7 +9,6 @@ import {queryProduct} from "../tasks/queryProduct";
 import {OnSaleProduct} from "../interfaces/OnSaleProduct";
 import {SoldProduct} from "../interfaces/SoldProduct";
 import calculatorTask from "../tasks/CalculatorTask";
-import {Product} from "../interfaces/Product";
 import CalculatorTask from "../tasks/CalculatorTask";
 import MessageBox from "../tasks/MessageBox";
 import rowsOfProducts from "../templates/rowsOfProducts";
@@ -30,7 +29,7 @@ const Sales = () => {
         total:0
     });
 
-    const [soldProducts, setSoldProduct] = useState<Partial<SoldProduct[]>>([]);
+    const [soldProducts, setSoldProduct] = useState<SoldProduct[]>([]);
 
     const [invoice, setInvoice] = useState();
 
@@ -87,7 +86,6 @@ const Sales = () => {
             setSaleTotal({tax_total: 0.00, total: 0.00});
 
         setSoldProduct(soldProducts);
-        console.log(soldProducts);
     }
 
     const handleSubmitOnTable = (evt: FormEvent) => {
@@ -98,11 +96,9 @@ const Sales = () => {
 
     const removeProduct = (soldProducts: any[], productArrayKey: number) => {
         if ((productArrayKey === 0) || (productArrayKey > 1)) {
-
             const index = products.findIndex((object: any) => {
                 return object.product_id === productArrayKey;
             });
-
             soldProducts.splice(index, 1);
             setSoldProduct(soldProducts);
             totalSaleGenerate(soldProducts);
@@ -119,7 +115,8 @@ const Sales = () => {
         }
 
         switch (saleType) {
-            case 'invoiceReceiptBtn' : break;
+            case 'invoiceReceiptBtn' :
+                break;
             case 'saleMoneyBtn' :   break;
             case 'creditNoteBtn' : break;
         }
@@ -269,7 +266,7 @@ const Sales = () => {
                                 <Col lg={12} className="mt-3 mb-3">
                                     <Button id="invoiceReceiptBtn" onClick = {
                                         () => setSaleType('invoiceReceiptBtn')
-                                    } className="btn btn-primary">Imprimir FacturaRecibo</Button>
+                                    } className="btn btn-primary">Imprimir Factura Recibo</Button>
                                 </Col>
                                 <Col lg={12} className="mt-3 mb-3">
                                     <Button id="saleMoneyBtn" onClick = {

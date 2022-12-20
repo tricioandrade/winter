@@ -222,8 +222,8 @@ export const  InventorySaveProducts = ({ getProducts }: any) => {
                                     <Col lg={12}>
                                         <FormLabel htmlFor="unity_of_measure">Pagamento por: </FormLabel>
                                         <FormSelect id="unity_of_measure">
-                                            <option value="KG">Por kilograma, Kilo</option>
                                             <option value="UN">Por unidade, Unitário</option>
+                                            <option value="KG">Por kilograma, Kilo</option>
                                             <option value="HH">Por hora</option>
                                         </FormSelect>
                                     </Col>

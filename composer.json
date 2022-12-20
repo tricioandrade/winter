@@ -1,9 +1,13 @@
 {
-    "name": "laravel/laravel",
+    "name": "Outono",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "Software de Facturação e ERP.",
     "keywords": ["framework", "laravel"],
-    "license": "MIT",
+    "license": "Apache-2.0",
+    "author": {
+        "name": "Patrício Andrade",
+        "email": "tricioandrade@outlook.com"
+    },
     "require": {
         "php": "^8.0.2",
         "guzzlehttp/guzzle": "^7.2",

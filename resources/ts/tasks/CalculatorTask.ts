@@ -1,7 +1,5 @@
 import {Calculator} from "../interfaces/Calculator";
 import {SoldProduct} from "../interfaces/SoldProduct";
-import {Product} from "../interfaces/Product";
-import {ProductResource} from "../interfaces/ProductResource";
 
 class CalculatorTask {
     static calculateFinalPrice(priceWithTax: number, onSaleQuantity: number, discount: number = 0): number{
@@ -14,14 +12,14 @@ class CalculatorTask {
         return +value;
     }
 
-    static calculateProducts(products: any[], newProduct: any): Partial<SoldProduct[]>{
+    static calculateProducts(products: SoldProduct[], newProduct: any): SoldProduct[]{
         const index = products.findIndex(object => {
             return object.product_id === newProduct.product_id;
         });
 
         if (index >= 0) {
-            products[index].total = (parseFloat(products[index].total) + parseFloat(newProduct.price_with_tax) - parseInt(newProduct.discount)).toFixed(4);
-            products[index].discount = parseInt(products[index].discount) + parseInt(newProduct.discount);
+            products[index].total = +(products[index].total + parseFloat(newProduct.price_with_tax) - parseInt(newProduct.discount)).toFixed(4);
+            products[index].discount = products[index].discount + parseInt(newProduct.discount);
             products[index].sold_quantity = products[index].sold_quantity + newProduct.sold_quantity;
 
             return products;

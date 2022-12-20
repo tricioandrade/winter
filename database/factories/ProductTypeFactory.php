@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\ProductTypes;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,14 @@ class ProductTypeFactory extends Factory
     public function definition()
     {
         return [
-            //
+            [
+                'name' => ProductTypes::from(ProductTypes::P->value)->name(),
+                'symbol' => ProductTypes::from(ProductTypes::P->value)->symbol(),
+            ],
+            [
+                'name' => ProductTypes::from(ProductTypes::S->value)->name(),
+                'symbol' => ProductTypes::from(ProductTypes::S->value)->symbol(),
+            ],
         ];
     }
 }

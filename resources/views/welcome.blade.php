@@ -22,8 +22,6 @@
                 /*background-color: #ffffff !important;*/
             }
 
-
-
             body:before {
                 /*      background: linear-gradient(45deg, hsl(45deg 100% 61%), hsl(54deg 99% 47%), hsl(45deg 100% 61%));  */
                 content: "";
@@ -38,35 +36,11 @@
                 z-index: -1;
             }
 
-            .preloader.active {
-                display: block;
-            }
-
-            .preloader {
-                position: fixed;
-                width: 1em;
-                height: 5em;
-                left: 50%;
-                bottom: 35%;
-                background-size: 100%;
-                background-position: top;
-                background-repeat: no-repeat;
-                z-index: 999;
-                display: none;
-                background: #333;
-                border-radius: 100px;
-                border-top: 13px solid #f1d70f;
-                border-bottom: 13px solid #f2d716;
-                transition: all 300ms ease-in;
-                animation: girar .4s ease-out infinite;
-            }
-
-
             body:after {
                 background:#f8fafc;
                 content: "";
                 position: absolute;
-                bottom: 0%;
+                bottom: 0;
                 left: 0;
                 width: 100%;
                 padding: 17%;
@@ -123,7 +97,7 @@
                     </div>
 
                     <div class="ml-4 text-center text-sm text-gray-500 sm:text-right sm:ml-0">
-                        Outono v1.2
+                        Outono v2.0.0
                     </div>
                 </div>
             </div>

@@ -8,7 +8,7 @@ trait HttpResponseTrait
     {
         return response()->json([
             'data' => $data,
-            'status' => 'The request was sucessful',
+            'status' => 'The request was successful',
             'message' => $message,
         ], $code);
     }
