@@ -1,3 +1,22 @@
+#sale-component #sale-content{
+    overflow: hidden;
+} 
+
+#sale-component table {
+    height: 55vh;
+    overflow-y: auto;
+}
+
+#sale-component table thead {
+    text-align: left !important;
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.15), #f8f9fa, #f8f9fa, #f8f9fa, #f8fafc); 
+    position: sticky;
+    top: 0;
+    font-size: 14px;
+    text-align: center;
+}
+
+
 #sale-component .card{
     border:2px solid #de771c;
     box-shadow: 0 0.5rem 1rem #adb5bd !important;

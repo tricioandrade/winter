@@ -116,6 +116,7 @@ const Sales = () => {
 
         switch (saleType) {
             case 'invoiceReceiptBtn' :
+                
                 break;
             case 'saleMoneyBtn' :   break;
             case 'creditNoteBtn' : break;
@@ -135,8 +136,8 @@ const Sales = () => {
                     </div>
                 </div>
             </div>
-            <Row className="col-12 m-auto pt-0 mt-0" id='sale-content'>
-                <Col lg={9} className="card shadow rounded pt-0 m-auto mt-0" style={{height: '70vh'}}>
+            <Row className="col-12 m-auto pt-0 mt-0" >
+                <Col id='sale-content' lg={9} className="card shadow rounded pt-0 m-auto mt-0" style={{height: '70vh'}}>
                     <Card.Body>
                         <Row>
                             <Col lg={3}>
