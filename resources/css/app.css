@@ -138,17 +138,17 @@ nav ul li a.nav-link {
     background: linear-gradient(45deg, rgba(255, 255, 255, 0.15), #f8f9fa, #f8f9fa, #f8f9fa, #f8fafc);
 }
 
-.btn {
+.btn, .btn.btn-primary, button {
     font-size:13px;
     color: #fefe;
-    text-shadow: 0 0 #d4a312;
+    text-shadow: 0 0 #d4a312 !important;
     background:#333;
-    border: 2px solid #fefe;
+    border: 2px solid #fefe !important;
     border-radius:100px;
     box-shadow:0px 0px 5px #333 !important;
 }
 
-.btn-group .btn {
+.btn-group .btn, .btn.btn-primary {
     background-color:#333;
     box-shadow:inherit;
     border:inherit;
