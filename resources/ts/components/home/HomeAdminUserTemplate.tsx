@@ -2,7 +2,7 @@ import React from "react";
 import {Link} from "react-router-dom";
 import {Card, Container} from "react-bootstrap";
 
-const _ = (
+const HomeAdminUserTemplate = (
 <Container id="home-component" className="animation">
     <div className="row col-12 mb-5">
         <div className="page-title">
@@ -66,4 +66,4 @@ const _ = (
 </Container>
 
 );
-export default _;
+export default HomeAdminUserTemplate;

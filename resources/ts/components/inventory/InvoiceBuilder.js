@@ -1,7 +1,7 @@
 import DateAndTime from "../tasks/DateAndTime";
-import PrintTemplate from "./PrintTemplate";
-import Preloader from "../tasks/Preloader";
-import CleanSaleAndPrint from "./CleanSaleAndPrint";
+import PrintTemplate from "../PrintTemplate";
+import Preloader from "../../tasks/Preloader";
+import CleanSaleAndPrint from "../CleanSaleAndPrint";
 
 class InvoiceBuilder {
     constructor(invoice) {

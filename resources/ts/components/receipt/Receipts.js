@@ -1,14 +1,14 @@
-import axios from "../api/axios";
-import ReceiptSaftCard from "../templates/ReceiptSaftCard";
-import ReceiptSqlBackUpCard from "../templates/ReceiptSqlBackUpCard";
-import ReceiptSaleResumeTable from "../templates/ReceiptSaleResumeTable";
+import axios from "../../api/axios";
+import ReceiptSaftCard from "./ReceiptSaftCard";
+import ReceiptSqlBackUpCard from "./ReceiptSqlBackUpCard";
+import ReceiptSaleResumeTable from "./ReceiptSaleResumeTable";
 import MessageBox from "./MessageBox";
-import Preloader from "../tasks/Preloader";
-import ReceiptSoldProductResume from "../templates/ReceiptSoldProductResume";
-import {ReceiptInvoiceRow} from "../tasks/ReceiptInvoiceRow";
-import {ReceiptProductRows} from "../tasks/ReceiptProductRows";
-import {InvoicesMonthsList} from "../tasks/InvoicesMonthsList";
-import {ReceiptPrintInvoice} from "../tasks/ReceiptPrintInvoice";
+import Preloader from "../../tasks/Preloader";
+import ReceiptSoldProductResume from "./ReceiptSoldProductResume";
+import {ReceiptInvoiceRow} from "../../tasks/ReceiptInvoiceRow";
+import {ReceiptProductRows} from "../../tasks/ReceiptProductRows";
+import {InvoicesMonthsList} from "../../tasks/InvoicesMonthsList";
+import {ReceiptPrintInvoice} from "../../tasks/ReceiptPrintInvoice";
 
 class Receipts {
 

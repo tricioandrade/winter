@@ -1,4 +1,4 @@
-import InvoiceBuilder from "../components/InvoiceBuilder";
+import InvoiceBuilder from "../components/inventory/InvoiceBuilder";
 
 export const ReceiptPrintInvoice = (invoice, soldProducts) => {
     const receiptSaleResume = document.querySelector("table#receiptSaleResume");

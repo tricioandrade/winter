@@ -1,4 +1,4 @@
-import axios from "../api/axios";
+import axios from "../../api/axios";
 import MessageBox from "./MessageBox";
 import Preloader from "./Preloader";
 

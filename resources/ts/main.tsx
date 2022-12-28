@@ -3,7 +3,7 @@ import 'bootstrap/dist/js/bootstrap.min';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import '../css/app.css';
 import '../css/css/app.css';
-import App from './routes/App';
+import App from './components/App';
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import {BrowserRouter} from 'react-router-dom';

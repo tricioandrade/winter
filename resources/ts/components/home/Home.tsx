@@ -1,15 +1,14 @@
 import React from "react";
-import {User} from "../interfaces/User";
-import UsersRequests from "../requests/UsersRequests";
-
-import '../../css/Home.css';
-import homeAdminUserTemplate from '../templates/HomeAdminUserTemplate';
+import UsersRequests from "../../requests/UsersRequests";
+import HomeAdminUserTemplate from "./HomeAdminUserTemplate";
+import {User} from "../../interfaces/User";
+import '../../../css/Home.css';
 
 class Home extends React.Component{
-    user: User[] = []
+    user: User[] = [];
 
     constructor(props: object) {
-     super(props);
+        super(props);
     }
 
     componentDidMount() {
@@ -24,7 +23,7 @@ class Home extends React.Component{
     }
 
     render () {
-        return homeAdminUserTemplate;
+        return HomeAdminUserTemplate;
     }
 }
 

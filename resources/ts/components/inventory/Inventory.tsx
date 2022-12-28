@@ -1,15 +1,14 @@
 import React, {FormEvent, useEffect, useState} from "react";
-import {InventorySaveProducts} from "../components/inventory/InventorySaveProducts";
-import {Link} from "react-router-dom";
+import {ProductResource} from "../../interfaces/ProductResource";
+import {queryProduct} from "../../tasks/queryProduct";
+import {loadProducts} from "../../tasks/loadProducts";
 import {Button, Col, Container, Form, FormControl, Row} from "react-bootstrap";
-import {ProductResource} from "../interfaces/ProductResource";
-import ListProductsOnCard from "./ListProductsOnCard";
-import ListOfProducts from "./ListOfProducts";
-import {loadProducts} from "../tasks/loadProducts";
-import '../../css/Inventory.css';
-import {queryProduct} from "../tasks/queryProduct";
+import {Link} from "react-router-dom";
+import ListOfProducts from "../../templates/ListOfProducts";
+import ListProductsOnCard from "../../templates/ListProductsOnCard";
+import {InventorySaveProducts} from "./InventorySaveProducts";
 
-export const InventoryTemplate =  () => {
+export const Inventory = () => {
 
     const [form,       setFormState] = useState<boolean>(true);
     const [product,      setProduct] = useState<ProductResource[]>([]);
@@ -26,8 +25,6 @@ export const InventoryTemplate =  () => {
             setProduct(products);
         }
     };
-
-
 
     useEffect( () => {
         if (form) {
@@ -46,22 +43,24 @@ export const InventoryTemplate =  () => {
                     </div>
                 </div>
             </Row>
-            <Row className="animation col-12">
-                <Row className='mb-3 col-12'>
+
+            {/*Search Form*/}
+            <Row className="animation">
+                <Row className='mb-3'>
                     <Form  id="productSearch" onSubmit={
                         (event: FormEvent) => searchProduct(event)
-                    } className="p-0" >
-                        <Row>
-                            <Col lg={7} className="d-flex p-2 shadow rounded align-baseline">
-                                <FormControl id="productName" list='myList' placeholder="Busque por produto..."/>
-                                <datalist id={'myList'}>
-                                    {ListOfProducts(products, 'name')}
-                                </datalist>
-                            </Col>
-                            <Col lg={4} className="d-flex">
-                                <Button type="submit"  className="btn text-center"><i className="fa fa-search"></i></Button>
-                            </Col>
-                        </Row>
+                    } className="row" >
+                        <Col lg={7} >
+                            <FormControl id="productName" list='myList' placeholder="Busque por produto..."/>
+                            <datalist id={'myList'}>
+                                {ListOfProducts(products, 'name')}
+                            </datalist>
+                        </Col>
+                        <Col lg={4}>
+                            <Button type="submit"  className="btn text-center">
+                                <i className="fa fa-search" />&nbsp;Pesquisar
+                            </Button>
+                        </Col>
                     </Form>
                 </Row>
 

@@ -1,6 +1,6 @@
-import axios from "../api/axios";
+import axios from "../../api/axios";
 import MessageBox from "../components/MessageBox";
-import Preloader from "../tasks/Preloader";
+import Preloader from "../../tasks/Preloader";
 
 
 function ReceiptSqlBackUpCard  (){

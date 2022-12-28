@@ -2,9 +2,7 @@
     overflow: hidden;
 } 
 
-#sale-component table {
-    height: 55vh;
-    overflow-y: auto;
+#sale-component table tbody {
 }
 
 #sale-component table thead {
@@ -12,8 +10,6 @@
     background: linear-gradient(45deg, rgba(255, 255, 255, 0.15), #f8f9fa, #f8f9fa, #f8f9fa, #f8fafc); 
     position: sticky;
     top: 0;
-    font-size: 14px;
-    text-align: center;
 }
 
 

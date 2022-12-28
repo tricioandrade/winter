@@ -1,13 +1,14 @@
 import React, {FormEvent, useEffect, useState} from "react";
-import {Button, ButtonGroup, Card, Col, Form, FormControl, FormLabel, FormSelect, Row} from "react-bootstrap";
-import CalculatorTask from "../tasks/CalculatorTask";
-import {Tax} from "../interfaces/TaxTypes";
-import MessageBox from "../tasks/MessageBox";
-import ProductsRequests from "../requests/ProductsRequests";
+import {Button,  Card, Col, Form, FormControl, FormLabel, FormSelect, Row} from "react-bootstrap";
+import CalculatorTask from "../../tasks/CalculatorTask";
+import MessageBox from "../../tasks/MessageBox";
+import ProductsRequests from "../../requests/ProductsRequests";
 import {nanoid} from "nanoid";
-import Preloader from "../tasks/Preloader";
-import {ProductResource} from "../interfaces/ProductResource";
-import ListOfProducts from "../templates/ListOfProducts";
+import Preloader from "../../tasks/Preloader";
+import {ProductResource} from "../../interfaces/ProductResource";
+import ListOfProducts from "../../templates/ListOfProducts";
+import {UnitOfMeasures} from "../../enums/UnitOfMeasures";
+import {TaxTypes} from "../../enums/TaxTypes";
 
 export const  InventorySaveProducts = ({ getProducts }: any) => {
     const [page, setPage] = useState(true);
@@ -68,7 +69,7 @@ export const  InventorySaveProducts = ({ getProducts }: any) => {
         /**
          * Verify if the tax is ISE so then apply exception and reason
          * */
-        if (taxId === Tax.ISE){
+        if (taxId === TaxTypes.ISE){
             product = { ...product,
                 tax_exemption_code: elem.tax_exemption_code.value,
                 tax_exemption_reason: elem.tax_exemption_reason.value
@@ -83,7 +84,7 @@ export const  InventorySaveProducts = ({ getProducts }: any) => {
         /**
          * Verify if the exception data is correctly filled
          * */
-        if (taxId === Tax.ISE && (elem.tax_value !== 0 || elem.tax_exemption_reason.length)) {
+        if (taxId === TaxTypes.ISE && (elem.tax_value !== 0 || elem.tax_exemption_reason.length)) {
             MessageBox.open('O valor do imposto tem de ser 0, e ter um motivo de isenção válido');
             return;
         }
@@ -91,7 +92,7 @@ export const  InventorySaveProducts = ({ getProducts }: any) => {
         /*
         * Verify if the value of tax its grater then 0
         * */
-        if ((taxId === Tax.IVA || taxId === Tax.IS || taxId === Tax.OUT || taxId === Tax.NS ) && +elem.tax_value <= 0) {
+        if ((taxId === TaxTypes.IVA || taxId === TaxTypes.IS || taxId === TaxTypes.OUT || taxId === TaxTypes.NS ) && +elem.tax_value <= 0) {
             MessageBox.open('O valor do imposto tem de ser maior que 0');
             return;
         }
@@ -130,15 +131,19 @@ export const  InventorySaveProducts = ({ getProducts }: any) => {
 
     return (
         <>
-            <Row className='col-12'>
-                <ButtonGroup size="sm">
-                    <Button className={ page ? 'active' : ''} onClick={ () => setPage(true) } >Cadastrar produto</Button>
-                    <Button className={ !page ? 'active' : ''} onClick={ () => setPage(false ) } >Actualizar dados de produto</Button>
-                </ButtonGroup>
+            <Row>
+                <Col>
+                    <Button className={ 'ml-0 m-1 ' + (page  ? 'active' : '')} onClick={ () => setPage(true) }>
+                        <i className='fa fa-save' />&nbsp;Cadastrar produto
+                    </Button>
+                    <Button className={ 'm-1 ' + (!page ? 'active' : '')} onClick={ () => setPage(false ) }>
+                        <i className='fa fa-upload' />&nbsp;Actualizar dados de produto
+                    </Button>
+                </Col>
             </Row>
             <Row className="mt-3">
-                <Card className='shadow rounded col-12 m-auto'>
-                    <Form id={page ? 'FormAddProduct' : 'FormUpdateProduct'} className="animation" onSubmit={
+                <Card className='shadow rounded col-12'>
+                    <Form id={page ? 'FormAddProduct' : 'FormUpdateProduct'} className="animation p-0 m-0" onSubmit={
                         (evt) => handleSubmit(evt)
                     }>
                         <Card.Body className='row'>
@@ -222,15 +227,15 @@ export const  InventorySaveProducts = ({ getProducts }: any) => {
                                     <Col lg={12}>
                                         <FormLabel htmlFor="unity_of_measure">Pagamento por: </FormLabel>
                                         <FormSelect id="unity_of_measure">
-                                            <option value="UN">Por unidade, Unitário</option>
-                                            <option value="KG">Por kilograma, Kilo</option>
-                                            <option value="HH">Por hora</option>
+                                            <option value={ UnitOfMeasures.UN }>Por unidade, Unitário</option>
+                                            <option value={ UnitOfMeasures.KG }>Por kilograma, Kilo</option>
+                                            <option value={ UnitOfMeasures.HH }>Por hora</option>
                                         </FormSelect>
                                     </Col>
                                     :''}
                             </Row>
 
-                            {/*Tax*/}
+                            {/*TaxTypes*/}
                             <Row className="col-4">
                                 <Col lg={12}><pre className="text-center"><i>Imposto</i></pre></Col>
                                 <div className="col-6">
@@ -263,12 +268,12 @@ export const  InventorySaveProducts = ({ getProducts }: any) => {
                                     <FormLabel htmlFor="tax_id">Tipo de imposto</FormLabel>
                                     <FormSelect id="tax_id">
                                         {taxValue === 0 || taxValue.toString().length === 0 ?
-                                            <option value={ Tax.ISE }>ISE - Isento sob termos</option>
+                                            <option value={ TaxTypes.ISE }>ISE - Isento sob termos</option>
                                             :   <>
-                                                <option value={ Tax.IVA } >IVA - Imposto sob valor acrescentado</option>
-                                                <option value={ Tax.IS  } >IS - Imposto de Selo</option>
-                                                <option value={ Tax.NS  } >NS - Não sujeição</option>
-                                                <option value={ Tax.OUT }  >OUT - Outros</option>
+                                                <option value={ TaxTypes.IVA } >IVA - Imposto sob valor acrescentado</option>
+                                                <option value={ TaxTypes.IS  } >IS - Imposto de Selo</option>
+                                                <option value={ TaxTypes.NS  } >NS - Não sujeição</option>
+                                                <option value={ TaxTypes.OUT }  >OUT - Outros</option>
                                             </>
                                         }
                                     </FormSelect>

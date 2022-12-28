@@ -1,7 +1,5 @@
 import React, {FormEvent, useEffect, useState} from "react";
-import {SaleFormProducts} from "../components/SaleFormProducts";
-import {SaleTable} from "./SaleTable";
-import {SaleFormAccount} from "../components/SaleFormAccount";
+import {SaleFormAccount} from "../components/sale/SaleFormAccount";
 import {Button, Card, Col, Container, Form, FormControl, FormLabel, Row} from "react-bootstrap";
 import '../../css/Sales.css';
 import {Link} from "react-router-dom";
@@ -95,7 +93,7 @@ const SaleTemplate = () => {
                                         <Col lg={12}>
                                             <FormLabel htmlFor="product-input">Produto ou Serviço</FormLabel>
                                             <FormControl list="productList" id="productInput" placeholder="Selecione o produto..."/>
-                                            <datalist id="productList"></datalist>
+                                            <datalist id="productList"/>
                                         </Col>
                                         <Col lg={12}>
                                             <FormLabel htmlFor="quantity">Quantidade</FormLabel>
@@ -123,7 +121,7 @@ const SaleTemplate = () => {
                                             <th>Total</th>
                                         </tr>
                                         </thead>
-                                        <tbody></tbody>
+                                        <tbody/>
                                     </table>
                                 </Col>
                             </Col>

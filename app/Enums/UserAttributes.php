@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum UserPrivilege: int
+enum UserAttributes: int
 {
     case ADMIN = 1;
     case NORMAL = 0;

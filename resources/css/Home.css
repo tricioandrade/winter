@@ -80,17 +80,3 @@
     background: none;
     padding:14%
 }
-
-#home-component .card .card-footer a.btn {
-    color: #333;
-    text-shadow: 0 0 #333;
-    background: #dee2e6;
-    border: 1px solid #c0691b;
-    border-radius: 100px;
-    box-shadow: 0px 0px 5px #333 !important;
-}
-#home-component .card .card-footer a.btn:hover {
-    color: #fefefe;
-    background: #333;
-    border-color: #f2d714;
-}

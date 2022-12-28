@@ -1,15 +1,15 @@
 import {UserFormAddUser} from "./UserFormAddUser";
-import UsersTableRows from "../tasks/UsersTableRows";
+import UsersTableRows from "../../tasks/UsersTableRows";
 import {UserUpdateUser} from "./UserUpdateUser";
 import {UserTableOfUsers} from "./UserTableOfUsers";
-import Preloader from "../tasks/Preloader";
-import axios from "../api/axios";
+import Preloader from "../../tasks/Preloader";
+import axios from "../../api/axios";
 import qs from "qs";
 import UsersList from "./UsersList";
 import MessageBox from "./MessageBox";
 import {UsersFormAddCompanyInfo} from "./UsersFormAddCompanyInfo";
 import UserCompanyInfo from "./UserCompanyInfo";
-import ChangeUserPassword from "../tasks/ChangeUserPassword";
+import ChangeUserPassword from "../../tasks/ChangeUserPassword";
 
 
 class Users {

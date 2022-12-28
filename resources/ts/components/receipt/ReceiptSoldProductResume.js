@@ -1,25 +1,26 @@
-import axios from "../api/axios";
+import axios from "../../api/axios";
 import MessageBox from "../components/MessageBox";
-import Preloader from "../tasks/Preloader";
+import Preloader from "../../tasks/Preloader";
 
 
-function ReceiptSaleResumeTable  (){
+function ReceiptSoldProductResume  (){
 
     return `
                     <div class="card-img">
                     </div>
                     <div class="row card-body text-left" style="height:30vh; overflow: auto">
-                        <h4>Resumo de vendas</h4>
+                        <h4>Produtos vendidos</h4>
                         <hr>
 
-                       <table id="receiptSaleResume" class="table">
+                       <table id="receiptSoldProductResume" class="table">
                            <thead>
                                 <tr>
                                     <th>&numero;</th>
+                                    <th>Nome</th>
+                                    <th>Descrição</th>
+                                    <th>Desconto</th>
+                                    <th>Quantidade</th>
                                     <th>Número da Factura</th>
-                                    <th>Tipo de Factura</th>
-                                    <th>Usuário</th>
-                                    <th>Data</th>
                                     <th>Total</th>
                                 </tr>
                            </thead>
@@ -38,4 +39,4 @@ function ReceiptSaleResumeTable  (){
     `;
 }
 
-export default  ReceiptSaleResumeTable;
+export default  ReceiptSoldProductResume;

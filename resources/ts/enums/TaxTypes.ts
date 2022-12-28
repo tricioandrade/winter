@@ -1,5 +1,4 @@
-
-export enum Tax {
+export enum TaxTypes {
     IVA = 1,
     ISE = 2,
     IS  = 3,

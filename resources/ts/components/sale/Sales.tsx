@@ -1,18 +1,16 @@
 import React, {FormEvent, useEffect, useState} from "react";
+import {ProductResource} from "../../interfaces/ProductResource";
+import {SoldProduct} from "../../interfaces/SoldProduct";
+import {OnSaleProduct} from "../../interfaces/OnSaleProduct";
+import {queryProduct} from "../../tasks/queryProduct";
+import MessageBox from "../../tasks/MessageBox";
+import calculatorTask from "../../tasks/CalculatorTask";
+import CalculatorTask from "../../tasks/CalculatorTask";
+import {loadProducts} from "../../tasks/loadProducts";
 import {Button, Card, Col, Container, Form, FormControl, FormLabel, Row} from "react-bootstrap";
-import '../../css/Sales.css';
 import {Link} from "react-router-dom";
-import {ProductResource} from "../interfaces/ProductResource";
-import {loadProducts} from "../tasks/loadProducts";
-import listOfProducts from "../templates/ListOfProducts";
-import {queryProduct} from "../tasks/queryProduct";
-import {OnSaleProduct} from "../interfaces/OnSaleProduct";
-import {SoldProduct} from "../interfaces/SoldProduct";
-import calculatorTask from "../tasks/CalculatorTask";
-import CalculatorTask from "../tasks/CalculatorTask";
-import MessageBox from "../tasks/MessageBox";
-import rowsOfProducts from "../templates/rowsOfProducts";
-// import {Product} from "../interfaces/Product";
+import listOfProducts from "../../templates/ListOfProducts";
+import rowsOfProducts from "../../templates/rowsOfProducts";
 
 const Sales = () => {
 
@@ -116,7 +114,6 @@ const Sales = () => {
 
         switch (saleType) {
             case 'invoiceReceiptBtn' :
-                
                 break;
             case 'saleMoneyBtn' :   break;
             case 'creditNoteBtn' : break;
@@ -137,7 +134,7 @@ const Sales = () => {
                 </div>
             </div>
             <Row className="col-12 m-auto pt-0 mt-0" >
-                <Col id='sale-content' lg={9} className="card shadow rounded pt-0 m-auto mt-0" style={{height: '70vh'}}>
+                <Col id='sale-content' lg={9} className="card shadow rounded pt-0 m-auto mt-0" >
                     <Card.Body>
                         <Row>
                             <Col lg={3}>
@@ -200,25 +197,23 @@ const Sales = () => {
                             </Col>
 
                             {/*Sale Table*/}
-                            <Col lg={9} className={"table-div"} style={{height: '68vh', overflow: 'auto'}}>
-                                <Col>
+                            <Col lg={9} className={"table-div"} style={{height: '65vh', overflow: 'auto'}}>
                                     <table id="saleTable" className="table" onSubmit={ handleSubmitOnTable }>
                                         <thead>
-                                        <tr>
-                                            <th>Descrição</th>
-                                            <th>Preço</th>
-                                            <th>Quantidade</th>
-                                            <th>Imposto</th>
-                                            <th>Desconto</th>
-                                            <th>Total</th>
-                                            <th>&nbsp;</th>
-                                        </tr>
+                                            <tr>
+                                                <th>Descrição</th>
+                                                <th>Preço</th>
+                                                <th>Quantidade</th>
+                                                <th>Imposto</th>
+                                                <th>Desconto</th>
+                                                <th>Total</th>
+                                                <th>&nbsp;</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
-                                            { rowsOfProducts(soldProducts) }
+                                        { rowsOfProducts(soldProducts) }
                                         </tbody>
                                     </table>
-                                </Col>
                             </Col>
                         </Row>
                     </Card.Body>
@@ -234,7 +229,7 @@ const Sales = () => {
                                             <FormControl
                                                 type="number" disabled
                                                 value={parseFloat((saleTotal?.total).toString()).toFixed(2)}
-                                                className="border-0 bg-transparent text-end rounded-0"
+                                                className="text-end "
                                                 placeholder="0.00"/>
                                         </Col>
                                         <Col>
@@ -247,7 +242,7 @@ const Sales = () => {
                                                         setChange(+evt.target.value - +saleTotal?.total);
                                                     }
                                                 }}
-                                                className="text-end rounded-0"
+                                                className="text-end "
                                                 placeholder="0,00"
                                             />
                                         </Col>
@@ -255,7 +250,7 @@ const Sales = () => {
                                             <FormLabel htmlFor="change">Troco</FormLabel>
                                             <FormControl
                                                 type="number"
-                                                className="text-end rounded-0"
+                                                className="text-end "
                                                 placeholder="0,00"
                                                 value={parseFloat((change.toString())).toFixed(2)}
                                                 disabled/>
