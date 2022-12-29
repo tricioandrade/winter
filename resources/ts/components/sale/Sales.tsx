@@ -108,7 +108,7 @@ const Sales = () => {
     useEffect(() => {
 
         if (sale) {
-            loadProducts(data => setProducts(data) );
+            loadProducts(data => setProducts(data) , 'sale');
             setSaleState(false);
         }
 
@@ -190,7 +190,7 @@ const Sales = () => {
                                         <Col lg={12}>
                                             <FormLabel htmlFor="discount" className="form-label">Desconto</FormLabel>
                                             <FormControl type="number" defaultValue={0} name="discount" id="discount" required placeholder='Total a descontar'/>
-                                        </Col>
+j                                        </Col>
                                         <Button type="submit" className="btn btn-primary mt-3">Adicionar</Button>
                                     </Form>
                                 </Col>

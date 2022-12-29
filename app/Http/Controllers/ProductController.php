@@ -33,6 +33,16 @@ class ProductController extends Controller
         }
     }
 
+    public function forSale(): \Illuminate\Http\JsonResponse|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    {
+        try {
+            return $this->success(ProductResource::collection(Product::all()
+                ->where('for_sale_status', '=' , 1)));
+        }catch (\Throwable $exception){
+            return $this->error([], $exception);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -115,7 +125,7 @@ class ProductController extends Controller
     {
         try {
             $status = $product->update([
-                'for_sale_status' => 'no'
+                'for_sale_status' => 0
             ]);
             return $this->success($status);
         }catch (\Throwable $exception) {

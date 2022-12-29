@@ -3,10 +3,10 @@ import axios from "../api/axios";
 import MessageBox from "./MessageBox";
 import {ProductResource} from "../interfaces/ProductResource";
 
-export const loadProducts = async (callback: (products: ProductResource[]) => void ) => {
+export const loadProducts = async (callback: (products: ProductResource[]) => void, status: string = '*') => {
     Preloader.active();
     try {
-        const { data } = await axios.get('/product');
+        const { data } = status === 'sale' ?  await axios.get('/products/for_sale') :  await axios.get('/product');
         callback(data.data);
         Preloader.inactive();
     }catch (e) {
