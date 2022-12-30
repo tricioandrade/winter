@@ -1,5 +1,6 @@
 import {Calculator} from "../interfaces/Calculator";
 import {SoldProduct} from "../interfaces/SoldProduct";
+import {ProductType} from "../interfaces/ProductType";
 
 class CalculatorTask {
     static calculateFinalPrice(priceWithTax: number, onSaleQuantity: number, discount: number = 0): number{
@@ -33,7 +34,9 @@ class CalculatorTask {
         return soldProducts.reduce((previousValue: any, currentValue: any) => {
             return {
                 total: previousValue.total + currentValue.total,
-                tax_total: previousValue.tax_total + currentValue.tax_total
+                tax_total: previousValue.tax_total + currentValue.tax_total,
+                service_total: ( previousValue.product_type_id === ProductType.S
+                    ?  previousValue.total + currentValue.total : 0.00)
             }
         });
     }

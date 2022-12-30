@@ -11,53 +11,74 @@ import {Button, Card, Col, Container, Form, FormControl, FormLabel, Row} from "r
 import {Link} from "react-router-dom";
 import listOfProducts from "../../templates/ListOfProducts";
 import rowsOfProducts from "../../templates/rowsOfProducts";
+import {DocTypes} from "../../enums/DocTypes";
+import {Invoice} from "../../interfaces/Invoice";
+import {ProductType} from "../../interfaces/ProductType";
 
 const Sales = () => {
 
-    const [sale, setSaleState] = useState(true)
-    const [paymentWay, setPaymentWay] = useState<string>('');
-    const [paymentMechanism, setPaymentMechanism] = useState<string>('')
-    const [products, setProducts] = useState<ProductResource[]>([]);
-    const [saleType, setSaleType] = useState<string>('');
-    const [productArrayKey, setProductArrayKey] = useState<number>(-1);
-    const [change, setChange] = useState<number>(0);
-    const [saleTotal, setSaleTotal] = useState<{tax_total: number,
-        total: number}>({
+    const [sale,                setSaleState]        = useState(true)
+    const [paymentWay,          setPaymentWay]       = useState<string>('');
+    const [paymentCondition,    setPaymentCondition] = useState<string>('')
+    const [products,            setProducts]         = useState<ProductResource[]>([]);
+    const [saleType,            setSaleType]         = useState<number>(0);
+    const [productArrayKey,     setProductArrayKey]  = useState<number>(-1);
+    const [change,              setChange]           = useState<number>(0);
+    const [saleTotal,           setSaleTotal]        = useState<{service_total: number, tax_total: number, total: number}>({
+        service_total: 0,
         tax_total: 0,
         total:0
     });
+    const [soldProducts,        setSoldProduct]      = useState<SoldProduct[]>([]);
+    const [payment,             setPayment]          = useState<number>(0);
+    const [invoice,             setInvoice]          = useState<Invoice>();
+    const [customer,            setCustomer]         = useState<string>('');
 
-    const [soldProducts, setSoldProduct] = useState<SoldProduct[]>([]);
+    /*
+     * Handling form product submission
+     * */
+    const handleSubmit = (evt: FormEvent) => {
 
-    const [invoice, setInvoice] = useState();
-
-    function handleSubmit (evt: FormEvent)  {
         evt.preventDefault();
         const form = evt.target as HTMLFormElement;
-
         const productCode: string = form.productCode.value;
+        form.productCode.value = '';
+
+        /*
+        * Inserting the product values from user
+        * */
         let onSaleProduct: OnSaleProduct = {
-            code: form.productCode.value,
+            code: productCode,
             price_total: 0,
             on_sale_quantity: +form.quantity.value,
             discount: +form.discount.value
         }
 
-        form.productCode.value = '';
-
+        /*
+        * Querying the product from requested data.
+        * */
         const product: ProductResource[] = queryProduct(productCode, products, 'code');
 
+        /*
+        * Verifying if the quantity to be sold is grater than stock quantity
+        * */
         if(onSaleProduct.on_sale_quantity > +product[0].attributes.stock_quantity){
             MessageBox.open('Não pode tentar vender uma quantidade maior que a existente em stock');
             return;
         }
 
+        /*
+        * @OnSaleProduct is the current product, here is getting the total cost
+        * */
         onSaleProduct.price_total = calculatorTask.calculateFinalPrice(
             product[0].attributes.price_with_tax,
             onSaleProduct.on_sale_quantity,
             onSaleProduct.discount
         );
 
+        /**
+         * Setting product to be sold into a store variable
+         * */
         setSoldProduct(CalculatorTask.calculateProducts(soldProducts,
             {
                 product_id: +product[0].id,
@@ -71,27 +92,46 @@ const Sales = () => {
                 ...product[0].attributes
             }
         ));
-        totalSaleGenerate(soldProducts);
 
+        /*
+        * Generating the total of sale
+        * */
+        totalSaleGenerate(soldProducts);
     }
 
-    const totalSaleGenerate = (soldProducts: any[]) => {
+    /*
+    * Calculate the total sold on current sale
+    * */
+    const totalSaleGenerate = (soldProducts: SoldProduct[]) => {
         if (soldProducts.length > 1)
             setSaleTotal(CalculatorTask.calculateSumOfTotal(soldProducts));
         else if(soldProducts.length === 1)
-            setSaleTotal({tax_total: soldProducts[0].tax_total, total: soldProducts[0].total});
+            setSaleTotal({
+                service_total: (soldProducts[0].product_type_id === ProductType.S ? soldProducts[0].total : 0.00),
+                tax_total: soldProducts[0].tax_total,
+                total: soldProducts[0].total
+            });
         else
-            setSaleTotal({tax_total: 0.00, total: 0.00});
+            setSaleTotal({service_total: 0.00, tax_total: 0.00, total: 0.00});
 
+        /*
+        * Updating Sold Product
+        * */
         setSoldProduct(soldProducts);
     }
 
+    /*
+    * Event to remove Product for current sale
+    * */
     const handleSubmitOnTable = (evt: FormEvent) => {
         evt.preventDefault();
         const value = +((evt.target as HTMLElement).querySelector('button') as HTMLButtonElement).value;
         setProductArrayKey(value);
     }
 
+    /*
+    * Removing product
+    * */
     const removeProduct = (soldProducts: any[], productArrayKey: number) => {
         if ((productArrayKey === 0) || (productArrayKey > 1)) {
             const index = products.findIndex((object: any) => {
@@ -101,26 +141,65 @@ const Sales = () => {
             setSoldProduct(soldProducts);
             totalSaleGenerate(soldProducts);
             setProductArrayKey(-1);
-
         }
     }
 
-    useEffect(() => {
 
+    /*
+    * Generate Invoice
+    * */
+    function generateInvoice (docType: DocTypes) {
+
+        const paymentInputVerify: () => boolean = (): boolean => !!(paymentCondition && paymentWay);
+
+        const paymentType = (): boolean => {
+            return !(paymentWay === 'NU' && saleTotal.total < change && payment < 0);
+        };
+
+        switch (docType) {
+            case DocTypes.FR:
+                if(!paymentInputVerify()) {
+                    MessageBox.open('Insira correctamente as informações de pagamento ');
+                    return;
+                }
+                if(!paymentType()){
+                    MessageBox.open('Insira correctamente as informações de pagamento ');
+                    return;
+                }
+
+                setInvoice({
+                    currency: 'AOA',
+                    exchange: 750,
+                    customer: customer ?? 'Consumidor final',
+                    paid_value: payment,
+                    change: change,
+                    payment_mechanism: paymentCondition,
+                    payment_way: paymentWay,
+                    invoice_type_id: docType,
+                    merchandise_total: saleTotal.total,
+                    commercial_discount: discount,
+                    service_total: number;
+                    tax_total: number;
+                    total: number;
+                });
+                break;
+            case 'saleMoneyBtn' :   break;
+            case 'creditNoteBtn' : break;
+        }
+        setSaleType(0);
+    }
+
+    useEffect(() => {
         if (sale) {
             loadProducts(data => setProducts(data) , 'sale');
             setSaleState(false);
         }
 
-        switch (saleType) {
-            case 'invoiceReceiptBtn' :
-                break;
-            case 'saleMoneyBtn' :   break;
-            case 'creditNoteBtn' : break;
-        }
+        /*  Finishing sale after clicker button
+        * */
+        if(saleType) generateInvoice(saleType) ;
 
         removeProduct(soldProducts, productArrayKey);
-
     }, [productArrayKey, saleType, sale, saleTotal, soldProducts]);
 
     return (
@@ -144,7 +223,7 @@ const Sales = () => {
                                     <Form>
                                         <Col lg={12}>
                                             <FormLabel htmlFor="payment_mechanism">Condições de pagamento</FormLabel>
-                                            <Form.Select id="payment_mechanism" onChange={ (evt) => setPaymentMechanism(evt.target.value) }>
+                                            <Form.Select id="payment_mechanism" onChange={ (evt) => setPaymentCondition(evt.target.value) }>
                                                 <option>&nbsp;</option>
                                                 <option>Pronto pagamento</option>
                                             </Form.Select>
@@ -190,30 +269,30 @@ const Sales = () => {
                                         <Col lg={12}>
                                             <FormLabel htmlFor="discount" className="form-label">Desconto</FormLabel>
                                             <FormControl type="number" defaultValue={0} name="discount" id="discount" required placeholder='Total a descontar'/>
-j                                        </Col>
+                                        </Col>
                                         <Button type="submit" className="btn btn-primary mt-3">Adicionar</Button>
                                     </Form>
                                 </Col>
                             </Col>
 
                             {/*Sale Table*/}
-                            <Col lg={9} className={"table-div"} style={{height: '65vh', overflow: 'auto'}}>
-                                    <table id="saleTable" className="table" onSubmit={ handleSubmitOnTable }>
-                                        <thead>
-                                            <tr>
-                                                <th>Descrição</th>
-                                                <th>Preço</th>
-                                                <th>Quantidade</th>
-                                                <th>Imposto</th>
-                                                <th>Desconto</th>
-                                                <th>Total</th>
-                                                <th>&nbsp;</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        { rowsOfProducts(soldProducts) }
-                                        </tbody>
-                                    </table>
+                            <Col lg={9} className={"table-div"} style={{ height: '65vh', overflow: 'auto' }}>
+                                <table id="saleTable" className="table" onSubmit={ handleSubmitOnTable }>
+                                    <thead>
+                                    <tr>
+                                        <th>Descrição</th>
+                                        <th>Preço</th>
+                                        <th>Quantidade</th>
+                                        <th>Imposto</th>
+                                        <th>Desconto</th>
+                                        <th>Total</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    { rowsOfProducts(soldProducts) }
+                                    </tbody>
+                                </table>
                             </Col>
                         </Row>
                     </Card.Body>
@@ -241,6 +320,7 @@ j                                        </Col>
                                                     if (+evt.target.value >= +saleTotal?.total){
                                                         setChange(+evt.target.value - +saleTotal?.total);
                                                     }
+                                                    setPayment(+evt.target.value);
                                                 }}
                                                 className="text-end "
                                                 placeholder="0,00"
@@ -261,18 +341,21 @@ j                                        </Col>
                             <Col className='mt-1'>
                                 <Col lg={12} className="mt-3 mb-3">
                                     <Button id="invoiceReceiptBtn" onClick = {
-                                        () => setSaleType('invoiceReceiptBtn')
-                                    } className="btn btn-primary">Imprimir Factura Recibo</Button>
+                                        /* Invoice Receipt */
+                                        () => setSaleType(DocTypes.FR)
+                                    } className="btn btn-primary">Factura Recibo</Button>
                                 </Col>
                                 <Col lg={12} className="mt-3 mb-3">
                                     <Button id="saleMoneyBtn" onClick = {
-                                        () => setSaleType('saleMoneyBtn')
-                                    } className="btn-primary">Imprimir Venda à Dinheiro</Button>
+                                        /* Sale Money */
+                                        () => setSaleType(DocTypes.VD)
+                                    } className="btn-primary">Venda à Dinheiro</Button>
                                 </Col>
                                 <Col lg={12} className="mt-3 mb-3">
                                     <Button id="creditNoteBtn" onClick = {
-                                        () => setSaleType('creditNoteBtn')
-                                    } className="btn-primary">Imprimir Nota de Crédito</Button>
+                                        /* Credit Note */
+                                        () => setSaleType(DocTypes.NC)
+                                    } className="btn-primary">Nota de Crédito</Button>
                                 </Col>
                             </Col>
                         </Card.Body>

@@ -9,6 +9,7 @@ export interface SoldProduct {
     price: number;
     price_with_tax: number;
     product_id: number;
+    product_type_id: number;
     product_type_name: string;
     product_type_symbol: string;
     promotional_price: string;
