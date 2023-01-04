@@ -142,7 +142,7 @@ export const  InventorySaveProducts = ({ getProducts }: any) => {
                 <Form id={page ? 'FormAddProduct' : 'FormUpdateProduct'} className="animation" onSubmit={
                     (evt) => handleSubmit(evt)
                 }>
-                    <Card.Body className='row d-flex align-items-stretch'>
+                    <Card.Body className='row d-flex align-items-stretch p-2'>
                         <div className="col-12 text-center">
                             {page ?
                                 <strong>Cadastrar dados de Produtos</strong>
