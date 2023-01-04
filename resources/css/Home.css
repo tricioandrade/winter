@@ -28,10 +28,17 @@
     width: 100%;
     padding: 17%;
     /*     border-top-left-radius: 100rem; */
-    border-top-right-radius: 6rem;
+/*     border-top-right-radius: 6rem;
     border-top-left-radius: 6rem;
     border-bottom-right-radius: 6rem;
-    border-bottom-left-radius: 6rem;
+    border-bottom-left-radius: 6rem; */
+    
+    border:2px solid #33333382;
+    box-shadow: 0 0.5rem 1rem #adb5bd !important;
+    border-top: 2px solid rgba(255, 255, 255, 0.15) !important;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.125) !important;
+    background: linear-gradient(45deg, #fefefe99, #f8f9fa, #f8f9fa, #f8f9fa, #f8fafc);
+
     z-index: 1;
 }
 

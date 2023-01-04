@@ -36,7 +36,10 @@ class CalculatorTask {
                 total: previousValue.total + currentValue.total,
                 tax_total: previousValue.tax_total + currentValue.tax_total,
                 service_total: ( previousValue.product_type_id === ProductType.S
-                    ?  previousValue.total + currentValue.total : 0.00)
+                    ?  previousValue.total + currentValue.total : 0.00),
+                merchandise_total: ( previousValue.product_type_id === ProductType.P
+                    ?  previousValue.total + currentValue.total : 0.00),
+                commercial_discount: +previousValue.discount + +currentValue.discount
             }
         });
     }
