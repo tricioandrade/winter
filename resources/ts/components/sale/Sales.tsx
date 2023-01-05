@@ -177,7 +177,7 @@ const Sales = () => {
         };
 
         if(docType === DocTypes.FR || docType === DocTypes.VD &&
-            paymentWay === PaymentWays.NU && !paymentInputVerify() || !paymentType()) {
+            paymentWay === PaymentWays.NU && !paymentInputVerify() || paymentType()) {
             MessageBox.open('Insira correctamente as informações de pagamento ');
             return;
         }
