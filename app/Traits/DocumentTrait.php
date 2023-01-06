@@ -33,9 +33,9 @@ trait DocumentTrait
 
     public function invoiceFilteredData(string $doc_type, int $id) {
         $documentTables = [
-            'NC' => CreditNote::all()->where('sale_id', '=', $id)->toArray(),
-            'FR' => InvoiceReceipt::all()->where('sale_id', '=', $id)->toArray(),
-            'VD' => SaleMoney::all()->where('sale_id', '=', $id)->toArray()
+            'NC' => CreditNote::where('sale_id', '=', $id)->get()->toArray(),
+            'FR' => InvoiceReceipt::where('sale_id', '=', $id)->get()->toArray(),
+            'VD' => SaleMoney::where('sale_id', '=', $id)->get()->toArray()
         ];
 
         return $documentTables[$doc_type] ?? '';

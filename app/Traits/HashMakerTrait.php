@@ -26,9 +26,8 @@ trait HashMakerTrait
         /*
          * Now set where you wanna save the keys
          * */
-        $privKey = './private.pem';
-        $pubKey = './public.pem';
-
+        $privKey = __DIR__.'/private.pem';
+        $pubKey = __DIR__.'/public.pem';
 
         /*
          * Generate The Keys
@@ -36,11 +35,11 @@ trait HashMakerTrait
          * Uncomment to get new key Pairs
          * */
 
-        if(!file_exists($privKey)) $enc::generateKeys();
 
         $enc::setPrivateKeyFilePathAndName($privKey);
         $enc::setPublicKeyFilePathAndName($pubKey);
 
+//        if(!file_exists(__DIR__.'/private.pem')) $enc::generateKeys();
         /*
          * Encrypt a message
          * Use encrypt() method to encrypt, you must provide params types for encrypt

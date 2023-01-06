@@ -234,6 +234,8 @@ const Sales = () => {
             soldProducts
         };
 
+        console.log(saleData.soldProducts);
+
         switch (docType) {
             case DocTypes.FR :
                 Preloader.active();
@@ -241,7 +243,8 @@ const Sales = () => {
                     console.log(data);
                     Preloader.inactive();
                 }).catch( e => {
-                    console.log(e);                    Preloader.inactive();
+                    console.log(e);
+                    Preloader.inactive();
 
                 });
                 break;
