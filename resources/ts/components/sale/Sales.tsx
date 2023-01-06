@@ -192,7 +192,8 @@ const Sales = () => {
                     MessageBox.open('Erro no valor de pagamento');
                     return true;
                 }
-
+            }else {
+                setPayment(saleTotal.total);
             }
         }
         return false;
@@ -209,24 +210,29 @@ const Sales = () => {
             DocTypes.NC
         ];
 
+        const paymentWays: number[] = [
+            PaymentWays.CC,
+            PaymentWays.OU,
+            PaymentWays.CB
+        ];
+
         if (verifyPayment(paidBills.includes(docType))) return;
 
-        setInvoice({
-            currency: 'AOA',
-            exchange: 750,
-            customer: customer ?? 'Consumidor final',
-            paid_value: payment,
-            change,
-            payment_mechanism: paymentCondition,
-            payment_way: paymentWay,
-            invoice_type_id: docType,
-            ...saleTotal
-        });
-
         saleData = {
-            invoice,
+            invoice: {
+                currency: 'AOA',
+                exchange: 750,
+                customer: customer ?? 'Consumidor final',
+                paid_value: !paymentWays.includes(paymentWay) ? payment : saleTotal.total,
+                change,
+                payment_mechanism: paymentCondition,
+                payment_way: paymentWay,
+                invoice_type_id: docType,
+                ...saleTotal
+            },
             soldProducts
         };
+        console.log(invoice);
 
         switch (docType) {
             case DocTypes.FR :
@@ -358,33 +364,35 @@ const Sales = () => {
                                         </Col>
                                         {paymentWay === 1
                                             ?
-                                            <Col>
-                                                <FormLabel htmlFor="paidValue">Valor pago</FormLabel>
-                                                <FormControl
-                                                    id="paidValue"
-                                                    type="number"
-                                                    onChange={ (evt) => {
-                                                        if (+evt.target.value >= +saleTotal?.total){
-                                                            setChange(+evt.target.value - +saleTotal?.total);
-                                                        }
-                                                        setPayment(+evt.target.value);
-                                                    }}
-                                                    className="text-end "
-                                                    placeholder="0,00"
-                                                />
-                                            </Col>
+                                            <>
+                                                <Col>
+                                                    <FormLabel htmlFor="paidValue">Valor pago</FormLabel>
+                                                    <FormControl
+                                                        id="paidValue"
+                                                        type="number"
+                                                        onChange={ (evt) => {
+                                                            if (+evt.target.value >= +saleTotal?.total){
+                                                                setChange(+evt.target.value - +saleTotal?.total);
+                                                            }
+                                                            setPayment(+evt.target.value);
+                                                        }}
+                                                        className="text-end "
+                                                        placeholder="0,00"
+                                                    />
+                                                </Col>
+                                                <Col>
+                                                    <FormLabel htmlFor="change">Troco</FormLabel>
+                                                    <FormControl
+                                                        type="number"
+                                                        className="text-end "
+                                                        placeholder="0,00"
+                                                        value={parseFloat((change.toString())).toFixed(2)}
+                                                        disabled/>
+                                                </Col>
+                                            </>
                                             :
                                             <Col>&nbsp;</Col>
                                         }
-                                        <Col>
-                                            <FormLabel htmlFor="change">Troco</FormLabel>
-                                            <FormControl
-                                                type="number"
-                                                className="text-end "
-                                                placeholder="0,00"
-                                                value={parseFloat((change.toString())).toFixed(2)}
-                                                disabled/>
-                                        </Col>
                                         <Col lg={12} className="">
                                             <FormLabel htmlFor="total">Total Líquido</FormLabel>
                                             <FormControl
