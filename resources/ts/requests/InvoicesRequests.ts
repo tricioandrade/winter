@@ -1,6 +1,6 @@
 import axios from "../api/axios";
 
-class InvoicesRequets {
+class InvoicesRequests {
     static async getAllInvoices () {
         return await axios.get('invoice');
     }
@@ -31,4 +31,4 @@ class InvoicesRequets {
 
 }
 
-export default InvoicesRequets;
+export default InvoicesRequests;

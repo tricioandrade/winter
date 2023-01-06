@@ -34,3 +34,6 @@ Route::get('/settings', [App\Http\Controllers\HomeController::class, 'index'])->
 /* ProductResource Routes */
 Route::resource('/product', \App\Http\Controllers\ProductController::class);
 Route::get('/products/for_sale', [\App\Http\Controllers\ProductController::class, 'forSale']);
+
+/*Sales Routes*/
+Route::post('/sales', [\App\Http\Controllers\SalesController::class, 'store']);

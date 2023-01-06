@@ -1,4 +1,5 @@
 import axios from "../api/axios";
+// @ts-ignore
 import qs from 'qs';
 class ProductsRequests {
 

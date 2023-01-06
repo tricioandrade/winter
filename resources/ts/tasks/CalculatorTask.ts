@@ -33,12 +33,12 @@ class CalculatorTask {
     static calculateSumOfTotal(soldProducts: any[]){
         return soldProducts.reduce((previousValue: any, currentValue: any) => {
             return {
-                total: previousValue.total + currentValue.total,
-                tax_total: previousValue.tax_total + currentValue.tax_total,
+                total: +parseFloat(previousValue.total + currentValue.total).toFixed(4),
+                tax_total: +parseFloat(previousValue.tax_total + currentValue.tax_total).toFixed(4),
                 service_total: ( previousValue.product_type_id === ProductType.S
-                    ?  previousValue.total + currentValue.total : 0.00),
+                    ?  +parseFloat(previousValue.total + currentValue.total).toFixed(4) : 0.00),
                 merchandise_total: ( previousValue.product_type_id === ProductType.P
-                    ?  previousValue.total + currentValue.total : 0.00),
+                    ?  +parseFloat(previousValue.total + currentValue.total).toFixed(4) : 0.00),
                 commercial_discount: +previousValue.discount + +currentValue.discount
             }
         });

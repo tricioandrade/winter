@@ -16,6 +16,8 @@ import {Invoice} from "../../interfaces/Invoice";
 import {ProductType} from "../../interfaces/ProductType";
 import {SaleTotal} from "../../interfaces/SaleTotal";
 import {PaymentWays} from "../../enums/PaymentWays";
+import SaleRequests from "../../requests/SaleRequests";
+import Preloader from "../../tasks/Preloader";
 
 const Sales = () => {
 
@@ -35,7 +37,6 @@ const Sales = () => {
     });
     const [soldProducts,        setSoldProduct]      = useState<SoldProduct[]>([]);
     const [payment,             setPayment]          = useState<number>(0);
-    const [invoice,             setInvoice]          = useState<Invoice>();
     const [customer,            setCustomer]         = useState<string>('');
 
     let saleData: {
@@ -232,14 +233,32 @@ const Sales = () => {
             },
             soldProducts
         };
-        console.log(invoice);
 
         switch (docType) {
             case DocTypes.FR :
-                console.log(saleData);
+                Preloader.active();
+                SaleRequests.saveInvoice(saleData).then( data  => {
+                    console.log(data);
+                    Preloader.inactive();
+                }).catch( e => {
+                    console.log(e);                    Preloader.inactive();
+
+                });
                 break;
-            case DocTypes.ND :  break;
-            case DocTypes.VD :  break;
+            case DocTypes.NC :
+                SaleRequests.saveInvoice(saleData).then( data  => {
+                    console.log(data);
+                }).catch( e => {
+                    console.log(e);
+                });
+                break;
+            case DocTypes.VD :
+                SaleRequests.saveInvoice(saleData).then( data  => {
+                    console.log(data);
+                }).catch( e => {
+                    console.log(e);
+                });
+                break;
         }
     }
 
