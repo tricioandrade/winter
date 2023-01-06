@@ -20,8 +20,8 @@ import {PaymentWays} from "../../enums/PaymentWays";
 const Sales = () => {
 
     const [sale,                setSaleState]        = useState(true)
-    const [paymentWay,          setPaymentWay]       = useState<PaymentWays>(0);
-    const [paymentCondition,    setPaymentCondition] = useState<string>('')
+    const [paymentWay,          setPaymentWay]       = useState<PaymentWays>(1);
+    const [paymentCondition,    setPaymentCondition] = useState<string>('Pronto pagamento')
     const [products,            setProducts]         = useState<ProductResource[]>([]);
     const [saleType,            setSaleType]         = useState<number>(0);
     const [productArrayKey,     setProductArrayKey]  = useState<number>(-1);
@@ -47,6 +47,9 @@ const Sales = () => {
     * Calculate the total sold on current sale
     * */
     const totalSaleGenerate = (soldProducts: SoldProduct[]) => {
+
+        console.log(soldProducts[0].discount);
+
         if (soldProducts.length > 1)
             setSaleTotal(CalculatorTask.calculateSumOfTotal(soldProducts));
         else if(soldProducts.length === 1)
@@ -92,6 +95,7 @@ const Sales = () => {
             discount: +form.discount.value
         }
 
+
         /*
         * Querying the product from requested data.
         * */
@@ -118,7 +122,16 @@ const Sales = () => {
             selectedProduct.discount
         );
 
-        /**
+        /*
+        * Verify discount Value
+        * */
+        if (selectedProduct.price_total <= selectedProduct.discount) {
+            MessageBox.open('Insira corretamente o valor do desconto');
+            return;
+        }
+
+
+            /**
          * Setting product to be sold into a store variable
          * */
         setSoldProduct(CalculatorTask.calculateProducts(soldProducts,
@@ -166,21 +179,37 @@ const Sales = () => {
     }
 
     /*
+    * Very payment by invoiceType
+    * */
+    const verifyPayment = (state: boolean): boolean => {
+        if(state){
+            if (paymentWay === PaymentWays.NU) {
+                if (!(payment > 0)) {
+                    MessageBox.open('Insira o valor de pagamento');
+                    return true;
+                }
+                if (payment < change || saleTotal.total < 0 || payment < saleTotal.total) {
+                    MessageBox.open('Erro no valor de pagamento');
+                    return true;
+                }
+
+            }
+        }
+        return false;
+    }
+
+    /*
     * Generate Invoice
     * */
     function generateInvoice (docType: DocTypes) {
         setSaleType(0);
+        const paidBills: number[] = [
+            DocTypes.VD,
+            DocTypes.FR,
+            DocTypes.NC
+        ];
 
-        const paymentInputVerify: () => boolean = (): boolean => !!(paymentCondition && paymentWay);
-        const paymentType = (): boolean => {
-            return !(paymentWay === PaymentWays.NU && saleTotal.total < change && payment < 0);
-        };
-
-        if(docType === DocTypes.FR || docType === DocTypes.VD &&
-            paymentWay === PaymentWays.NU && !paymentInputVerify() || paymentType()) {
-            MessageBox.open('Insira correctamente as informações de pagamento ');
-            return;
-        }
+        if (verifyPayment(paidBills.includes(docType))) return;
 
         setInvoice({
             currency: 'AOA',
@@ -312,40 +341,41 @@ const Sales = () => {
                             <Col lg={12}>
                                 <Col id="account-footer">
                                     <Form>
-                                        {/*Form Payment Ways*/}
                                         <Col>
-                                            <Form>
-                                                <div className="col-12">
-                                                    <FormLabel htmlFor="payment_way">Meios de Pagamento</FormLabel>
-                                                    <Form.Select id="payment_way" onChange={
-                                                        (evt) => setPaymentWay(+evt.target.value)
-                                                    }>
-                                                        <optgroup label={'Meios de pagamento'}>
-                                                            <option >&nbsp;</option>
-                                                            <option value={ PaymentWays.NU }>Numerário</option>
-                                                            <option value={ PaymentWays.CC }>Cartão de Crédito</option>
-                                                            <option value={ PaymentWays.CB }>Cheque Bancário</option>
-                                                            <option value={ PaymentWays.OU }>Outros Meios</option>
-                                                        </optgroup>
-                                                    </Form.Select>
-                                                </div>
-                                            </Form>
+                                            <div className="col-12">
+                                                <FormLabel htmlFor="payment_way">Meios de Pagamento</FormLabel>
+                                                <Form.Select id="payment_way" onChange={
+                                                    (evt) => setPaymentWay(+evt.target.value)
+                                                }>
+                                                    <optgroup label={'Meios de pagamento'}>
+                                                        <option value={ PaymentWays.NU }>Numerário</option>
+                                                        <option value={ PaymentWays.CC }>Cartão de Crédito</option>
+                                                        <option value={ PaymentWays.CB }>Cheque Bancário</option>
+                                                        <option value={ PaymentWays.OU }>Outros Meios</option>
+                                                    </optgroup>
+                                                </Form.Select>
+                                            </div>
                                         </Col>
-                                        <Col>
-                                            <FormLabel htmlFor="paidValue">Valor pago</FormLabel>
-                                            <FormControl
-                                                id="paidValue"
-                                                type="number"
-                                                onChange={ (evt) => {
-                                                    if (+evt.target.value >= +saleTotal?.total){
-                                                        setChange(+evt.target.value - +saleTotal?.total);
-                                                    }
-                                                    setPayment(+evt.target.value);
-                                                }}
-                                                className="text-end "
-                                                placeholder="0,00"
-                                            />
-                                        </Col>
+                                        {paymentWay === 1
+                                            ?
+                                            <Col>
+                                                <FormLabel htmlFor="paidValue">Valor pago</FormLabel>
+                                                <FormControl
+                                                    id="paidValue"
+                                                    type="number"
+                                                    onChange={ (evt) => {
+                                                        if (+evt.target.value >= +saleTotal?.total){
+                                                            setChange(+evt.target.value - +saleTotal?.total);
+                                                        }
+                                                        setPayment(+evt.target.value);
+                                                    }}
+                                                    className="text-end "
+                                                    placeholder="0,00"
+                                                />
+                                            </Col>
+                                            :
+                                            <Col>&nbsp;</Col>
+                                        }
                                         <Col>
                                             <FormLabel htmlFor="change">Troco</FormLabel>
                                             <FormControl
