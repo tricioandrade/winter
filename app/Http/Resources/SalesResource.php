@@ -58,10 +58,6 @@ class SalesResource extends JsonResource
                     'name' => $this->user->name,
                     'email' => $this->user->email,
                 ],
-                'documentType' => [
-                    'doc_type' => $this->documentType->doc_type,
-                    'description' => $this->documentType->description
-                ],
                 'soldProducts' => [
                     SoldProductResource::collection(SoldProduct::all()->where('sale_id', '=', $this->id))
                 ],

@@ -25,6 +25,7 @@ class ProductResource extends JsonResource
                 'stock_quantity'=> $this->stock_quantity,
                 'unity_quantity'=> $this->unity_quantity,
                 'for_sale_quantity'=> $this->for_sale_quantity,
+                'product_type_id'=> $this->product_type_id,
                 'for_sale_status'=> $this->for_sale_status,
                 'unity_of_measure'=> $this->unity_of_measure,
                 'price'=>  $this->price,

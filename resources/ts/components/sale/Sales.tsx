@@ -13,7 +13,6 @@ import listOfProducts from "../../templates/ListOfProducts";
 import rowsOfProducts from "../../templates/rowsOfProducts";
 import {DocTypes} from "../../enums/DocTypes";
 import {Invoice} from "../../interfaces/Invoice";
-import {ProductType} from "../../interfaces/ProductType";
 import {SaleTotal} from "../../interfaces/SaleTotal";
 import {PaymentWays} from "../../enums/PaymentWays";
 import SaleRequests from "../../requests/SaleRequests";
@@ -37,8 +36,10 @@ const Sales = () => {
     });
     const [soldProducts,        setSoldProduct]      = useState<SoldProduct[]>([]);
     const [payment,             setPayment]          = useState<number>(0);
-    const [customer,            setCustomer]         = useState<string>('');
+    const [discount,             setDiscount]        = useState<number>(0);
+    const [customer,            setCustomer]         = useState<string>('Consumidor final');
 
+    console.log(saleTotal);
     let saleData: {
         invoice: Invoice | undefined,
         soldProducts: SoldProduct[]
@@ -49,27 +50,7 @@ const Sales = () => {
     * */
     const totalSaleGenerate = (soldProducts: SoldProduct[]) => {
 
-        console.log(soldProducts[0].discount);
-
-        if (soldProducts.length > 1)
-            setSaleTotal(CalculatorTask.calculateSumOfTotal(soldProducts));
-        else if(soldProducts.length === 1)
-            setSaleTotal({
-                commercial_discount: soldProducts[0].discount,
-                merchandise_total: (soldProducts[0].product_type_id === ProductType.P ? soldProducts[0].total : 0.00),
-                service_total: (soldProducts[0].product_type_id === ProductType.S ? soldProducts[0].total : 0.00),
-                tax_total: soldProducts[0].tax_total,
-                total: soldProducts[0].total
-            });
-        else
-            setSaleTotal({
-                commercial_discount: 0.00,
-                merchandise_total: 0.00,
-                service_total: 0.00,
-                tax_total: 0.00,
-                total:0.00
-            });
-
+        setSaleTotal(CalculatorTask.calculateSumOfTotal(soldProducts));
         /*
         * Updating Sold Product
         * */
@@ -93,7 +74,7 @@ const Sales = () => {
             code: productCode,
             price_total: 0,
             on_sale_quantity: +form.quantity.value,
-            discount: +form.discount.value
+            discount: discount
         }
 
 
@@ -132,22 +113,26 @@ const Sales = () => {
         }
 
 
-            /**
+        /**
          * Setting product to be sold into a store variable
          * */
-        setSoldProduct(CalculatorTask.calculateProducts(soldProducts,
-            {
+            // @ts-ignore
+        const newProduct: SoldProduct =  {
+            ...product[0].attributes,
+                price_with_tax: +product[0].attributes.price_with_tax,
+                tax_total_added: +product[0].attributes.tax_total_added,
+                price: +product[0].attributes.price,
                 product_id: +product[0].id,
                 product_type_symbol: product[0].relationships.productType.symbol,
                 product_type_name: product[0].relationships.productType.name,
                 sold_quantity: selectedProduct.on_sale_quantity,
-                discount: selectedProduct.discount,
+                discount: discount,
                 tax_type: product[0].relationships.tax.symbol,
                 tax_total: +product[0].attributes.tax_total_added * selectedProduct.on_sale_quantity,
-                total: selectedProduct.price_total,
-                ...product[0].attributes
-            }
-        ));
+                total: selectedProduct.price_total
+            };
+
+        setSoldProduct(CalculatorTask.calculateProducts(soldProducts, newProduct));
 
         /*
         * Generating the total of sale
@@ -223,7 +208,7 @@ const Sales = () => {
             invoice: {
                 currency: 'AOA',
                 exchange: 750,
-                customer: customer ?? 'Consumidor final',
+                customer: customer,
                 paid_value: !paymentWays.includes(paymentWay) ? payment : saleTotal.total,
                 change,
                 payment_mechanism: paymentCondition,
@@ -234,7 +219,7 @@ const Sales = () => {
             soldProducts
         };
 
-        console.log(saleData.soldProducts);
+        console.log(saleData);
 
         switch (docType) {
             case DocTypes.FR :
@@ -288,8 +273,8 @@ const Sales = () => {
                     </div>
                 </div>
             </div>
-            <Row className="col-12 m-auto pt-0 mt-0" >
-                <Col id='sale-content' lg={9} className="card shadow rounded pt-0 m-auto mt-0" >
+            <Row className="col-12 d-flex align-items-stretch">
+                <Col id='sale-content' lg={9} className="card shadow rounded" >
                     <Card.Body>
                         <Row>
                             <Col lg={3}>
@@ -334,7 +319,8 @@ const Sales = () => {
                                         </Col>
                                         <Col lg={12}>
                                             <FormLabel htmlFor="discount" className="form-label">Desconto</FormLabel>
-                                            <FormControl type="number" defaultValue={0} name="discount" id="discount" required placeholder='Total a descontar'/>
+                                            <FormControl type="number" defaultValue={0} onChange={
+                                                (evt) => setDiscount(+evt.target.value)} id="discount" required placeholder='Total a descontar'/>
                                         </Col>
                                         <Button type="submit" className="btn btn-primary mt-3 float-end">Adicionar</Button>
                                     </Form>
@@ -342,7 +328,7 @@ const Sales = () => {
                             </Col>
 
                             {/*Sale Table*/}
-                            <Col lg={9} className={"table-div"} style={{ height: '65vh', overflow: 'auto' }}>
+                            <Col lg={9} className="table-div" style={{ height: '65vh', overflow: 'auto' }}>
                                 <table id="saleTable" className="table" onSubmit={ handleSubmitOnTable }>
                                     <thead>
                                     <tr>

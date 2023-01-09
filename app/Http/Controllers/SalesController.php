@@ -6,6 +6,7 @@ use App\Enums\DocTypes;
 use App\Http\Resources\SalesResource;
 use App\Models\Company;
 use App\Models\InvoiceReceipt;
+use App\Models\Product;
 use App\Models\Sales;
 use App\Models\SoldProduct;
 use App\Traits\DocumentTrait;
@@ -29,43 +30,41 @@ class SalesController extends Controller
 
             $generatedData = $this->genInvoiceNumber($invoiceData['invoice_type_id'],$invoiceData['total']);
 
-            $invoiceData['company_id']          = 1;
+            $invoiceData['company_id']          = (Company::all())[0]->id;
             $invoiceData['user_id']             = Auth::user()->id;
-            $invoiceData['document_type_id']    = $invoiceData['invoice_type_id'];
-
-            $invoiceData['date']            = $generatedData['database_date'];
-            $invoiceData['day']             = $generatedData['day'];
-            $invoiceData['expiration_date'] = $generatedData['expiration_date'];
-            $invoiceData['invoice_code']    = $generatedData['invoice_code'];
-            $invoiceData['invoice_number'] = $generatedData['invoice_number'];
-            $invoiceData['month'] = $generatedData['month_period'];
-            $invoiceData['process_number'] = $generatedData['process_number'];
-            $invoiceData['short_hash'] = $generatedData['short_hash'];
-            $invoiceData['system_entry_date'] = $generatedData['system_entry_date'];
+            $invoiceData['date']                = $generatedData['database_date'];
+            $invoiceData['day']                 = $generatedData['day'];
+            $invoiceData['expiration_date']     = $generatedData['expiration_date'];
+            $invoiceData['invoice_code']        = $generatedData['invoice_code'];
+            $invoiceData['invoice_number']      = $generatedData['invoice_number'];
+            $invoiceData['month']               = $generatedData['month_period'];
+            $invoiceData['process_number']      = $generatedData['process_number'];
+            $invoiceData['short_hash']          = $generatedData['short_hash'];
+            $invoiceData['system_entry_date']   = $generatedData['system_entry_date'];
 
             $data = Sales::create($invoiceData);
 
             foreach ($soldProducts as $key => $value) {
-                $soldProducts[$key]['sale_id'] = $data->sale_id;
-                unset($soldProducts[$key]['for_sale_quantity']);
-                unset($soldProducts[$key]['for_sale_status']);
-                unset($soldProducts[$key]['code']);
+                $soldProducts[$key]['sale_id'] = $data->id;
+
+                SoldProduct::create($soldProducts[$key]);
+                Product::where('id', '=', $soldProducts[$key]['product_id'])
+                    ->update(['stock_quantity' =>
+                        ($soldProducts[$key]['stock_quantity'] - $soldProducts[$key]['sold_quantity'])]);
             }
 
-            SoldProduct::create(
-                $soldProducts
-            );
-
             switch ($invoiceData['invoice_type_id']):
-                case DocTypes::FR:
+                case DocTypes::from($invoiceData['invoice_type_id'])->value:
                         InvoiceReceipt::create([
-                        'sale_id' => $data->sale_id,
-                        'hash' => $generatedData['hash'],
-                        'invoice_ref' => $generatedData['invoice_code'],
-                        'date' => $invoiceData['date'],
+                            'sale_id' => $data->id,
+                            'saft_number' => $generatedData['invoice_code'],
+                            'hash' => $generatedData['hash'],
+                            'invoice_ref' => $generatedData['invoice_code'],
+                            'date' => $invoiceData['date'],
                         ]);
                     break;
             endswitch;
+
             DB::commit();
             return $this->success(new SalesResource(Sales::where('id', '=', $data->id)));
         }catch (\Throwable $exception){

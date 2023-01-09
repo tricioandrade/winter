@@ -4,6 +4,7 @@
 namespace App\Traits;
 
 
+use App\Enums\DocTypes;
 use App\Models\CreditNote;
 use App\Models\Invoice;
 use App\Models\InvoiceReceipt;
@@ -31,52 +32,47 @@ trait DocumentTrait
         return $format->format($value);
     }
 
-    public function invoiceFilteredData(string $doc_type, int $id) {
-        $documentTables = [
+    public function invoiceFilteredData(int $docType, int $id) {
+        return match(DocTypes::from($docType)->name){
             'NC' => CreditNote::where('sale_id', '=', $id)->get()->toArray(),
             'FR' => InvoiceReceipt::where('sale_id', '=', $id)->get()->toArray(),
             'VD' => SaleMoney::where('sale_id', '=', $id)->get()->toArray()
-        ];
-
-        return $documentTables[$doc_type] ?? '';
-    }
-
-    public function invoiceCountData($docType) {
-        $count =  [
-            'NC' => CreditNote::all()->count(),
-            'FR' => InvoiceReceipt::all()->count(),
-            'VD' => SaleMoney::all()->count()
-        ];
-
-        return $count[$docType] ?? '';
-    }
-
-    public function invoiceLastData($docType) {
-        $count =  [
-            'NC' => CreditNote::all()->sortByDesc('id')->take(1),
-            'FR' => InvoiceReceipt::all()->sortByDesc('id')->take(1),
-            'VD' => SaleMoney::all()->sortByDesc('id')->take(1)
-        ];
-
-        return $count[$docType] ?? '';
+        };
     }
 
 
-    public function genInvoiceNumber($docType, $total): array | object
-    {
-        $count = $this->invoiceCountData($docType);
+    public function invoiceLastData($docType): array {
+        return match(DocTypes::from($docType)->name){
+            'NC' => $this->query('credit_notes'),
+            'FR' => $this->query('invoice_receipts'),
+            'VD' => $this->query('sale_money')
+        };
+    }
+
+    private function query($table): array{
+        return DB::select("select * from ${table} order by id desc limit 1");
+    }
+
+    public function invoiceCountData(int $docType): int {
+        return match (DocTypes::from($docType)->name) {
+            'NC' => count((CreditNote::all())),
+            'FR' => count((InvoiceReceipt::all())),
+            'VD' => count((SaleMoney::all()))
+        };
+    }
+    public function genInvoiceNumber($docType, $total): array | object {
         $invoiceId = 0;
         $hash = '';
 
-        if($count) {
+        if($this->invoiceCountData($docType) > 0) {
             $invoiceInfo    = $this->invoiceLastData($docType);
-            $invoiceId      = (int)$invoiceInfo->id;
-            $hash           = $invoiceInfo->hash;
+            $invoiceId      = $invoiceInfo[0]->id;
+            $hash           = $invoiceInfo[0]->hash;
         }
 
         /*
          * Generating invoice Number string with new InvoiceResource Info*/
-        $invoiceNumber = $docType .' '.date('Y').'OTN'.'/'. ($invoiceId + 1);
+        $invoiceNumber = DocTypes::from($docType)->name .' '.date('Y').'OTN'.'/'. ($invoiceId + 1);
 
         /*
          * Generating data info based in date and datetime string*/

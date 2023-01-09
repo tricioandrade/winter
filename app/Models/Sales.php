@@ -11,7 +11,8 @@ class Sales extends Model
 
     protected $fillable = [
         'id',
-        'currency',
+        'user_id',
+        'company_id',
         'exchange',
         'customer',
         'paid_value',

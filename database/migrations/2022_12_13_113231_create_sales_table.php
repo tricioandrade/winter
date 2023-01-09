@@ -26,11 +26,6 @@ return new class extends Migration
                 ->references('id')
                 ->on('users');
 
-            $table->unsignedBigInteger('document_type_id')->unique();
-            $table->foreign('document_type_id')
-                ->on('document_types')
-                ->references('id');
-
             $table->string('currency')->default('AOA');
             $table->integer('exchange')->default(750);
             $table->string('customer')->default('Consumidor final');

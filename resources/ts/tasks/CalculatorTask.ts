@@ -1,47 +1,63 @@
 import {Calculator} from "../interfaces/Calculator";
 import {SoldProduct} from "../interfaces/SoldProduct";
 import {ProductType} from "../interfaces/ProductType";
+import {SaleTotal} from "../interfaces/SaleTotal";
 
 class CalculatorTask {
     static calculateFinalPrice(priceWithTax: number, onSaleQuantity: number, discount: number = 0): number{
-        let result = 0;
-        result =  (+priceWithTax * +onSaleQuantity ) - discount;
-        return +result.toFixed(4);
+        return +parseFloat((priceWithTax * onSaleQuantity - discount).toString()).toFixed(4);
     }
 
     static getNumber(value: string): number {
         return +value;
     }
 
-    static calculateProducts(products: SoldProduct[], newProduct: any): SoldProduct[]{
+    static calculateProducts(products: SoldProduct[], newProduct: SoldProduct): SoldProduct[]{
         const index = products.findIndex(object => {
             return object.product_id === newProduct.product_id;
         });
 
         if (index >= 0) {
-            products[index].total = +(products[index].total + parseFloat(newProduct.price_with_tax) - parseInt(newProduct.discount)).toFixed(4);
-            products[index].discount = products[index].discount + parseInt(newProduct.discount);
+            products[index].total = this.parseFloatSum(products[index].total, newProduct.price_with_tax) - newProduct.discount;
+            products[index].discount = newProduct.discount > 0 ? products[index].discount + newProduct.discount : 0;
+            console.log(products[index].discount);
             products[index].sold_quantity = products[index].sold_quantity + newProduct.sold_quantity;
 
+            console.log(products);
             return products;
         }
 
         products.push(newProduct);
+        console.log(newProduct);
         return products;
     }
 
-    static calculateSumOfTotal(soldProducts: any[]){
-        return soldProducts.reduce((previousValue: any, currentValue: any) => {
-            return {
-                total: +parseFloat(previousValue.total + currentValue.total).toFixed(4),
-                tax_total: +parseFloat(previousValue.tax_total + currentValue.tax_total).toFixed(4),
-                service_total: ( previousValue.product_type_id === ProductType.S
-                    ?  +parseFloat(previousValue.total + currentValue.total).toFixed(4) : 0.00),
-                merchandise_total: ( previousValue.product_type_id === ProductType.P
-                    ?  +parseFloat(previousValue.total + currentValue.total).toFixed(4) : 0.00),
-                commercial_discount: +previousValue.discount + +currentValue.discount
+    private static parseFloatSum(num1: number, num2:number ):number {
+        return +parseFloat((num1 + num2).toString()).toFixed(4);
+    }
+
+    static calculateSumOfTotal(soldProducts: SoldProduct[]): SaleTotal{
+        let total: SaleTotal = {
+            commercial_discount: 0.00,
+            merchandise_total: 0.00,
+            service_total: 0.00,
+            tax_total: 0.00,
+            total:0.00
+        };
+
+        soldProducts.forEach((obj: SoldProduct) => {
+            total = {
+                total: this.parseFloatSum(obj.total, total.total),
+                tax_total: this.parseFloatSum(obj.tax_total, total.tax_total),
+                service_total: (obj.product_type_id === ProductType.S ?
+                    this.parseFloatSum(obj.total, total.service_total) : total.service_total),
+                merchandise_total: (obj.product_type_id === ProductType.P ?
+                    this.parseFloatSum(obj.total, total.merchandise_total) : total.merchandise_total),
+                commercial_discount: this.parseFloatSum(obj.discount, total.commercial_discount)
             }
         });
+
+        return total;
     }
 
     static calculatePriceTax<T extends Calculator>(props: T):{ priceWithTax: number, taxAdded:number , discount: number}  {
