@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Enums\DocTypes;
+use App\Enums\InvoiceStatus;
 use App\Models\CreditNote;
 use App\Models\InvoiceReceipt;
 use App\Models\SaleMoney;
@@ -35,7 +36,7 @@ class SalesResource extends JsonResource
                 'change' => $this->moneyFormat( $this->change),
                 'payment_mechanism' => $this->payment_mechanism,
                 'payment_way' => $this->payment_way,
-                'invoice_status' => $this->invoice_status,
+                'invoice_status' => InvoiceStatus::from($this->invoice_status)->symbol(),
                 'invoice_type_id' => $this->invoice_type_id,
                 'invoice_number' => $this->invoice_number,
                 'day' => $this->day,
