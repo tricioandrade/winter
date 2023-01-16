@@ -2,8 +2,12 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\DocTypes;
 use App\Models\CreditNote;
+use App\Models\InvoiceReceipt;
+use App\Models\SaleMoney;
 use App\Models\SoldProduct;
+use App\Models\User;
 use App\Traits\DocumentTrait;
 use App\Traits\TimeTools;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -54,16 +58,22 @@ class SalesResource extends JsonResource
                 'updated_at' => $this->updated_at
             ],
             'relationships' => [
-                'user' => [
-                    'name' => $this->user->name,
-                    'email' => $this->user->email,
+                'user' => new UserResource(User::all()->where('id', '=', $this->user_id)->first()),
+
+                'invoice' =>[
+                    'name' => DocTypes::from($this->invoice_type_id)->name(),
+                    'data' => match($this->invoice_type_id){
+                        DocTypes::FR->value => InvoiceReceipt::all()->where('sale_id', '=',  $this->id)->toArray(),
+                        DocTypes::NC->value => CreditNote::all()->where('sale_id', '=',  $this->id)->toArray(),
+                        DocTypes::VD->value => SaleMoney::all()->where('sale_id', '=',  $this->id)->toArray()
+                    }
                 ],
-                'soldProducts' => [
-                    SoldProductResource::collection(SoldProduct::all()->where('sale_id', '=', $this->id))
+                'products' => [
+                    ...SoldProductResource::collection(SoldProduct::all()
+                    ->where('sale_id', '=', $this->id)
+                    )
                 ],
-                'invoice' => [
-                    $this->invoiceFilteredData($this->documentType->doc_type, $this->id)
-                ]
+
             ]
         ];
     }

@@ -28,8 +28,7 @@ trait DocumentTrait
 
     #[Pure] public function moneyFormat($value): string
     {
-        $format = new \NumberFormatter("pt_AOA", \NumberFormatter::DECIMAL);
-        return $format->format($value);
+        return number_format($value , 2, ',', '.');
     }
 
     public function invoiceFilteredData(int $docType, int $id) {

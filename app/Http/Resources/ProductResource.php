@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
 use App\Traits\DocumentTrait;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -43,10 +44,7 @@ class ProductResource extends JsonResource
                     'description' => $this->tax->description,
                     'symbol'=> $this->tax->symbol
                 ],
-                'user' => [
-                    'name'  => $this->user->name,
-                    'email' => $this->user->email,
-                ],
+                'user' => new UserResource(User::all()->where('id', '=', $this->user_id)->first()),
                 'productType' => [
                     'name'  => $this->productType->name,
                     'symbol'=> $this->productType->symbol

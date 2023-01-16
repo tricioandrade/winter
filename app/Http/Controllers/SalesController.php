@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Enums\DocTypes;
 use App\Http\Resources\SalesResource;
+use App\Http\Resources\SoldProductResource;
 use App\Models\Company;
+use App\Models\CreditNote;
 use App\Models\InvoiceReceipt;
 use App\Models\Product;
+use App\Models\SaleMoney;
 use App\Models\Sales;
 use App\Models\SoldProduct;
 use App\Traits\DocumentTrait;
@@ -20,6 +23,18 @@ class SalesController extends Controller
     use HttpResponseTrait;
     use DocumentTrait;
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    public function receipts() {
+        try{
+            return $this->returnIfAdmin(SalesResource::collection(Sales::all()));
+       }catch(\Throwable $exception){
+            return $this->error('', $exception);
+       }
+    }
 
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
@@ -54,19 +69,38 @@ class SalesController extends Controller
             }
 
             switch ($invoiceData['invoice_type_id']):
-                case DocTypes::from($invoiceData['invoice_type_id'])->value:
-                        InvoiceReceipt::create([
-                            'sale_id' => $data->id,
-                            'saft_number' => $generatedData['invoice_code'],
-                            'hash' => $generatedData['hash'],
-                            'invoice_ref' => $generatedData['invoice_code'],
-                            'date' => $invoiceData['date'],
-                        ]);
-                    break;
+                case DocTypes::FR->value:
+                    InvoiceReceipt::create([
+                        'sale_id' => $data->id,
+                        'saft_number' => $generatedData['invoice_code'],
+                        'hash' => $generatedData['hash'],
+                        'invoice_ref' => $generatedData['invoice_code'],
+                        'date' => $invoiceData['date'],
+                    ]);
+                case DocTypes::VD->value:
+                    SaleMoney::create([
+                        'sale_id' => $data->id,
+                        'saft_number' => $generatedData['invoice_code'],
+                        'hash' => $generatedData['hash'],
+                        'invoice_ref' => $generatedData['invoice_code'],
+                        'date' => $invoiceData['date'],
+                    ]);
+                break;
+                case DocTypes::NC->value:
+                    CreditNote::create([
+                        'sale_id' => $data->id,
+                        'saft_number' => $generatedData['saft_number'],
+                        'hash' => $generatedData['hash'],
+                        'invoice_ref' => $generatedData['invoice_ref'],
+                        'invoice_changed_ref' => $invoiceData['invoice_changed_ref'],
+                        'type_of_change' => $invoiceData['type_of_change'],
+                        'date' => $generatedData['date'],
+                    ]);
+                break;
             endswitch;
 
             DB::commit();
-            return $this->success(new SalesResource(Sales::where('id', '=', $data->id)));
+            return $this->success(new SalesResource($data));
         }catch (\Throwable $exception){
             DB::rollBack();
             return $this->error($request->all(), $exception);

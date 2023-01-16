@@ -2,10 +2,14 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Sales;
+use App\Models\User;
+use App\Traits\DocumentTrait;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class SoldProductResource extends JsonResource
 {
+    use DocumentTrait;
     /**
      * Transform the resource into an array.
      *
@@ -21,24 +25,27 @@ class SoldProductResource extends JsonResource
                 'name' => $this->name,
                 'description' => $this->description,
                 'product_id' => $this->product_id,
-                'price' => $this->price,
-                'price_with_tax' => $this->price_with_tax,
+                'price' => $this->moneyFormat($this->price),
+                'price_with_tax' => $this->moneyFormat($this->price_with_tax),
                 'promotional_price' => $this->promotional_price,
                 'promotional_status' => $this->promotional_status,
                 'product_type_symbol' => $this->product_type_symbol,
                 'product_type_name' => $this->product_type_name,
                 'sold_quantity' => $this->sold_quantity,
-                'discount' => $this->discount,
+                'discount' => $this->moneyFormat($this->discount),
                 'tax_value' => $this->tax_value,
                 'tax_type' => $this->tax_type,
-                'tax_total' => $this->tax_total,
-                'total' => $this->total,
+                'tax_total' => $this->moneyFormat($this->tax_total),
+                'total' => $this->moneyFormat($this->total),
                 'tax_exemption_code' => $this->tax_exemption_code,
                 'tax_exemption_reason' => $this->tax_exemption_reason,
             ],
             'relationships' => [
-                'product' => new ProductResource($this->product_id),
-                'sale' => new SalesResource($this->sale_id)
+                'user' => new UserResource(User::all()->where('id', '=', $this->user_id)->first()),
+                'product' => [
+                    'name' => $this->product->name,
+                    'description' => $this->product->description,
+                ]
             ]
         ];
     }

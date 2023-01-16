@@ -36,7 +36,7 @@ return new class extends Migration
             $table->string('payment_mechanism');
             $table->string('payment_way');
 
-            $table->string('invoice_status', 1)->default('N');
+            $table->boolean('invoice_status')->default(1);
             $table->unsignedBigInteger('invoice_type_id');
 
             $table->string('invoice_number')->unique();

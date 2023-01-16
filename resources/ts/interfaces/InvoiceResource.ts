@@ -4,45 +4,42 @@ import {SoldProduct} from "./SoldProduct";
 export interface InvoiceResource {
     id: number | string;
     attributes: {
-        user_id: number;
-        invoice_number: string;
-        invoice_status: string;
-        invoice_document_code: string;
-        invoice_type: string;
-        currency: string;
+        currency: number;
         exchange: number;
-        customer: string | number;
-        paid_value: number;
-        payment_condition: string;
-        payment_method: string;
+        customer: string;
+        paid_value: string;
+        change: string;
+        payment_mechanism: string;
+        payment_way: string;
+        invoice_status: string;
+        invoice_type_id: number;
+        invoice_number: string;
         day: number;
-        month_period: number;
+        month: number;
         date: string;
-        year: number;
         expiration_date: string;
-        change: number;
-        merchandise_total: number;
-        commercial_discount: number;
-        financial_discount: number;
-        postage: number;
-        service_total: number;
-        tax_total: number;
-        advance: number;
-        eco_value: number;
-        hit: number;
-        total: number;
+        system_entry_date: string;
+        merchandise_total: string;
+        commercial_discount: string;
+        financial_discount: string;
+        postage: string;
+        service_total: string;
+        tax_total: string;
+        advance: string;
+        eco_value: string;
+        hit: string;
+        total: string;
         short_hash: string;
+        created_at: string;
+        updated_at: string;
     };
     relationships: {
-        safT: {
-            id: number | string;
-            system_entry_date: Date
-        },
-        user: {
-            id: number | string;
-            name: string;
-            email: string
-        },
-        sold_products: SoldProduct[]
+        user: UserResource;
+        invoice: [
+            name: string,
+            data: []
+        ],
+        products: [],
+
     }
 }

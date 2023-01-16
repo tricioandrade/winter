@@ -3,6 +3,7 @@ import Home from "./home/Home";
 import {Routes, Route} from "react-router-dom";
 import Sales from "./sale/Sales";
 import {Inventory} from "./inventory/Inventory";
+import Receipts from "./receipt/Receipts";
 
 const App = () => {
     return (
@@ -14,6 +15,7 @@ const App = () => {
                 <Route index element = { <Inventory/> }/>
                 <Route path=":page" element = { <Inventory/> }/>
             </Route>
+            <Route path="/receipts" element = {<Receipts/>} />
         </Routes>
     );
 }

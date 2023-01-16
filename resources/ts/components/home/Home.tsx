@@ -1,7 +1,7 @@
 import React from "react";
 import UsersRequests from "../../requests/UsersRequests";
 import HomeAdminUserTemplate from "./HomeAdminUserTemplate";
-import {User} from "../../interfaces/User";
+import {User} from "../../interfaces/UserResource";
 import '../../../css/Home.css';
 
 class Home extends React.Component{

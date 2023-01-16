@@ -34,6 +34,7 @@ const Sales = () => {
         tax_total: 0.00,
         total:0.00
     });
+    
     const [soldProducts,        setSoldProduct]      = useState<SoldProduct[]>([]);
     const [payment,             setPayment]          = useState<number>(0);
     const [discount,             setDiscount]        = useState<number>(0);
@@ -44,6 +45,27 @@ const Sales = () => {
         invoice: Invoice | undefined,
         soldProducts: SoldProduct[]
     };
+
+    const clearSates = () => {
+        setSaleState(true);
+        setPaymentWay(1);
+        setPaymentCondition('Pronto pagamento');
+        setProducts([]);
+        setSaleType(0);
+        setProductArrayKey(-1);
+        setChange(0);
+        setSaleTotal({
+            commercial_discount: 0.00,
+            merchandise_total: 0.00,
+            service_total: 0.00,
+            tax_total: 0.00,
+            total:0.00
+        });
+        setSoldProduct([]);
+        setPayment(0);
+        setDiscount(0);
+        setCustomer('Consumidor final');
+    }
 
     /*
     * Calculate the total sold on current sale
@@ -219,35 +241,15 @@ const Sales = () => {
             soldProducts
         };
 
-        console.log(saleData);
-
-        switch (docType) {
-            case DocTypes.FR :
-                Preloader.active();
-                SaleRequests.saveInvoice(saleData).then( data  => {
-                    console.log(data);
-                    Preloader.inactive();
-                }).catch( e => {
-                    console.log(e);
-                    Preloader.inactive();
-
-                });
-                break;
-            case DocTypes.NC :
-                SaleRequests.saveInvoice(saleData).then( data  => {
-                    console.log(data);
-                }).catch( e => {
-                    console.log(e);
-                });
-                break;
-            case DocTypes.VD :
-                SaleRequests.saveInvoice(saleData).then( data  => {
-                    console.log(data);
-                }).catch( e => {
-                    console.log(e);
-                });
-                break;
-        }
+        Preloader.active();
+        SaleRequests.saveInvoice(saleData).then( data  => {
+            console.log(data);
+            Preloader.inactive();
+            clearSates();
+        }).catch( e => {
+            console.log(e);
+            Preloader.inactive();
+        });
     }
 
     useEffect(() => {
@@ -370,7 +372,7 @@ const Sales = () => {
                                                 </Form.Select>
                                             </div>
                                         </Col>
-                                        {paymentWay === 1
+                                        {paymentWay === PaymentWays.NU
                                             ?
                                             <>
                                                 <Col>
@@ -414,15 +416,19 @@ const Sales = () => {
                             </Col>
                             <Col className='mt-1 row'>
                                 <ButtonGroup className="btn-group-vertical">
-                                    <Button id="invoiceReceiptBtn" onClick = {
+                                    <Button onClick = {
                                         /* Invoice Receipt */
                                         () => setSaleType(DocTypes.FR)
                                     } className="btn-primary">Factura Recibo</Button>
-                                    <Button id="saleMoneyBtn" onClick = {
-                                        /* Sale Money */
-                                        () => setSaleType(DocTypes.VD)
-                                    } className="btn-primary">Venda à Dinheiro</Button>
-                                    <Button id="creditNoteBtn" onClick = {
+                                    {paymentWay === PaymentWays.NU
+                                        ?
+                                        <Button onClick = {
+                                            /* Sale Money */
+                                            () => setSaleType(DocTypes.VD)
+                                        } className="btn-primary">Venda à Dinheiro</Button>
+                                        : ''
+                                    }
+                                    <Button onClick = {
                                         /* Credit Note */
                                         () => setSaleType(DocTypes.NC)
                                     } className="btn-primary">Nota de Crédito</Button>

@@ -6,6 +6,7 @@ use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Traits\HttpResponseTrait;
+use App\Traits\PrivilegeTrait;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\Auth;
 class ProductController extends Controller
 {
     use HttpResponseTrait;
+    use PrivilegeTrait;
+
 
     public function __construct()
     {
@@ -33,11 +36,12 @@ class ProductController extends Controller
         }
     }
 
-    public function forSale(): \Illuminate\Http\JsonResponse|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    public function getProductBySaleStatus(): \Illuminate\Http\JsonResponse|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         try {
-            return $this->success(ProductResource::collection(Product::all()
-                ->where('for_sale_status', '=' , 1)));
+            return $this->success(ProductResource::collection(Product::all()->where(
+                'for_sale_status', '=', 1
+            )));
         }catch (\Throwable $exception){
             return $this->error([], $exception);
         }
@@ -62,11 +66,12 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
         $request->validated($request->all());
-        $all = $request->all();
-        $all['user_id'] = Auth::user()->id;
         try {
-            $saved = Product::create($all);
-            return $this->success($saved);
+            $all = $request->all();
+            $all['user_id'] = Auth::user()->id;
+            return $this->doIfAdmin() ? $this->success(
+                new ProductResource(Product::create($all)))
+                : $this->error(exception: [], code: 403);
         }catch (\Throwable $exception) {
             return $this->error($all, $exception);
         }
@@ -81,7 +86,8 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         try {
-            return $this->success(new ProductResource($product));
+            return $this->doIfAdmin() ?  $this->success(new ProductResource($product))
+                : $this->error(exception: [], code: 403);
         }catch (\Throwable $exception) {
             return $this->error([], $exception);
         }
@@ -93,9 +99,15 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $id)
+    public function edit(Product $product)
     {
-        //
+        try {
+            return $this->doIfAdmin() ?  $this->success( $product->update([
+                'for_sale_status' => 1
+            ])) : $this->error(exception: [], code: 403);
+        }catch (\Throwable $exception) {
+            return $this->error([], $exception);
+        }
     }
 
     /**
@@ -108,8 +120,8 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         try {
-            $saved = $product->update($request->all());
-            return $this->success([$saved, $request->all()]);
+            return $this->doIfAdmin() ?  $this->success( $product->update($request->all())) 
+            : $this->error(exception: [], code: 403);
         }catch (\Throwable $exception) {
             return $this->error($request->all(), $exception);
         }
@@ -124,10 +136,10 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         try {
-            $status = $product->update([
+            return $this->doIfAdmin() ?  $this->success( $product->update([
                 'for_sale_status' => 0
-            ]);
-            return $this->success($status);
+            ])) 
+            : $this->error(exception: [], code: 403);
         }catch (\Throwable $exception) {
             return $this->error([], $exception);
         }
