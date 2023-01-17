@@ -38,6 +38,8 @@ class SalesResource extends JsonResource
                 'payment_way' => $this->payment_way,
                 'invoice_status' => InvoiceStatus::from($this->invoice_status)->symbol(),
                 'invoice_type_id' => $this->invoice_type_id,
+                'invoice_type_symbol' => DocTypes::from($this->invoice_type_id)->symbol(),
+                'invoice_type_name' => DocTypes::from($this->invoice_type_id)->name(),
                 'invoice_number' => $this->invoice_number,
                 'day' => $this->day,
                 'month' => $this->month,
@@ -60,7 +62,6 @@ class SalesResource extends JsonResource
             ],
             'relationships' => [
                 'user' => new UserResource(User::all()->where('id', '=', $this->user_id)->first()),
-
                 'invoice' =>[
                     'name' => DocTypes::from($this->invoice_type_id)->name(),
                     'data' => match($this->invoice_type_id){

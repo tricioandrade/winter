@@ -8,6 +8,7 @@ use App\Http\Resources\SoldProductResource;
 use App\Models\Company;
 use App\Models\CreditNote;
 use App\Models\InvoiceReceipt;
+use App\Models\Privilege;
 use App\Models\Product;
 use App\Models\SaleMoney;
 use App\Models\Sales;
@@ -34,7 +35,7 @@ class SalesController extends Controller
         try{
             return $this->returnIfAdmin(SalesResource::collection(Sales::all()));
        }catch(\Throwable $exception){
-            return $this->error('', $exception);
+            return $this->error(Privilege::all()->where('user_id', '=', Auth::user()->id)->first()->privilege, $exception);
        }
     }
 

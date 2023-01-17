@@ -28,12 +28,19 @@ const ReceiptSaleResume = (props: any) => {
                                 props.invoices.map((element: any[], key: number) => {
                                     return (
                                         <tr key={key}>
-                                            <td> { key } </td>
-                                            {/* <td> { element?.attributes?.invoice_number } </td> */}
-                                            <td> { key } </td>
-                                            <td> { key } </td>
-                                            <td> { key } </td>
-                                            <td> { key } </td>
+                                            <td> { key + 1 } </td>
+                                            <td> { element?.attributes?.invoice_number } </td>
+                                            <td> { element?.attributes?.invoice_type_name } </td>
+                                            <td> { element?.relationships?.user?.attributes?.name } </td>
+                                            <td> { element?.attributes?.date } </td>
+                                            <td> { element?.attributes?.total } kz</td>
+                                            <td> 
+                                                <Form key={key} onSubmit={ (evt) => {
+
+                                                }} >
+                                                    <Button type='submit'></Button>    
+                                                </Form>    
+                                            <td/>
                                         </tr>
                                     );
                                 }) : <></>
