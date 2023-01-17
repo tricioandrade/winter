@@ -11,7 +11,7 @@ trait PrivilegeTrait
     use HttpResponseTrait;
     public function returnIfAdmin($data)
     {
-        $result =  match(UserAttributes::from((Privilege::all()->where('id', '=', Auth::user()->id)->value)[0]->privilege)){
+        $result =  match(UserAttributes::from((Privilege::all()->where('user_id', '=', Auth::user()->id)->first())->privilege)){
             UserAttributes::ADMIN->value => $data,
             UserAttributes::NORMAL->value => 403 
         };
@@ -21,7 +21,7 @@ trait PrivilegeTrait
 
     public function doIfAdmin()
     {
-        $result =  match(UserAttributes::from((Privilege::all()->where('id', '=', Auth::user()->id)->value)[0]->privilege)){
+        $result =  match(UserAttributes::from((Privilege::all()->where('user_id', '=', Auth::user()->id)->first())->privilege)){
             UserAttributes::ADMIN->value => true,
             UserAttributes::NORMAL->value => 403 
         };

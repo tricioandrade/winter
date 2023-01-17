@@ -14,6 +14,7 @@ use App\Models\Sales;
 use App\Models\SoldProduct;
 use App\Traits\DocumentTrait;
 use App\Traits\HttpResponseTrait;
+use App\Traits\PrivilegeTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -22,13 +23,14 @@ class SalesController extends Controller
 {
     use HttpResponseTrait;
     use DocumentTrait;
+    use PrivilegeTrait;
 
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    public function receipts() {
+    public function invoices() {
         try{
             return $this->returnIfAdmin(SalesResource::collection(Sales::all()));
        }catch(\Throwable $exception){
