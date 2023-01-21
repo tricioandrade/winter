@@ -165,7 +165,7 @@ nav ul li a.nav-link {
 
 .page-title a{
     font-family:'Nunito Bold';
-    color:#de771c;
+    color:#e39957;
 }
 
 .card {
@@ -178,12 +178,12 @@ nav ul li a.nav-link {
 
 
 .btn, .btn.btn-primary, button, a.btn {
-    color: #fefe;
+    color: #fefefe;
     text-shadow: 0 0 #d4a312 !important;
-    background:#333;
-    border: 2px solid #fefe !important;
+    background:#41464b;
+    border: 1px solid rgb(255 255 255 / 66%) !important;
 /*     border-radius:100px; */
-    box-shadow:0px 0px 5px #333 !important;
+    box-shadow:0px 0px 5px hsl(0deg 0% 20% / 62%) !important;
 }
 
 .btn-group .btn, .btn.btn-primary {
@@ -200,8 +200,8 @@ nav ul li a.nav-link {
     border-color: #ffffff;
     transition: all 300ms ease-out;
     color: #333;
-    background: #e9ecef;
-    border-color: #f2d714;
+    background: #e9ecef;   
+    border: 1px solid rgb(255 255 255 / 66%) !important;
 }
 
 table .btn.btn-danger {
