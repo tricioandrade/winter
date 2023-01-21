@@ -139,20 +139,22 @@ export const  InventorySaveProducts = ({ getProducts }: any) => {
                 </Button>
             </Col>
             <Card className='shadow rounded col-12 mt-2'>
-                <Form id={page ? 'FormAddProduct' : 'FormUpdateProduct'} className="animation" onSubmit={
-                    (evt) => handleSubmit(evt)
-                }>
-                    <Card.Body className='row d-flex align-items-stretch p-2'>
-                        <div className="col-12 text-center">
-                            {page ?
-                                <strong>Cadastrar dados de Produtos</strong>
-                                :''}
-                            {!page ?
-                                <strong>Actualizar dados de Produtos</strong>
-                                : ''}
-                        </div>
+                <Card.Body className=''>
+                    <Form id={page ? 'FormAddProduct' : 'FormUpdateProduct'} className="animation row d-flex align-items-stretch" onSubmit={
+                        (evt) => handleSubmit(evt)
+                    }>
+                        <Row>
+                            <Col lg={12} className="text-center">
+                                {page ?
+                                    <strong>Cadastrar dados de Produtos</strong>
+                                    :''}
+                                {!page ?
+                                    <strong>Actualizar dados de Produtos</strong>
+                                    : ''}
+                            </Col>
+                        </Row>
 
-                        <Row className="col-4 p-1">
+                        <Row className="col-4">
                             <Col lg={12}><pre className="text-center"><i>Descrição</i></pre></Col>
                             {!page ?
                                 <Col>
@@ -199,7 +201,7 @@ export const  InventorySaveProducts = ({ getProducts }: any) => {
 
                         {/*Quotation*/}
 
-                        <Row className="col-4 p-1">
+                        <Row className="col-4">
                             <Col lg={12}><pre className="text-center"><i>Cotação</i></pre></Col>
                             <Col lg={page ? 12 : 12}>
                                 <FormLabel htmlFor="price">Preço</FormLabel>
@@ -232,7 +234,7 @@ export const  InventorySaveProducts = ({ getProducts }: any) => {
                         </Row>
 
                         {/*TaxTypes*/}
-                        <Row className="col-4 p-1">
+                        <Row className="col-4">
                             <Col lg={12}><pre className="text-center"><i>Imposto</i></pre></Col>
                             <div className="col-12">
                                 <FormLabel htmlFor="tax_value">Valor do imposto</FormLabel>
@@ -275,17 +277,19 @@ export const  InventorySaveProducts = ({ getProducts }: any) => {
                                 </FormSelect>
                             </Col>
                         </Row>
-                    </Card.Body>
-                    <Card.Footer className='text-end p-1'>
-                        <Button type="submit" className="btn-primary ">
-                            {page ?
-                                <><i className='fa fa-save'/> Salvar</>
-                                :
-                                <><i className='fa fa-upload'/> Actualizar</>
-                            }
-                        </Button>
-                    </Card.Footer>
+                    <Row className=''>
+                        <Col lg={12} className='pt-2'>
+                            <Button type="submit" className="btn-primary float-end">
+                                {page ?
+                                    <><i className='fa fa-save'/> Salvar</>
+                                    :
+                                    <><i className='fa fa-upload'/> Actualizar</>
+                                }
+                            </Button>
+                        </Col>
+                    </Row>
                 </Form>
+                </Card.Body>
             </Card>
         </>
     );

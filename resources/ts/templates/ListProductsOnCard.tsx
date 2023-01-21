@@ -1,5 +1,5 @@
 import React, {FormEvent} from "react";
-import {Button, Col, Dropdown, Form} from "react-bootstrap";
+import {Button, Col, Card, Form} from "react-bootstrap";
 import {ProductResource} from "../interfaces/ProductResource";
 import ProductsRequests from "../requests/ProductsRequests";
 import MessageBox from "../tasks/MessageBox";
@@ -12,43 +12,28 @@ const ListProductsOnCard = (products: ProductResource[]) => {
 
     return products.map((p: ProductResource, k) => {
         return (
-            <Dropdown key={k}  className={"col-6 m-auto " + ( p.attributes.for_sale_status ? 'active' : 'inactive') }>
-                <Dropdown.Toggle id={'product' + p.id}>
-                    <div className="">
-                        <ul className="list-group">
-                            <li className="list-group-item">Nome: <div>{p.attributes.name}</div></li>
-                            <li className='list-group-item'>Preço com imposto: <div>{p.attributes.price_with_tax}</div>
-                            </li>
-                            <li className='list-group-item'>Estado do
-                                produto: <div>{p.attributes.for_sale_status ? 'Activado' : 'Desactivado'}</div></li>
-                        </ul>
-                    </div>
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
+            <Card key={k}  className={"col-11 m-1 m-auto" + ( p.attributes.for_sale_status ? 'active' : 'inactive') }>
+                <Card.Body>
+                    <table lg={12} className='table'>
+                        <tr><th className='col-6' >Nome:                   </th><td className='col'>{p.attributes.name}</td></tr>
+                        <tr><th className='col-6' >Códido:                 </th><td className='col'>{p.attributes.code}</td></tr>
+                        <tr><th className='col-6' >Descrição:              </th><td className='col'>{p.attributes.description}</td></tr>
+                        <tr><th className='col-6' >Tipo de Artigo:         </th><td className='col'>{p.relationships.productType.name}</td></tr>
+                        <tr><th className='col-6' >Preço base:             </th><td className='col'>{p.attributes.price}</td></tr>
+                        <tr><th className='col-6' >Preço com imposto:      </th><td className='col'>{p.attributes.price_with_tax}</td></tr>
+                        <tr><th className='col-6' >Quantidade em stock:    </th><td className='col'>{p.attributes.stock_quantity}</td></tr>
+                        <tr><th className='col-6' >Unidade:                </th><td className='col'>{p.attributes.unity_quantity}</td></tr>
+                        <tr><th className='col-6' >Valor do imposto:       </th><td className='col'>{p.relationships.tax.symbol}</td></tr>
+                        <tr><th className='col-6' >Valor do imposto:       </th><td className='col'>{p.attributes.tax_value}</td></tr>
+                        <tr><th className='col-6' >Total de taxa adicionada</th><td className='col'>{p.attributes.tax_total_added}</td></tr>    
+                        <tr><th className='col-6' >Código de Isenção:      </th><td className='col'>{p.attributes.tax_exemption_code}</td></tr>
+                        <tr><th className='col-6' >Motivo de Isenção:      </th><td className='col'>{p.attributes.tax_exemption_reason}</td></tr>
+                        <tr><th className='col-6' >Estado do produto:      </th><td className='col'>{p.attributes.for_sale_status ? 'Activado': 'Desactivado'}</td></tr>
+                    </table>
+                </Card.Body>
+                <Card.Footer>
                     <Col lg={12}>
-                        <ul className="list-group">
-                            <li className='list-group-item'>Nome:                          <div>{p.attributes.name}</div></li>
-                            <li className='list-group-item'>Códido:                        <div>{p.attributes.code}</div></li>
-                            <li className='list-group-item'>Descrição:                     <div>{p.attributes.description}</div></li>
-                            <li className='list-group-item'>Tipo de Artigo:                <div>{p.relationships.productType.name}</div></li>
-                            <li className='list-group-item'>Preço Original:                <div>{p.attributes.price}</div></li>
-                            <li className='list-group-item'>Preço com imposto:             <div>{p.attributes.price_with_tax}</div></li>
-                            <li className='list-group-item'>Quantidade em stock:           <div>{p.attributes.stock_quantity}</div></li>
-                        </ul>
-                        <ul className='list-group'>
-                            <li className='list-group-item'>Unidade:                       <div>{p.attributes.unity_quantity}</div></li>
-                            <li className='list-group-item'>Tipo de imposto:               <div>{p.relationships.tax.symbol}</div></li>
-                            <li className='list-group-item'>Valor do imposto:              <div>{p.attributes.tax_value}</div></li>
-                            <li className='list-group-item'>Total adicionado:              <div>{p.attributes.tax_total_added}</div></li>
-                            {/*<li className='list-group-item'>Armazem:  <div>${p.attributes.storage}</div></li>*/}
-                            <li className='list-group-item'>Código de Isenção:             <div>{p.attributes.tax_exemption_code}</div></li>
-                            <li className='list-group-item'>Motivo de Isenção:             <div>{p.attributes.tax_exemption_reason}</div></li>
-                            <li className='list-group-item'>Estado do produto:             <div>{p.attributes.for_sale_status ? 'Activado': 'Desactivado'}</div></li>
-                        </ul>
-                    </Col>
-                    <Col lg={12}>
-                        <Form>
-                            <Button onSubmit={(evt: FormEvent) => {
+                        <Form onSubmit={(evt: FormEvent) => {
                                 evt.preventDefault();
                                 const btnValue: string = (evt.target as HTMLButtonElement).value;
 
@@ -79,13 +64,14 @@ const ListProductsOnCard = (products: ProductResource[]) => {
                                     card.classList.add((p.attributes.for_sale_status ? 'active' : 'inactive'));
                                 }
 
-                            }} type="submit" value={'product' + p.id} className="btn btn-success">
+                            }}>
+                            <Button type="submit" value={'product' + p.id} className="btn btn-success">
                                 { !p.attributes.for_sale_status ? 'Tornar disponível' : 'Tornar Produto indisponível'}
                             </Button>
                         </Form>
                     </Col>
-                </Dropdown.Menu>
-            </Dropdown>);
+                </Card.Footer>
+            </Card>);
     });
 }
 

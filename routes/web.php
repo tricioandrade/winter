@@ -1,5 +1,7 @@
 <?php
 
+use App\Traits\SalesInvoices;
+use App\Traits\Saft;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,6 +24,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/saft', function () {
+    
+        $saf = new Saft();
+        
+            try{
+                $saf->generate();
+            }catch(\Throwable $e){
+                dd($e);
+            }
+        });
 
 Auth::routes();
 
@@ -38,3 +50,4 @@ Route::get('/products/for_sale', [\App\Http\Controllers\ProductController::class
 /*Sales Routes*/
 Route::post('/sales', [\App\Http\Controllers\SalesController::class, 'store']);
 Route::get('/sales/invoices', [\App\Http\Controllers\SalesController::class, 'invoices']);
+

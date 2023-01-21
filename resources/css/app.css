@@ -302,3 +302,29 @@ table tbody tr td {
         transform: translateY(0);
     }
 }
+
+
+#listedProducts  {
+    width:100%;
+    padding:0;
+    background:none !important;
+    box-shadow: none !important;
+    border: none;
+}
+
+#listedProducts ul li {
+    text-align:left;
+}
+
+#listedProducts ul li div{
+    font-weight:normal;
+    color:#333;
+    text-align: right;
+    display:inline;
+}
+
+
+#listedProducts ul li div {
+    display:inline;
+    float:right;
+}

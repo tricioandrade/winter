@@ -37,7 +37,7 @@ class ProductFactory extends Factory
             'unity_quantity' => $this->faker->randomNumber(4),
             'for_sale_quantity' => $this->faker->randomNumber(4),
             'for_sale_status' => $this->faker->numberBetween(1, 0),
-            'unity_of_measure' => 'KG',
+            'unity_of_measure' => 1,
             'price' => $price,
             'price_with_tax' => $price_with_tax,
             'product_type_id' =>  1,

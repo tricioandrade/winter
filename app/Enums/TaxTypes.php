@@ -44,4 +44,15 @@ enum TaxTypes: int implements Types {
         };
     }
 
+    public function code(): string
+    {
+        return match ($this) {
+            self::IVA => 'NOR',
+            self::ISE => 'ISE',
+            self::IS => 'NOR',
+            self::NS => 'NOR',
+            self::OUT => 'NOR'
+        };
+    }
+
 }

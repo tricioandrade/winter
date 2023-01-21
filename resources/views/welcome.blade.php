@@ -51,18 +51,34 @@
                 z-index: -1;
             }
 
-            a.btn {
-                padding: 10px 20px;
-                background-color: #1a202c;
-                border: 1px solid #fefefe;
-                text-decoration: none;
-                border-radius: 10px;
-                box-shadow: 0 2px 10px #ccc;
-                font-weight: bold;
-                color: #fefefe;
-                font-family: "Open Sans", sans-serif;
-
+            
+            .btn, .btn.btn-primary, .btn.btn-success, button, a.btn {
+                color: #fefe;
+                text-shadow: 0 0 #d4a312 !important;
+                background:#333;
+                border: 2px solid #fefe !important;
+            /*     border-radius:100px; */
+                box-shadow:0px 0px 5px #333 !important;
             }
+
+            .btn-group .btn, .btn.btn-primary {
+                box-shadow:inherit;
+                border:inherit;
+            }
+
+            .btn-group .btn{
+                margin:4px 0;
+            }
+
+            .btn:hover, a.btn:hover {
+                transform: translateY(-3px);
+                border-color: #ffffff;
+                transition: all 300ms ease-out;
+                color: #333;
+                background: #e9ecef;
+                border-color: #f2d714;
+            }
+
         </style>
     </head>
     <body class="antialiased">

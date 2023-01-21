@@ -34,7 +34,7 @@ return new class extends Migration
             $table->decimal('change', 20, 4)->default(0);
 
             $table->string('payment_mechanism');
-            $table->string('payment_way');
+            $table->integer('payment_way');
 
             $table->boolean('invoice_status')->default(1);
             $table->unsignedBigInteger('invoice_type_id');
@@ -48,7 +48,7 @@ return new class extends Migration
             $table->dateTime('system_entry_date');
 
 
-            $table->decimal('merchandise_total', 20, 4)->default(0);
+            $table->decimal('merchandise_total', 20, 4);
             $table->decimal('commercial_discount', 20, 4)->default(0);
             $table->decimal('financial_discount', 20, 4)->default(0);
             $table->decimal('postage', 20, 4)->default(0);

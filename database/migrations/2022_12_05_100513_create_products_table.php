@@ -42,7 +42,7 @@ return new class extends Migration
             $table->integer('unity_quantity');
             $table->integer('for_sale_quantity')->nullable();
             $table->boolean('for_sale_status');
-            $table->string('unity_of_measure');
+            $table->integer('unity_of_measure');
 
             $table->decimal('price', 20, 4);
             $table->decimal('price_with_tax', 20,4);

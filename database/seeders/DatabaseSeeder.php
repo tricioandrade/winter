@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             TaxSeeder::class,
             ProductTypeSeeder::class,
             CompanySeeder::class,
-            ProductSeeder::class
+            ProductSeeder::class,
+            AppSeeder::class
         ]);
     }
 }

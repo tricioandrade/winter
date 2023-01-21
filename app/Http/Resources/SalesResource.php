@@ -4,6 +4,8 @@ namespace App\Http\Resources;
 
 use App\Enums\DocTypes;
 use App\Enums\InvoiceStatus;
+use App\Enums\PaymentWays;
+use App\Models\App;
 use App\Models\CreditNote;
 use App\Models\InvoiceReceipt;
 use App\Models\SaleMoney;
@@ -33,9 +35,10 @@ class SalesResource extends JsonResource
                 'exchange' => $this->exchange,
                 'customer' => $this->customer,
                 'paid_value' => $this->moneyFormat( $this->paid_value),
+                'saft_paid_value' => $this->paid_value,
                 'change' => $this->moneyFormat( $this->change),
                 'payment_mechanism' => $this->payment_mechanism,
-                'payment_way' => $this->payment_way,
+                'payment_way' => PaymentWays::from($this->payment_way)->symbol(),
                 'invoice_status' => InvoiceStatus::from($this->invoice_status)->symbol(),
                 'invoice_type_id' => $this->invoice_type_id,
                 'invoice_type_symbol' => DocTypes::from($this->invoice_type_id)->symbol(),
@@ -44,10 +47,12 @@ class SalesResource extends JsonResource
                 'day' => $this->day,
                 'month' => $this->month,
                 'date' => $this->convertDate($this->date),
+                'saft_date' => $this->date,
                 'expiration_date' => $this->convertDate($this->expiration_date),
                 'system_entry_date' => str_replace( ' ', 'T', $this->system_entry_date),
                 'merchandise_total' => $this->merchandise_total,
                 'commercial_discount' =>  $this->moneyFormat($this->commercial_discount),
+                'saft_commercial_discount' =>  $this->commercial_discount,
                 'financial_discount' =>  $this->moneyFormat($this->financial_discount),
                 'postage' =>  $this->moneyFormat($this->postage),
                 'service_total' =>  $this->moneyFormat($this->service_total),
@@ -56,6 +61,8 @@ class SalesResource extends JsonResource
                 'eco_value' =>  $this->moneyFormat($this->eco_value),
                 'hit' =>  $this->moneyFormat($this->hit),
                 'total' =>  $this->moneyFormat($this->total),
+                'saft_total' => $this->total,
+                'footer' => 'Documento processado por software válido ' . App::all()->where('id', '=', 1)->first()->licence . ' Outono',
                 'short_hash' => $this->short_hash,
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at

@@ -6,11 +6,14 @@ import Preloader from "../../tasks/Preloader";
 import MessageBox from "../../tasks/MessageBox";
 import ReceiptSaftCard from "./ReceiptSaftCard";
 import ReceiptSaleResume from "./ReceiptSaleResume";
+import ReceiptSoldProductResume from "./ReceiptSoldProductResume";
+import ReceiptSqlBackUpCard from "./ReceiptSqlBackUpCard";
 
 const Receipts  = () => {
     const [invoices, setInvoices] = useState<object[]>();
     const [soldProducts, setSoldProducts] = useState<object[]>();
     const [receipt, setReceipt] = useState<boolean>(true);
+    
     
     const requestData = async (callback: (invoices: object[], soldProducts: object[]) => void ) => {        
         Preloader.active();    
@@ -21,7 +24,7 @@ const Receipts  = () => {
                 soldProducts.push(data?.relationships.products);
             });
 
-            console.log(data.data, soldProducts);
+            console.log(soldProducts);
             callback([ ...(data.data) ], soldProducts);
             Preloader.inactive();
         } catch (error) {
@@ -54,14 +57,22 @@ const Receipts  = () => {
                 </div>
             </div>
             <Row className="col-12 d-flex align-items-stretch" style={{ height: '75vh', overflow: 'auto' }}>
-                <Row className='col-lg-9 col-md-9' style={{ height: '75vh', overflow: 'auto' }}>
-                    <Col>
+                <Row className='col-lg-8 col-md-8 m-1'>
+                    <Col lg={12}>
+                        <ReceiptSoldProductResume products = { soldProducts } invoices = { invoices }/>
+                    </Col>
+                    <Col lg={12} className='mt-4 mb-4'>
                         <ReceiptSaleResume invoices={ invoices } />
                     </Col>
                 </Row>
-                <Col lg={3}>
-                    <ReceiptSaftCard />
-                </Col>
+                <Row className='col-lg-3 col-md-3 p-1' >
+                    <Col className='mb-4'>
+                        <ReceiptSqlBackUpCard />
+                    </Col>
+                    <Col className='mt-4 mb-4'>
+                        <ReceiptSaftCard />
+                    </Col>
+                </Row>
             </Row>
         </Container>
     );

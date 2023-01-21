@@ -81,8 +81,7 @@ trait DocumentTrait
          * Encrypting*/
         $encryptedData = self::encrypt($this->dateNormal().';'.$this->dateTimeT().';'.$invoiceNumber.';'.$total.';'.$hash);
 
-        /*
-         * Split and get a short chars of generated hash*/
+        /** Split and get a short chars of generated hash*/
         $split = str_split($encryptedData);
         $shortHash = $split[1].$split[11].$split[21].$split[31];
 

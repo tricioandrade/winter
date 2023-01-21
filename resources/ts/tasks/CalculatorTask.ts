@@ -69,6 +69,15 @@ class CalculatorTask {
         }
     }
 
+    static calculateInvoiceTotal (invoices: any) {
+        let total: number = 0 ;
+        invoices.forEach((obj: any) => {
+            total = this.parseFloatSum(parseFloat((obj?.attributes?.total).replace(/,/, '.')), total);
+        });
+
+        return total;
+    }
+
 }
 
 export default CalculatorTask;
