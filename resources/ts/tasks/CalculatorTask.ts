@@ -5,11 +5,15 @@ import {SaleTotal} from "../interfaces/SaleTotal";
 
 class CalculatorTask {
     static calculateFinalPrice(priceWithTax: number, onSaleQuantity: number, discount: number = 0): number{
-        return +parseFloat((priceWithTax * onSaleQuantity - discount).toString()).toFixed(4);
+        return this.makeDiscount(+parseFloat((priceWithTax * onSaleQuantity).toString()), discount);
     }
 
     static getNumber(value: string): number {
         return +value;
+    }
+
+    static makeDiscount(price: number, discountValue: number): number {
+        return +parseFloat((price - (price * discountValue / 100)).toString()).toFixed(4);
     }
 
     static calculateProducts(products: SoldProduct[], newProduct: SoldProduct): SoldProduct[]{
@@ -18,7 +22,7 @@ class CalculatorTask {
         });
 
         if (index >= 0) {
-            products[index].total = this.parseFloatSum(products[index].total, newProduct.price_with_tax) - newProduct.discount;
+            products[index].total = this.makeDiscount(this.parseFloatSum(products[index].total, newProduct.price_with_tax), newProduct.discount);
             products[index].discount = newProduct.discount > 0 ? products[index].discount + newProduct.discount : 0;
             console.log(products[index].discount);
             products[index].sold_quantity = products[index].sold_quantity + newProduct.sold_quantity;
