@@ -129,7 +129,7 @@ const Sales = () => {
         /*
         * Verify discount Value
         * */
-        if (selectedProduct.price_total <= selectedProduct.discount) {
+        if (100 === selectedProduct.discount) {
             MessageBox.open('Insira corretamente o valor do desconto');
             return;
         }

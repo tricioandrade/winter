@@ -57,10 +57,12 @@ class SalesResource extends JsonResource
                 'postage' =>  $this->moneyFormat($this->postage),
                 'service_total' =>  $this->moneyFormat($this->service_total),
                 'tax_total' =>  $this->moneyFormat($this->tax_total),
+                'saft_tax_total' =>  $this->tax_total,
                 'advance' =>  $this->moneyFormat($this->advance),
                 'eco_value' =>  $this->moneyFormat($this->eco_value),
                 'hit' =>  $this->moneyFormat($this->hit),
                 'total' =>  $this->moneyFormat($this->total),
+                'total_no_tax' => SoldProduct::all()->where('sale_id', '=', $this->id)->sum('total'),
                 'saft_total' => $this->total,
                 'footer' => 'Documento processado por software válido ' . App::all()->where('id', '=', 1)->first()->licence . ' Outono',
                 'short_hash' => $this->short_hash,
@@ -72,9 +74,9 @@ class SalesResource extends JsonResource
                 'invoice' =>[
                     'name' => DocTypes::from($this->invoice_type_id)->name(),
                     'data' => match($this->invoice_type_id){
-                        DocTypes::FR->value => InvoiceReceipt::all()->where('sale_id', '=',  $this->id)->toArray(),
-                        DocTypes::NC->value => CreditNote::all()->where('sale_id', '=',  $this->id)->toArray(),
-                        DocTypes::VD->value => SaleMoney::all()->where('sale_id', '=',  $this->id)->toArray()
+                        DocTypes::FR->value => InvoiceReceipt::all()->where('sale_id', '=',  $this->id)->first()->toArray(),
+                        DocTypes::NC->value => CreditNote::all()->where('sale_id', '=',  $this->id)->first()->toArray(),
+                        DocTypes::VD->value => SaleMoney::all()->where('sale_id', '=',  $this->id)->first()->toArray()
                     }
                 ],
                 'products' => [

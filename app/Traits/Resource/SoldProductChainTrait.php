@@ -37,7 +37,7 @@ trait SoldProductChainTrait
                     'tax_exemption_reason' => $data->tax_exemption_reason,
                 ],
                 'relationships' => [
-                    'data' => Product::all()->where('id', '=', $data->product_id)->first()
+                    'info' => Product::all()->where('id', '=', $data->product_id)->first()->toArray()
                 ]
             ];
         }

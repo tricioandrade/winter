@@ -7,10 +7,10 @@ const rowsOfProducts = (products: any[]) => {
         return (
         <tr key={key}>
             <td>{item.name}</td>
-            <td>{parseFloat(item.price).toFixed(2)}</td>
+            <td>{parseFloat(item.price_with_tax).toFixed(2)}</td>
             <td>{item.sold_quantity}</td>
-            <td>{item.tax_value}</td>
-            <td>{item.discount}</td>
+            <td>{item.tax_value}%</td>
+            <td>{item.discount}%</td>
             <td>{parseFloat(item.total).toFixed(2)} Kz</td>
             <td>
                 <Form>

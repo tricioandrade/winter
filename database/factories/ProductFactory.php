@@ -43,11 +43,11 @@ class ProductFactory extends Factory
             'product_type_id' =>  1,
             'promotional_price' => 0,
             'promotional_status' => 0,
-            'tax_id' => $tax_id,
+            'tax_id' => $taxValues > 0 ? 1 : 2,
             'tax_value' => $taxValues,
             'tax_total_added' => $tax_added,
-            'tax_exemption_code' => $taxValues > 0 ? 'M-00' : 'NÃO_APLICA',
-            'tax_exemption_reason' =>  $taxValues > 0 ? 'Isento sob termos' : 'NÃO_APLICA',
+            'tax_exemption_code' => $taxValues > 0 ? 'NÃO_APLICA' : 'M-00',
+            'tax_exemption_reason' =>  $taxValues > 0 ?  'NÃO_APLICA' : 'Isento sob termos',
         ];
     }
 }

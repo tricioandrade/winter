@@ -55,9 +55,11 @@ trait SaleChainTrait
                     'postage' => $data->postage,
                     'service_total' => $data->service_total,
                     'tax_total' => $data->tax_total,
+                    'tax_total' => $data->tax_total,
                     'advance' => $data->advance,
                     'eco_value' => $data->eco_value,
                     'hit' => $data->hit,
+                    'total_no_tax' => SoldProduct::all()->where('sale_id', '=', $data->id)->sum('total'),
                     'total' => $data->total,
                     'saft_total' => $data->total,
                     'short_hash' => $data->short_hash,
@@ -67,10 +69,10 @@ trait SaleChainTrait
                 'relationships' => [
                     'invoice' =>[
                         'name' => DocTypes::from($data->invoice_type_id)->name(),
-                        'data' => match($data->invoice_type_id){
-                            DocTypes::FR->value => InvoiceReceipt::all()->where('sale_id', '=',  $data->id)->toArray(),
-                            DocTypes::NC->value => CreditNote::all()->where('sale_id', '=',  $data->id)->toArray(),
-                            DocTypes::VD->value => SaleMoney::all()->where('sale_id', '=',  $data->id)->toArray()
+                        'info' => match($data->invoice_type_id){
+                            DocTypes::FR->value => InvoiceReceipt::all()->where('sale_id', '=',  $data->id)->first()->toArray(),
+                            DocTypes::NC->value => CreditNote::all()->where('sale_id', '=',  $data->id)->first()->toArray(),
+                            DocTypes::VD->value => SaleMoney::all()->where('sale_id', '=',  $data->id)->first()->toArray()
                         }
                     ],
                     'products' => [

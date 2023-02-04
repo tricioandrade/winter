@@ -37,14 +37,17 @@ class SoldProductResource extends JsonResource
                 'tax_type' => $this->tax_type,
                 'tax_total' => $this->moneyFormat($this->tax_total),
                 'total' => $this->moneyFormat($this->total),
+                'total_saft' => $this->total,
                 'tax_exemption_code' => $this->tax_exemption_code,
                 'tax_exemption_reason' => $this->tax_exemption_reason,
             ],
             'relationships' => [
-                'user' => new UserResource(User::all()->where('id', '=', $this->user_id)->first()),
                 'product' => [
                     'name' => $this->product->name,
+                    'code' => $this->product->code,
                     'description' => $this->product->description,
+                    'tax_id' => $this->product->tax_id,
+                    'unity' => $this->product->unity_of_measure
                 ]
             ]
         ];

@@ -13,7 +13,11 @@ class CalculatorTask {
     }
 
     static makeDiscount(price: number, discountValue: number): number {
-        return +parseFloat((price - (price * discountValue / 100)).toString()).toFixed(4);
+        if(discountValue === 0) return price;
+
+        const discount: number = price * (discountValue / 100);
+        const total: number = price - discount;
+        return +parseFloat((total).toString()).toFixed(4);
     }
 
     static calculateProducts(products: SoldProduct[], newProduct: SoldProduct): SoldProduct[]{
