@@ -18,9 +18,9 @@ export const SaleFormCreditNote = (state: any) => {
             return (
             <tr key={key}>
                 <td>{item.name}</td>
-                <td>{parseFloat(item.price_with_tax).toFixed(2)}</td>
-                <td>{item.sold_quantity}</td>
-                <td>{item.tax_value}%</td>
+                <td>{parseFloat(item.decimal_price_with_tax).toFixed(2)}</td>
+                <td><Form><Form.Control defaultValue={item.id} /><Form.Control defaultValue={{item.sold_quantity}} /></Form></td>
+                <td>{item.decimal_tax_total}%</td>
                 <td>{item.discount}%</td>
                 <td>{parseFloat(item.total).toFixed(2)} Kz</td>
                 <td>
