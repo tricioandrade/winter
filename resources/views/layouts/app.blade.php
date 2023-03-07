@@ -17,7 +17,7 @@
     @vite(['resources/sass/app.scss', 'resources/ts/main.tsx'])
 </head>
 <body>
-<div id="app">
+<main id="app">
     @guest
 
     @else
@@ -74,7 +74,7 @@
         </nav>
     @endguest
 
-        <main class="py-4">
+        <div class="py-4">
             @yield('content')
             <span class="preloader"></span>
             <div style="display:none" class="modal fade show" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-modal="true" role="dialog">
@@ -90,7 +90,7 @@
                     </div>
                 </div>
             </div>
-        </main>
-</div>
+        </div>
+</main>
 </body>
 </html>

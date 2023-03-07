@@ -2,7 +2,7 @@ import axios from "../api/axios";
 
 class InvoicesRequests {
     static async getAllInvoices () {
-        return await axios.get('invoice');
+        return await axios.get('sales/invoices');
     }
 
     static async getAllPaidInvoices () {

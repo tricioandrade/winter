@@ -17,10 +17,13 @@ import {SaleTotal} from "../../interfaces/SaleTotal";
 import {PaymentWays} from "../../enums/PaymentWays";
 import SaleRequests from "../../requests/SaleRequests";
 import Preloader from "../../tasks/Preloader";
+import { SaleFormCreditNote } from "./SaleFormCreditNote";
+import InvoicesRequests from "../../requests/InvoicesRequests";
 
 const Sales = () => {
 
     const [sale,                setSaleState]        = useState(true)
+    const [creditNoteState,     setCreditNoteState]  = useState(false)
     const [paymentWay,          setPaymentWay]       = useState<PaymentWays>(1);
     const [paymentCondition,    setPaymentCondition] = useState<string>('Pronto pagamento')
     const [products,            setProducts]         = useState<ProductResource[]>([]);
@@ -214,8 +217,7 @@ const Sales = () => {
         setSaleType(0);
         const paidBills: number[] = [
             DocTypes.VD,
-            DocTypes.FR,
-            DocTypes.NC
+            DocTypes.FR
         ];
 
         const paymentWays: number[] = [
@@ -252,6 +254,7 @@ const Sales = () => {
         });
     }
 
+
     useEffect(() => {
         if (sale) {
             loadProducts(data => setProducts(data) , 'sale');
@@ -261,9 +264,8 @@ const Sales = () => {
         /*  Finishing sale after clicker button
         * */
         if(saleType > 0) generateInvoice(saleType) ;
-
         removeProduct(soldProducts, productArrayKey);
-    }, [productArrayKey, saleType, sale, saleTotal, soldProducts]);
+    }, [productArrayKey, saleType, sale, saleTotal, soldProducts, creditNoteState]);
 
     return (
         <Container id="sale-component" className="animation">
@@ -419,32 +421,33 @@ const Sales = () => {
                                     <Button onClick = {
                                         /* Invoice Receipt */
                                         () => setSaleType(DocTypes.FR)
-                                    } className="btn-primary">Factura Recibo</Button>
+                                    } className="btn-primary btn-lg">Factura Recibo</Button>
                                     {paymentWay === PaymentWays.NU
                                         ?
                                         <Button onClick = {
                                             /* Sale Money */
                                             () => setSaleType(DocTypes.VD)
-                                        } className="btn-primary">Venda à Dinheiro</Button>
+                                        } className="btn-primary btn-lg">Venda à Dinheiro</Button>
                                         : ''
                                     }
                                     <Button onClick = {
                                         /* Credit Note */
-                                        () => setSaleType(DocTypes.NC)
-                                    } className="btn-primary">Nota de Crédito</Button>
+                                        () => setCreditNoteState(!creditNoteState)
+                                    } className="btn-primary btn-lg">Nota de Crédito</Button>
                                 </ButtonGroup>
                             </Col>
                         </Card.Body>
                         <Card.Footer>
                             <Col lg={12}>
                                 <Button
-                                    className="bg-success btn-primary float-end">Imprimir novamente</Button>
+                                    className="bg-success btn-primary btn-lg float-end">Imprimir novamente</Button>
                             </Col>
                         </Card.Footer>
 
                     </Col>
                 </Col>
             </Row>
+             { creditNoteState ? <SaleFormCreditNote state={ (creditNoteState )} /> : '' }
         </Container>
     );
 }

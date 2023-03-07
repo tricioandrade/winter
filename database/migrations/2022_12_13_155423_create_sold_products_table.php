@@ -35,7 +35,7 @@ return new class extends Migration
             $table->string('product_type_symbol');
             $table->string('product_type_name');
 
-            $table->decimal('sold_quantity', 20,4);
+            $table->bigInteger('sold_quantity');
             $table->integer('discount');
             $table->integer('tax_value');
             $table->string('tax_type');
