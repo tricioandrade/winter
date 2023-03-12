@@ -4,10 +4,9 @@ import Preloader from "../../tasks/Preloader";
 import InvoicesRequests from "../../requests/InvoicesRequests";
 import { LoadInvoices } from "../../tasks/LoadInvoices";
 import { QueryInvoices } from "../../tasks/QueryInvoices";
-import { SaleTotal } from "../../interfaces/SaleTotal";
 
 
-export const SaleFormCreditNote = (state: any) => {
+export const SaleDebitNote = (state: any) => {
     console.log(state);
 
     const [componentStatus, setComponentStatus] = useState(state);
@@ -15,33 +14,10 @@ export const SaleFormCreditNote = (state: any) => {
     const [invoiceData,         setInvoiceData] = useState<any[]>([]);
     const [products,               setProducts] = useState<any[]>([]);
     const [invoiceRef,           setInvoiceRef] = useState<string>('');
-    const [changedProducts, setChangedProducts] = useState<any>();
-    const [saleTotal,             setSaleTotal] = useState<SaleTotal>({
-        commercial_discount: 0.00,
-        merchandise_total: 0.00,
-        service_total: 0.00,
-        tax_total: 0.00,
-        total:0.00
-    });
 
 
-    const handleSubmitOnTable = (evt: FormEvent) => {
-        evt.preventDefault();
-        // if((evt.target as HTMLElement).querySelector('input#quantity')){
-            const element = (evt.target as HTMLElement).querySelector('input#quantity');
-            console.log(element);
-            console.log(evt.target);
-        // }
+    const handleChange = () => {
 
-        if((evt.target as HTMLElement).querySelector('button')){
-            const value = +((evt.target as HTMLElement).querySelector('button') as HTMLButtonElement).value;
-        }
-        // setProductArrayKey(value);
-    }
-
-    const change = (evt: FormEvent) => {
-        const form: HTMLFormElement = (evt.target as HTMLElement).parentElement as HTMLFormElement;
-        console.log(JSON.parse(form.product.value));
     }
 
     const rowsOfProducts = (products: any[]) => {
@@ -49,22 +25,21 @@ export const SaleFormCreditNote = (state: any) => {
         console.log('PO', products);
 
         return products[0]?.relationships.products.map((item: any, key: number) => {
-            return (            
-                <tr key={key}>
-                    <td>{item?.attributes?.name}</td>
-                    <td>
-                        <Form onChange={ change }>
-                            <Form.Control id="product" defaultValue={JSON.stringify(item)} hidden />
-                            <Form.Control min={0} max={item?.attributes?.sold_quantity} id="quantity" width={30}  
-                                type="number" defaultValue={ item?.attributes?.sold_quantity } />
-                        </Form>
-                    </td>
-                    <td>
-                        <Form>
-                            <Button id="remove" type='submit' value={item.id} className='btn-danger text-light'><i className='fa fa-trash'/></Button>
-                        </Form>
-                    </td>
-                </tr>
+            return (
+            <tr key={key}>
+                <td>{item?.attributes?.name}</td>
+                <td>{parseFloat(item?.attributes?.decimal_price_with_tax).toFixed(2)}</td>
+                <td>{item?.attributes?.decimal_price_with_tax}%</td>
+                <td><Form><Form.Control type="number" defaultValue={item.id} hidden />
+                    <Form.Control id="quantity" width={30}  type="number" defaultValue={ item?.attributes?.decimal_tax_total } /></Form></td>
+                <td>{item?.attributes?.discount}%</td>
+                <td>{parseFloat(item?.attributes?.total).toFixed(2)} Kz</td>
+                <td>
+                    <Form>
+                        <Button id="remove" type='submit' value={item.id} className='btn-danger text-light'><i className='fa fa-trash'/></Button>
+                    </Form>
+                </td>
+            </tr>
             );
         });
     }
@@ -85,35 +60,6 @@ export const SaleFormCreditNote = (state: any) => {
         evt.preventDefault();
         const value: string = ((evt.target as HTMLElement).querySelector('#invoiceRef') as HTMLButtonElement).value;
         setInvoiceRef(value);
-    }
-
-    /*
-    * Generate Invoice
-    * */
-    function generateInvoice () {
-        let saleData = {};
-        saleData = {
-            // ...invoiceData.attributes,
-                currency: 'AOA',
-                exchange: 750,
-                // // paid_value: !paymentWays.includes(paymentWay) ? payment : saleTotal.total,
-                // change,
-                // payment_mechanism: paymentCondition,
-                // payment_way: paymentWay,
-                // invoice_type_id: docType,
-                // ...saleTotal
-            };
-            // soldProducts
-
-        // Preloader.active();
-        // SaleRequests.saveInvoice(saleData).then( data  => {
-        //     console.log(data);
-        //     Preloader.inactive();
-        //     clearSates();
-        // }).catch( e => {
-        //     console.log(e);
-        //     Preloader.inactive();
-        // });
     }
 
 
@@ -146,7 +92,7 @@ export const SaleFormCreditNote = (state: any) => {
                             }}>
                                 <Card.Body>
                                     <Col lg={12} className='text-center'>
-                                        <h6>Emitir nota de crédito</h6>
+                                        <h6>Emitir nota de débito</h6>
                                     </Col>
                                     <Col lg={12} className='row'>
                                         <Col lg={3} className='row'>
@@ -161,16 +107,22 @@ export const SaleFormCreditNote = (state: any) => {
                                                 </Form>
                                             </Col>
                                             <Col lg={12}>
-                                                    <Button onClick={ saveChanges }  type="submit" className="btn btn-primary mt-3 float-end bg-success">Salvar/Imprimir</Button>
-                                                    <Button onClick={ nullCompletly } type="submit" className="btn btn-primary mt-3 float-end bg-danger">Anular factura</Button>
+                                                <ButtonGroup className="btn-group-vertical">
+                                                    <Button onClick={ saveChanges }  type="submit" className="btn btn-primary mt-3 btn-lg float-end bg-success">Salvar</Button>
+                                                    <Button onClick={ nullCompletly } type="submit" className="btn btn-primary mt-3 btn-lg float-end bg-danger">Anular factura</Button>
+                                                </ButtonGroup>
                                             </Col>
                                         </Col>
                                         <Col lg={9} className="table-div" style={{ height: '55vh', overflow: 'auto' }}>
-                                            <table id="saleTable" className="table"  onSubmit={ handleSubmitOnTable }>
+                                            <table id="saleTable" className="table" >
                                                 <thead>
                                                 <tr>
                                                     <th>Descrição</th>
+                                                    <th>Preço</th>
                                                     <th>Quantidade</th>
+                                                    <th>Imposto</th>
+                                                    <th>Desconto</th>
+                                                    <th>Total</th>
                                                     <th>&nbsp;</th>
                                                 </tr>
                                                 </thead>
