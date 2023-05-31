@@ -1,0 +1,22 @@
+
+form input,
+form select {
+    background:none !important;
+    border: 2px solid  #fff !important;
+    border-radius: 0 !important;
+    color:#fff !important;
+}
+
+form input:focus,
+form select:focus {
+    outline-color: #29cec5;
+    border:1px solid #29cec5;
+    box-shadow: 0 0 10px #29cec5;
+  }
+
+form label {
+    width:50%;
+    background:#29cec5;
+    text-align:center !important;
+}
+

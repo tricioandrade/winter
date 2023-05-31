@@ -1,30 +1,15 @@
 import React from "react";
-import UsersRequests from "../../requests/UsersRequests";
-import HomeAdminUserTemplate from "./HomeAdminUserTemplate";
-import {User} from "../../interfaces/UserResource";
+// import UsersRequests from "../../requests/UsersRequests";
+// import HomeAdminUserTemplate from "./HomeAdminUserTemplate";
+// import {User} from "../../interfaces/UserResource";
 import '../../../css/Home.css';
+import HomeTemplate from "./HomeTemplate";
 
-class Home extends React.Component{
-    user: User[] = [];
+export const Home = () => {
 
-    constructor(props: object) {
-        super(props);
-    }
 
-    componentDidMount() {
-        this.setUser();
-    }
 
-    private setUser () {
-        UsersRequests.getSingleUser(1).then(data => {
-            this.user = data.data;
-            console.log(this.user);
-        }).catch( e => { console.log(e) });
-    }
-
-    render () {
-        return HomeAdminUserTemplate;
-    }
+   return <HomeTemplate />;
 }
 
-export default Home;
+// export default Home;

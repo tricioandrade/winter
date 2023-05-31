@@ -1,5 +1,5 @@
 import React from "react";
-import Home from "./home/Home";
+import { Home } from "./home/Home";
 import {Routes, Route} from "react-router-dom";
 import Sales from "./sale/Sales";
 import {Inventory} from "./inventory/Inventory";
