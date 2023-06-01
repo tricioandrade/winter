@@ -1,6 +1,7 @@
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import Clock from "../../tasks/Clock";
 
 
 const HomeTemplate = () => {
@@ -55,7 +56,7 @@ const HomeTemplate = () => {
                     </Col>
                     <Col lg={10} className="row">
                         <Col lg={6}>
-                            <div id="clock"></div>
+                            <div id="clock"> <Clock /> </div>
                         </Col>
                     </Col>
                 </Row>
