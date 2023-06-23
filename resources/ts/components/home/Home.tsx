@@ -3,6 +3,7 @@ import React from "react";
 // import HomeAdminUserTemplate from "./HomeAdminUserTemplate";
 // import {User} from "../../interfaces/UserResource";
 import '../../../css/Home.css';
+import './Home.css';
 import HomeTemplate from "./HomeTemplate";
 
 export const Home = () => {

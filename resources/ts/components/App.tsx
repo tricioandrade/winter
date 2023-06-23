@@ -4,6 +4,8 @@ import {Routes, Route} from "react-router-dom";
 import Sales from "./sale/Sales";
 import {Inventory} from "./inventory/Inventory";
 import Receipts from "./receipt/Receipts";
+import './Header.css';
+import './App.css';
 
 const App = () => {
     return (

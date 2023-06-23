@@ -13,7 +13,7 @@ table .btn, a, p, input, label, table, select, datalist, ul {
 a.btn, button, .btn {
     font-size:13.5px !important;
 }
-
+/* 
 body:before {
     content: "";
     position: absolute;
@@ -21,15 +21,15 @@ body:before {
     top:0;
     left: 0;
     width: 100%;
-    padding: 17%;
-/*     box-shadow: 10px 10px 10px #f2d714; */
-/*     background:linear-gradient(45deg, #27c97d, #0f6468, #333, #198754); */
+   padding: 17%;
+     box-shadow: 10px 10px 10px #f2d714; 
+    background:linear-gradient(45deg, #27c97d, #0f6468, #333, #198754);
     z-index: -1;
     background:linear-gradient(45deg, #212529,#212529,#212529,#212529);
       background: linear-gradient(to bottom, #000000 0%, #0f0f0f 100%);
 
 
-}
+} */
 
 #app {
     background-color:#fefefe;
@@ -116,7 +116,7 @@ body:before {
     animation: moveInBotton .3s ease-out .75s;
     animation-fill-mode: backwards;
 }
-
+/* 
 nav {
     top:2%;
     position:relative !important;
@@ -130,15 +130,13 @@ nav a.navbar-brand {
 
 nav ul {
     border: 1px solid #e9ecef !important;
-    background:linear-gradient(45deg, #e9ecef, #dee2e6 #f8f9fa);
     border-radius:10px;
-    background:linear-gradient(45deg, #f6ad6a, #d6843b, #eba05c);
     padding:2px;
 }
 
 nav ul li a.nav-link {
     color:#fefefe;
-}
+} */
 
 #app {
     height: 100vh;

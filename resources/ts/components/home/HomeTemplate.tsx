@@ -11,7 +11,7 @@ const HomeTemplate = () => {
             <Container>
                 <Row>
                     <Col lg={2}>
-                        <ul className='list-group'>
+                        <ul className='list-group float-left'>
                             <li className='row d-flex flex-row list-group-item'>
                                 <Col lg={1} className="icon text-center"><i className="fa fa-home"></i></Col>
                                 <Col lg={4}>
