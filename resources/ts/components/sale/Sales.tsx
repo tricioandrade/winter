@@ -86,9 +86,8 @@ const Sales = () => {
      * Handling form product submission
      * */
     const handleSubmit = (evt: FormEvent) => {
-        evt.preventDefault();
-        evt.target.removeEventListener('submit', ()=>{});
 
+        evt.preventDefault();
         const form = evt.target as HTMLFormElement;
         const productCode: string = form.productCode.value;
         form.productCode.value = '';
@@ -448,7 +447,7 @@ const Sales = () => {
                     </Col>
                 </Col>
             </Row>
-             { true ? <SaleFormCreditNote state={ (creditNoteState )} /> : '' }
+             { creditNoteState ? <SaleFormCreditNote state={ (creditNoteState )} /> : '' }
         </Container>
     );
 }

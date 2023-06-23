@@ -1,8 +1,10 @@
 
 export interface SoldProduct {
-    code?: string | number;
+    code: string | number;
     description: string;
     discount: number;
+    for_sale_quantity: number;
+    for_sale_status: number;
     name: string;
     price: number;
     price_with_tax: number;
@@ -13,7 +15,7 @@ export interface SoldProduct {
     promotional_price: string;
     promotional_status: string;
     sold_quantity: number;
-    stock_quantity?: number;
+    stock_quantity: number;
     tax_exemption_code: string;
     tax_exemption_reason: string;
     tax_total: number;
@@ -21,6 +23,6 @@ export interface SoldProduct {
     tax_type: string;
     tax_value: number;
     total: number;
-    unity_of_measure?: string;
-    unity_quantity?: number;
+    unity_of_measure: string;
+    unity_quantity: number;
 }

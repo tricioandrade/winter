@@ -5,22 +5,15 @@ import InvoicesRequests from "../../requests/InvoicesRequests";
 import { LoadInvoices } from "../../tasks/LoadInvoices";
 import { QueryInvoices } from "../../tasks/QueryInvoices";
 import { SaleTotal } from "../../interfaces/SaleTotal";
-import { SoldProduct } from "../../interfaces/SoldProduct";
-import CalculatorTask from "../../tasks/CalculatorTask";
-import { queryProduct, querySoldProduct } from "../../tasks/queryProduct";
-import { SoldProductResource } from "../../interfaces/SoldProductResource";
-import { InvoiceResource } from "../../interfaces/InvoiceResource";
-import MessageBox from "../../tasks/MessageBox";
+
 
 export const SaleFormCreditNote = (state: any) => {
     console.log(state);
 
-    const [productToChange, setProductToChange] = useState<any[]>([]);
-
     const [componentStatus, setComponentStatus] = useState(state);
     const [loadStatus,           setLoadStatus] = useState(state);
     const [invoiceData,         setInvoiceData] = useState<any[]>([]);
-    const [soldProducts,       setSoldProducts] = useState<InvoiceResource[]>([]);
+    const [products,               setProducts] = useState<any[]>([]);
     const [invoiceRef,           setInvoiceRef] = useState<string>('');
     const [changedProducts, setChangedProducts] = useState<any>();
     const [saleTotal,             setSaleTotal] = useState<SaleTotal>({
@@ -32,98 +25,43 @@ export const SaleFormCreditNote = (state: any) => {
     });
 
 
-    // const handleProductChange = (evt: FormEvent) => {
-    //     evt.preventDefault();
-    //     const success   = (evt.target as HTMLElement).querySelector('button#success') as HTMLButtonElement;
-    //     const element   = (evt.target as HTMLElement).querySelector('input#quantity') as HTMLInputElement;
-    //     const elementID = (evt.target as HTMLElement).querySelector('input#productId') as HTMLInputElement;
-
-    //     if(success){
-    //         console.log(element);
-    //         console.log(evt.target);
-    //         console.log(+element.value);
-                
-    //         const product: SoldProductResource[] = soldProducts[0].relationships.products.filter((obj: SoldProductResource)  => {
-    //                 console.log('filter: Y', obj); 
-    //                 return obj.id === element.value;
-    //         });
-    //         if(!(product.length > 0)){
-    //             MessageBox.open('Referência do produto não registrada');
-    //             return;
-    //         }
-    //         console.log(soldProducts[0].relationships.products);
-    //         console.log(product);
-
-    //     }
-
-    // }
-
-
-
-    const handleProductChange = (evt: FormEvent) => {
+    const handleSubmitOnTable = (evt: FormEvent) => {
         evt.preventDefault();
-        const form = (evt.target as HTMLFormElement);
-        form.quantity.value
+        // if((evt.target as HTMLElement).querySelector('input#quantity')){
+            const element = (evt.target as HTMLElement).querySelector('input#quantity');
+            console.log(element);
+            console.log(evt.target);
+        // }
 
-        let products: SoldProduct[] = [];
-
-        productToChange.forEach((item: SoldProductResource, key: number) => {
-            products[key] = {
-                ...item.attributes,
-                sold_quantity: item.attributes.product_id ===  +form.productId.value ? form.quantity.value : item.attributes.sold_quantity,
-                total: +item.attributes.product_id ===  +form.productId.value ? 
-                    +item.attributes.price_with_tax * +form.quantity.value : +item.attributes.total,
-            }
-        });
-
-        setProductToChange(products);
+        if((evt.target as HTMLElement).querySelector('button')){
+            const value = +((evt.target as HTMLElement).querySelector('button') as HTMLButtonElement).value;
+        }
+        // setProductArrayKey(value);
     }
 
-    const fillSoldProducts = (products: any[]) => {
-        let filteredProducts: any[] = [];
-        products[0]?.relationships.products.map((item: any, key: number) => {
-            filteredProducts[key] = {
-                ...item
-            };
-        });
-        console.log('Filtered Products: ', filteredProducts);
-        setProductToChange(filteredProducts as SoldProduct[]);
-    }
-    
-    const removeProduct = (evt: FormEvent) => {
-        evt.preventDefault();
-        const form: HTMLFormElement = (evt.target as HTMLFormElement); 
-
-        const index = productToChange.findIndex((object: SoldProductResource) => {
-            return object.attributes.product_id === +form.removeProduct.value;
-        });
-        
-        productToChange.splice(index, 1);
-        setProductToChange(productToChange);
+    const change = (evt: FormEvent) => {
+        const form: HTMLFormElement = (evt.target as HTMLElement).parentElement as HTMLFormElement;
+        console.log(JSON.parse(form.product.value));
     }
 
-    const rowsOfProducts = (products: SoldProductResource[]) => {
+    const rowsOfProducts = (products: any[]) => {
         if (!products.length) return ;
-        console.log(products);
-        return products.map((item: SoldProductResource, key: number) => {
+        console.log('PO', products);
+
+        return products[0]?.relationships.products.map((item: any, key: number) => {
             return (            
                 <tr key={key}>
-                    <td>{item.attributes.name}</td>
-                    <td className="row">
-                        <Form className="row"  onSubmit={ handleProductChange }>
-                            <Col lg={8}>
-                                <Form.Control id="productId" type="number" defaultValue={item.attributes.product_id} hidden />
-                                <Form.Control min={0} max={item.attributes.sold_quantity} id="quantity" width={30}  
-                                    type="number" defaultValue={ +item.attributes.sold_quantity } />
-                            </Col>
-                            <Col lg={4}>    
-                                <Button id="success" type='submit' value={item.attributes.product_id} className='btn-success text-light'><i className='fa fa-save'/></Button>
-                            </Col>
+                    <td>{item?.attributes?.name}</td>
+                    <td>
+                        <Form onChange={ change }>
+                            <Form.Control id="product" defaultValue={JSON.stringify(item)} hidden />
+                            <Form.Control min={0} max={item?.attributes?.sold_quantity} id="quantity" width={30}  
+                                type="number" defaultValue={ item?.attributes?.sold_quantity } />
                         </Form>
                     </td>
                     <td>
-                        <Form onSubmit={ removeProduct }>
-                            <Button id="removeProduct" type='submit' value={item.attributes.product_id} className='btn-danger text-light'><i className='fa fa-trash'/></Button>
+                        <Form>
+                            <Button id="remove" type='submit' value={item.id} className='btn-danger text-light'><i className='fa fa-trash'/></Button>
                         </Form>
                     </td>
                 </tr>
@@ -186,16 +124,18 @@ export const SaleFormCreditNote = (state: any) => {
         }
         
         if(invoiceData.length && invoiceRef.length){
-            setSoldProducts(QueryInvoices( invoiceRef, invoiceData, 'ref' ));
-            fillSoldProducts(QueryInvoices( invoiceRef, invoiceData, 'ref' ));
+            setProducts(QueryInvoices( invoiceRef, invoiceData, 'ref' ));
+            console.log(products);
             setInvoiceRef('');
         }
 
-    }, [componentStatus, invoiceData, soldProducts, invoiceRef, productToChange]);
+        console.log(invoiceData);
+        console.log(invoiceRef);
+    }, [componentStatus, invoiceData, products, invoiceRef]);
 
     return (
      <>
-        { true ?
+        { componentStatus ?
             <>
                 <div className="backShadow"></div>
                 <section id="creditNoteSection">
@@ -226,18 +166,16 @@ export const SaleFormCreditNote = (state: any) => {
                                             </Col>
                                         </Col>
                                         <Col lg={9} className="table-div" style={{ height: '55vh', overflow: 'auto' }}>
-                                            <table id="saleTable" className="table" >
+                                            <table id="saleTable" className="table"  onSubmit={ handleSubmitOnTable }>
                                                 <thead>
                                                 <tr>
                                                     <th>Descrição</th>
                                                     <th>Quantidade</th>
                                                     <th>&nbsp;</th>
-                                                    <th>&nbsp;</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                { rowsOfProducts(productToChange) }
-                                                
+                                                { rowsOfProducts(products) }
                                                 </tbody>
                                             </table>
                                         </Col>
