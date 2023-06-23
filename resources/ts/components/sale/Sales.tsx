@@ -23,7 +23,7 @@ import InvoicesRequests from "../../requests/InvoicesRequests";
 const Sales = () => {
 
     const [sale,                setSaleState]        = useState(true)
-    const [creditNoteState,     setCreditNoteState]  = useState(false)
+    const [creditNoteState,     setCreditNoteState]  = useState(true)
     const [paymentWay,          setPaymentWay]       = useState<PaymentWays>(1);
     const [paymentCondition,    setPaymentCondition] = useState<string>('Pronto pagamento')
     const [products,            setProducts]         = useState<ProductResource[]>([]);
@@ -86,8 +86,9 @@ const Sales = () => {
      * Handling form product submission
      * */
     const handleSubmit = (evt: FormEvent) => {
-
         evt.preventDefault();
+        evt.target.removeEventListener('submit', ()=>{});
+
         const form = evt.target as HTMLFormElement;
         const productCode: string = form.productCode.value;
         form.productCode.value = '';
@@ -447,7 +448,7 @@ const Sales = () => {
                     </Col>
                 </Col>
             </Row>
-             { creditNoteState ? <SaleFormCreditNote state={ (creditNoteState )} /> : '' }
+             { false ? <SaleFormCreditNote state={ (creditNoteState )} /> : '' }
         </Container>
     );
 }

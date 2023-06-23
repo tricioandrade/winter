@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Winter</title>
+    <title>Outono</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -23,10 +23,9 @@
     @else
 
         <nav  class="navbar navbar-expand-md navbar-light ">
-            <div class="container">
+            <div class="container m-auto">
                 <a class="navbar-brand" href="{{ url('/home') }}" onclick="route()">
-                    {{-- <img src="{{asset('winterlogo.png')}}" alt="winter" width="30">  --}}
-                    <span>WINTER</span>
+                    <img src="{{asset('outonologo.png')}}" alt="Outono" width="100">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -42,6 +41,16 @@
                         @guest
 
                         @else
+                            <li class="nav-item">
+                                <a  class="nav-link">
+                                    <span id="clock"></span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link">
+                                    &verbar;
+                                </a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">
                                     <span id="user-name"><i class="fa fa-user-alt"></i>&nbsp;{{ Auth::user()->name }}</span>

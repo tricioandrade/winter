@@ -1,0 +1,36 @@
+
+
+#listedProducts .btn {
+    background:none !important;
+    border:2px solid #636464;
+    box-shadow: 0 0.5rem 1rem #adb5bd !important;
+    border-top: 2px solid rgba(255, 255, 255, 0.15) !important;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.125) !important;
+    background: linear-gradient(45deg, #fefefe99, #f8f9fa, #f8f9fa, #f8f9fa, #f8fafc);
+
+}
+
+#listedProducts .card ul li {
+    list-style: none;
+    font-size:12.6px !important;
+    font-weight: bold;
+    font-size:13px;
+    color: #333;
+    text-shadow: 0 0 #d4a312;
+    background:#fefefe;
+    margin: 2px 0;
+    padding: 0 7px;
+    border: 2px solid #fefe;
+    box-shadow:0px 0px 5px #333 !important;
+}
+
+#listedProducts .card ul li div{
+    font-weight:normal;
+    color:#333;
+    text-align: right;
+}
+
+
+#listedProducts .card .card-footer {
+    text-align:center;
+}

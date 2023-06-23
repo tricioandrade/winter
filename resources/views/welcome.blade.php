@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Winter</title>
+        <title>Outono</title>
 
         <!-- Fonts -->
         <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -22,24 +22,21 @@
             }
         </style>
         
-        @vite(['node_modules/bootstrap/dist/css/bootstrap.css', 'resources/css/start_scream.css'])
+        @vite(['node_modules/bootstrap/dist/css/bootstrap.css', 'resources/css/app.css'])
     </head>
     <body>
         <div class="container">
             <div class="row col-6 m-auto d-flex align-items-end">
                 <div class="m-auto col-12 text-center">
-                    <figure>
-                        <img src="{{ asset('winterlogo.png') }}" alt="" width="100">
-                        <figcaption>WINTER</figcaption>    
-                    </figure>
+                    <img src="{{ asset('outonologo.png') }}" alt="" width="400">
                 </div>
                 <div class="col-6 m-auto">
                     @if (Route::has('login'))
                         <div class="d-grid gap-2 col-6 mx-auto text-center top-0 right-0 px-6 py-4 sm:block">
                             @auth
-                                <a href="{{ url('/home') }}" class="text-sm btn btn-link text-gray-700 dark:text-gray-500 underline">Dashboard</a>
+                                <a href="{{ url('/home') }}" class="text-sm btn btn-success text-gray-700 dark:text-gray-500 underline">Dashboard</a>
                             @else
-                            <a href="{{ route('login') }}" class="text-sm btn btn-link text-gray-700 dark:text-gray-500 underline">Entrar</a>
+                            <a href="{{ route('login') }}" class="text-sm btn btn-success text-gray-700 dark:text-gray-500 underline">Entrar</a>
 
                             @if (Route::has('register'))
                             @endif
@@ -49,7 +46,7 @@
                 </div>
 
                 <div class="col-12 d-flex align-items-end text-center fs-6">
-                    <small class='col-12'>WINTER 1.0</small>
+                    <small class='col-12'>Outono v2.0.0</small>
                 </div>
             </div>
         </div>
