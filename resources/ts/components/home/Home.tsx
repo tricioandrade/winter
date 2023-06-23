@@ -1,8 +1,8 @@
 import React from "react";
 import UsersRequests from "../../requests/UsersRequests";
-import HomeAdminUserTemplate from "./HomeAdminUserTemplate";
 import {User} from "../../interfaces/UserResource";
 import '../../../css/Home.css';
+import HomeTemplate from "./HomeTemplate";
 
 class Home extends React.Component{
     user: User[] = [];
@@ -23,7 +23,7 @@ class Home extends React.Component{
     }
 
     render () {
-        return HomeAdminUserTemplate;
+        return HomeTemplate;
     }
 }
 

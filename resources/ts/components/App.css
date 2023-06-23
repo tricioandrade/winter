@@ -1,6 +1,6 @@
 body{
     font-family: 'Roboto Condensed', sans-serif;
-    background:#;
+    background:radial-gradient( #2b4f89 50%, #4bd7f0a1);
 }
 
 
@@ -14,7 +14,7 @@ a.btn, button, .btn {
 
 body:before {
     content: "";
-    position: absolute;
+    position: fixed;
     bottom: 0%;
     top:0;
     left: 0;
@@ -28,16 +28,14 @@ body:before {
 
 
 body:after {
-    background:#41464b;
     content: "";
-    position: absolute;
+    position: fixed;
     bottom: 0%;
     left: 0;
     width: 100%;
     padding: 21%;
     border-top-left-radius: 100rem;
     border-top-right-radius: 100rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.125);
     z-index: -1;
 }
 
@@ -124,7 +122,6 @@ body:after {
 nav {
     top:2%;
     line-height: 1;
-    position:relative !important;
     z-index:10;
     color:#333;
 }
@@ -146,10 +143,6 @@ nav ul li a.nav-link {
     color:#fefefe;
 }
 
-#app {
-    height: 100vh;
-    overflow:hidden;
-}
 
 .page-title {
     padding:4px;
@@ -162,7 +155,7 @@ nav ul li a.nav-link {
 
 .page-title a{
     font-family:'Nunito Bold';
-    color:#e39957;
+    color:#141619;
 }
 
 .card {
@@ -313,6 +306,10 @@ table tbody tr td {
 
 #creditNoteSection .card {
 /*     padding:10px; */
+}
+
+#root {
+    margin-top:3rem
 }
 
 .backShadow{

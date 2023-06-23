@@ -22,7 +22,7 @@
 
     @else
 
-        <nav  class="navbar navbar-expand-md navbar-light ">
+        <nav  class="navbar navbar-expand-md fixed-top navbar-light ">
             <div class="container m-auto">
                 <a class="navbar-brand" href="{{ url('/home') }}" onclick="route()">
                     <img src="{{asset('outonologo.png')}}" alt="Outono" width="100">
@@ -33,8 +33,6 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent" style="display: none">
                     <!-- Left Side Of Navbar -->
-
-
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
