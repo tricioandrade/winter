@@ -25,7 +25,8 @@
         <nav  class="navbar navbar-expand-md fixed-top navbar-light ">
             <div class="container m-auto">
                 <a class="navbar-brand" href="{{ url('/home') }}" onclick="route()">
-                    <img src="{{asset('outonologo.png')}}" alt="Outono" width="100">
+                    {{-- <img src="{{asset('outonologo.png')}}" alt="Outono" width="100"> --}}
+                    WINTER
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
