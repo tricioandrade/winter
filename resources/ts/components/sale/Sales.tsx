@@ -270,7 +270,7 @@ const Sales = () => {
 
     return (
         <Container id="sale-component" className="animation">
-            <div className="row col-12 mb-5">
+            <div className="row col-12 mb-2">
                 <div className="page-title">
                     <div className="col-12 m-auto title-section">
                         <Link to="#" className="border-0 text-decoration-none" aria-current="page">
@@ -278,7 +278,7 @@ const Sales = () => {
                     </div>
                 </div>
             </div>
-            <Row className="col-12 d-flex align-items-stretch">
+            <Row className="col-12 d-flex align-items-stretch ">
                 <Col id='sale-content' lg={9} className="card shadow rounded" >
                     <Card.Body>
                         <Row>

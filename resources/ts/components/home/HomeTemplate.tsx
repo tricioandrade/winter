@@ -18,44 +18,32 @@ const HomeTemplate = (
             <div className="card-img-top">
                 <i className="fa fa-cash-register"/>
             </div>
-            <Card.Body className="card-body">
-                <h5 className="card-title">Vendas</h5>
-            </Card.Body>
             <Card.Footer className="align-items-center text-center">
-                <Link to="/sales" id="sales"  className="btn btn-primary">Abrir secção</Link>
+                <Link to="/sales" id="sales"  className="btn btn-primary">Vendas</Link>
             </Card.Footer>
         </Card>
         <Card className="col m-2  rounded">
             <div className="card-img-top">
                 <i className="fa fa-receipt"/>
             </div>
-            <Card.Body className="card-body">
-                <h5 className="card-title">Inventário</h5>
-            </Card.Body>
             <Card.Footer className="align-items-center text-center">
-                <Link to="/inventory" id="inventory"  className="btn btn-primary">Abrir secção</Link>
+                <Link to="/inventory" id="inventory"  className="btn btn-primary">Inventário</Link>
             </Card.Footer>
         </Card>
         <Card className=" col m-2  rounded">
             <div className="card-img-top">
                 <i className="fa fa-file-invoice" />
             </div>
-            <Card.Body>
-                <h5 className="card-title">Relatórios</h5>
-            </Card.Body>
             <Card.Footer className="align-items-center text-center">
-                <Link to="/receipts" id="receipts"  className="btn btn-primary">Abrir secção</Link>
+                <Link to="/receipts" id="receipts"  className="btn btn-primary">Relatórios</Link>
             </Card.Footer>
         </Card>
         <Card className="col m-2  rounded">
             <div className="card-img-top">
                 <i className="fa fa-users-cog"/>
             </div>
-            <Card.Body>
-                <h5 className="card-title">Usuários</h5>
-            </Card.Body>
             <Card.Footer className="align-items-center text-center">
-                <Link to="/settings" id="users"  className="btn btn-primary">Abrir secção</Link>
+                <Link to="/settings" id="users"  className="btn btn-primary">Usuários</Link>
             </Card.Footer>
         </Card>
     </div>

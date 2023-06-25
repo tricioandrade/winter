@@ -130,7 +130,7 @@ export const  InventorySaveProducts = ({ getProducts }: any) => {
 
     return (
         <>
-            <Col lg={12}>
+            <Col lg={12} className="row d-flex">
                 <Button className={(page  ? 'active' : '')} onClick={ () => setPage(true) }>
                     <i className='fa fa-save' />&nbsp;Cadastrar produto
                 </Button>

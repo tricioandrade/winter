@@ -45,7 +45,7 @@ export const Inventory = () => {
             </Row>
 
             {/*Search Form*/}
-            <Row className="animation">
+            <Row className="animation col-12">
                 <Col lg={6}>
                     <Col lg={12} className='mb-3'>
                         <Form  id="productSearch" onSubmit={
@@ -75,7 +75,7 @@ export const Inventory = () => {
                                     { ListProductsOnCard(product) }
                                 </Row>
                             </>
-                            : <Col lg={12} className='align-content-around'><h4>Os produtos aparecerão aqui</h4></Col>
+                            : <Col lg={12} className='align-content-around'><h5>Os produtos aparecerão aqui</h5></Col>
                         }
                     </Col>
                 </Col>
