@@ -161,8 +161,8 @@ nav ul li a.nav-link {
 }
 
 .card {
-    background: linear-gradient(45deg,  #f8f9fa, #f8f9fa, #f8fafc);
-    border:2px solid #212529;
+    background: linear-gradient(45deg,  #f8f9fa80, #f8f9fa78, #f8fafc6e);
+    border:1px ridge #212529;
     border-radius:0rem !important;
 }
 

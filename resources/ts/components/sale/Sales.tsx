@@ -22,8 +22,8 @@ import InvoicesRequests from "../../requests/InvoicesRequests";
 
 const Sales = () => {
 
-    const [sale,                setSaleState]        = useState(true)
-    const [creditNoteState,     setCreditNoteState]  = useState(true)
+    const [sale,                setSaleState]        = useState(false)
+    const [creditNoteState,     setCreditNoteState]  = useState(false)
     const [paymentWay,          setPaymentWay]       = useState<PaymentWays>(1);
     const [paymentCondition,    setPaymentCondition] = useState<string>('Pronto pagamento')
     const [products,            setProducts]         = useState<ProductResource[]>([]);
@@ -448,7 +448,7 @@ const Sales = () => {
                     </Col>
                 </Col>
             </Row>
-             { false ? <SaleFormCreditNote state={ (creditNoteState )} /> : '' }
+             { creditNoteState ? <SaleFormCreditNote state={ (creditNoteState )} /> : '' }
         </Container>
     );
 }
