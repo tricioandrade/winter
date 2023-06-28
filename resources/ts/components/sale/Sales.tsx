@@ -19,11 +19,12 @@ import SaleRequests from "../../requests/SaleRequests";
 import Preloader from "../../tasks/Preloader";
 import { SaleFormCreditNote } from "./SaleFormCreditNote";
 import InvoicesRequests from "../../requests/InvoicesRequests";
+import { Products } from "../inventory/Products";
 
 const Sales = () => {
 
-    const [sale,                setSaleState]        = useState(false)
-    const [creditNoteState,     setCreditNoteState]  = useState(false)
+    const [sale,                setSaleState]        = useState(true);
+    const [creditNoteState,     setCreditNoteState]  = useState(false);
     const [paymentWay,          setPaymentWay]       = useState<PaymentWays>(1);
     const [paymentCondition,    setPaymentCondition] = useState<string>('Pronto pagamento')
     const [products,            setProducts]         = useState<ProductResource[]>([]);
@@ -269,6 +270,7 @@ const Sales = () => {
     }, [productArrayKey, saleType, sale, saleTotal, soldProducts, creditNoteState]);
 
     return (
+        <>
         <Container id="sale-component" className="animation">
             <div className="row col-12 mb-2">
                 <div className="page-title">
@@ -278,7 +280,7 @@ const Sales = () => {
                     </div>
                 </div>
             </div>
-            <Row className="col-12 d-flex align-items-stretch ">
+            <Row className="col-12 d-flex align-items-stretch " >
                 <Col id='sale-content' lg={9} className="card shadow rounded" >
                     <Card.Body>
                         <Row>
@@ -354,7 +356,7 @@ const Sales = () => {
                         </Row>
                     </Card.Body>
                 </Col>
-                <Col lg={3} className="pl-1 float-end">
+                <Col lg={3} className="pl-1 float-end" style={{ height: '75vh', overflow: 'auto' }}>
                     <Col lg={12} className="card shadow rounded ">
                         <Card.Body>
                             <Col lg={12}>
@@ -450,6 +452,7 @@ const Sales = () => {
             </Row>
              { creditNoteState ? <SaleFormCreditNote state={ (creditNoteState )} /> : '' }
         </Container>
+        </>
     );
 }
 

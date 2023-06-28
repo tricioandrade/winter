@@ -133,8 +133,12 @@ export const SaleFormCreditNote = (state: any) => {
     
     const handleSubmit = (evt: FormEvent) => {
         evt.preventDefault();
-        const value: string = ((evt.target as HTMLElement).querySelector('#invoiceRef') as HTMLButtonElement).value;
-        setInvoiceRef(value);
+        try{
+            const value: string = ((evt.target as HTMLElement).querySelector('#invoiceRef') as HTMLButtonElement).value;
+            setInvoiceRef(value);
+        }catch(e){
+            MessageBox.open(e);
+        }
     }
 
     const nullCompletly = (evt: FormEvent) => {

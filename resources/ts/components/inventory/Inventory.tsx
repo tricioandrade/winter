@@ -7,9 +7,11 @@ import {Link} from "react-router-dom";
 import ListOfProducts from "../../templates/ListOfProducts";
 import ListProductsOnCard from "../../templates/ListProductsOnCard";
 import {InventorySaveProducts} from "./InventorySaveProducts";
+import Products  from "./Products";
 
 export const Inventory = () => {
 
+    const [displayProducts,     setdisplayProducts]  = useState(true);
     const [form,       setFormState] = useState<boolean>(true);
     const [product,      setProduct] = useState<ProductResource[]>([]);
     const [products,    setProducts] = useState<ProductResource[]>([]);
@@ -34,6 +36,7 @@ export const Inventory = () => {
     }, [form]);
 
     return (
+        <>
         <Container id="inventory-component" className="animation">
             <Row className="col-12 mb-2">
                 <div className="page-title">
@@ -45,7 +48,7 @@ export const Inventory = () => {
             </Row>
 
             {/*Search Form*/}
-            <Row className="animation col-12">
+            <Row className="animation col-12" style={{ height: '75vh', overflow: 'auto' }}>
                 <Col lg={6}>
                     <Col lg={12} className='mb-3'>
                         <Form  id="productSearch" onSubmit={
@@ -84,6 +87,8 @@ export const Inventory = () => {
                 </Col>
             </Row>
         </Container>
+        <Products props={{display: displayProducts, products: products }} />
+        </>
     )
 }
 
